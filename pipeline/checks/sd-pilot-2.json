@@ -1,0 +1,13 @@
+{
+  "checkedAt": "2026-11-15",
+  "results": [
+    {
+      "cardId": "sd-failover",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "notes": "Re-check after the generator added the 'Disadvantage(s): failover' citation. kp1-kp4 match 'Fail-over'; kp7/kp8 match the two bullets of 'Disadvantage(s): failover'; the explanation's aliases match both subsections. The prompt's downsides question is answerable again."
+    }
+  ]
+}

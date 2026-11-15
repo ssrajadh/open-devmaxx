@@ -1,0 +1,270 @@
+{
+  "checkedAt": "2026-11-15",
+  "results": [
+    {
+      "cardId": "sd-performance-vs-scalability",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": "Scalability is about how performance responds to added resources: a service scales if adding resources raises performance proportionally, whether that means serving more units of work or larger ones.\n\nA quick diagnostic: if the system is already slow for a single user, it is a **performance** problem. If a single user sees it fast but it slows down under heavy load, it is a **scalability** problem.",
+      "notes": "All key points match the passage. Explanation rewritten: the example causes in parentheses (algorithms, queries, I/O; contention, bottlenecks, missing scale-out) are not in the passage."
+    },
+    {
+      "cardId": "sd-latency-vs-throughput",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": "Latency is about how long one action or result takes. Throughput is about how many of those actions or results you get per unit of time. The general guideline is to aim for maximal throughput while keeping latency acceptable.",
+      "notes": "Key points match. Explanation rewritten: the unit examples (ms per request, requests per second) and the claim that the two 'often pull against each other' are not in the passage."
+    },
+    {
+      "cardId": "sd-cap-theorem",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": "A distributed system can only support two of consistency, availability, and partition tolerance. Because networks aren't reliable, partition tolerance is required, so the real tradeoff is between **CP** (waiting on a partitioned node may end in a timeout error) and **AP** (respond with the most readily available data on any node, which may be stale; writes propagate once the partition is resolved).\n\nPick CP when the business needs atomic reads and writes. Pick AP when the business can allow eventual consistency or the system must keep working despite external errors.",
+      "notes": "Key points match. Explanation rewritten: 'refuse' is not in the passage (only timeouts), and the AP condition was narrowed from 'eventual consistency OR keep working' to 'and'."
+    },
+    {
+      "cardId": "sd-consistency-patterns",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "notes": "Every key point, example system, and the phone-call example in the explanation appear in the passage."
+    },
+    {
+      "cardId": "sd-failover",
+      "status": "partial",
+      "dropKeyPoints": ["kp5", "kp6"],
+      "keyPointEdits": {},
+      "explanation": "Active-passive fail-over can also be called master-slave fail-over; active-active can also be called master-master fail-over.",
+      "notes": "kp1-kp4 match the cited 'Fail-over' passage. kp5/kp6 (downsides) come from the sibling section 'Disadvantage(s): failover', which the card does not cite, so they are dropped; the prompt's downsides question is now unanswerable, so the generator should add that section as a source and restore them, or trim the prompt. Explanation's 'fail-over and replication are complementary HA patterns' sentence is not in the passage and was removed."
+    },
+    {
+      "cardId": "sd-availability-numbers",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {
+        "kp2": "Three 9s allows about 8h 46m of downtime per year; four 9s about 52.5 minutes"
+      },
+      "explanation": "In sequence, the availabilities multiply, so every extra component below 100% lowers the total. In parallel, the service only fails when both components fail, so the total goes up.\n\nThe primer's table puts 99.9% at 8h 45min 57s of downtime per year and 99.99% at 52min 35.7s per year.",
+      "notes": "kp2 rounded the figures loosely (8.75 h, 53 min); reworded to match the table. Explanation rewritten: the claim about replicas and multiple load balancers is not in this passage."
+    },
+    {
+      "cardId": "sd-dns",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "notes": "Record types, caching/TTL, routing methods, and downsides all match the passage, as do the weighted round robin uses in the explanation."
+    },
+    {
+      "cardId": "sd-cdn-push-pull",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "notes": "Push/pull behavior, site fit, and disadvantages all match; explanation's static/dynamic content and even-traffic points are in the passage."
+    },
+    {
+      "cardId": "sd-load-balancer",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "notes": "Benefits, SSL termination, session persistence, routing metrics, and disadvantages (including multiple LBs in active-passive/active-active) all appear in the passage."
+    },
+    {
+      "cardId": "sd-l4-vs-l7",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {
+        "kp6": "Layer 4 needs less time and compute than layer 7 at the cost of flexibility; the performance impact can be minimal on modern commodity hardware"
+      },
+      "explanation": "Layer 4 balancing decides from transport-layer header info and forwards packets with NAT. Layer 7 balancing reads the application-layer message itself, which lets it route by content, but it does more work: it terminates the traffic, reads the message, and opens a new connection to the chosen server.",
+      "notes": "kp6 said 'often small'; passage says 'can be minimal', reworded. Explanation rewritten: the TCP/UDP and HTTP examples for the layers are not in the passage."
+    },
+    {
+      "cardId": "sd-horizontal-scaling",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": "Load balancers can help with horizontal scaling, which involves cloning servers and adds complexity. The primer also notes it is easier to hire people who know commodity hardware than specialized enterprise systems.",
+      "notes": "Key points match. Explanation rewritten: 'the usual way to scale out' overstates the passage, which only says load balancers can help with horizontal scaling."
+    },
+    {
+      "cardId": "sd-reverse-proxy",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": "A load balancer is useful once you have several servers, usually ones serving the same function. A reverse proxy brings its benefits (security, flexibility, SSL termination, compression, caching, static content) even in front of a single web or application server. Some software, such as NGINX and HAProxy, supports both layer 7 reverse proxying and load balancing.",
+      "notes": "Key points match. Explanation rewritten: the 'managed front door' framing and 'often plays both roles' go beyond the passage, which only says NGINX and HAProxy can support both."
+    },
+    {
+      "cardId": "sd-acid",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": "ACID is a set of properties of transactions in a relational database, which is a collection of data items organized in tables.",
+      "notes": "Key points match. Explanation rewritten: the comparison with the C in CAP is not in the cited RDBMS passage."
+    },
+    {
+      "cardId": "sd-replication",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {
+        "kp3": "Master-master: both masters serve reads and writes and coordinate on writes; if either goes down, the system keeps serving reads and writes",
+        "kp4": "Master-master needs an LB or app logic to choose where to write; most setups are loosely consistent or have higher write latency; conflict resolution matters more as write nodes and latency grow"
+      },
+      "explanation": "Slaves can also replicate to further slaves in a tree. One subtle point: on some systems, writes to the master can run on multiple threads in parallel, while read replicas apply writes sequentially on a single thread.",
+      "notes": "kp3 claimed 'without losing writes', which the passage doesn't say (it lists data loss as a shared risk); kp4's 'needs conflict resolution' was flattened. Explanation's 'one reason replicas fall behind' is an inference not in the passage."
+    },
+    {
+      "cardId": "sd-federation-vs-sharding",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": "Federation splits databases by function; sharding distributes one dataset so each database manages a subset of it. With federation, smaller databases fit more data in memory, which means more cache hits from better cache locality. With sharding, add some form of replication so a shard going down doesn't mean data loss.",
+      "notes": "Key points match. Explanation rewritten: the 'split by key' framing is not in the passage, and the memory/cache-locality point is stated for federation only."
+    },
+    {
+      "cardId": "sd-denormalization",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": "Denormalization trades some write performance for read performance. It fits systems where reads heavily outnumber writes and joins are expensive; under heavy write load, a denormalized database might perform worse than a normalized one.",
+      "notes": "Key points match. Explanation rewritten: 'joins are the bottleneck' and 'backfires' overstate the passage's 'might perform worse'."
+    },
+    {
+      "cardId": "sd-indices",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {
+        "kp5": "For large data loads it might be faster to disable indices, load the data, then rebuild them"
+      },
+      "explanation": "An index can keep data in memory, which speeds lookups on the columns you query but costs extra space and makes writes slower, since every write must also update the index.",
+      "notes": "kp5 said 'drop'; passage says 'disable'. Explanation rewritten: SQL tuning and benchmark/profile/slow query log are not in the cited 'Use good indices' passage."
+    },
+    {
+      "cardId": "sd-nosql-types",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "notes": "Abstractions, use cases, named products, general NoSQL traits, and the explanation's lexicographic keys, timestamps, and graph-tooling points all appear in the NoSQL section."
+    },
+    {
+      "cardId": "sd-base",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": "BASE is often used to describe the properties of NoSQL databases, most of which lack true ACID transactions and favor eventual consistency.",
+      "notes": "Key points match. Explanation rewritten: 'the usual shorthand' and the contrast with 'ACID for relational transactions' go beyond the NoSQL passage."
+    },
+    {
+      "cardId": "sd-sql-vs-nosql",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": "The primer frames this as two lists of reasons: SQL for structured, relational data that needs joins and transactions; NoSQL for semi-structured or non-relational data, very large volumes, and very high IOPS.",
+      "notes": "Key points match the lists. Explanation rewritten: the interview advice about tying the choice to gathered requirements is not in the passage."
+    },
+    {
+      "cardId": "sd-cache-layers",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "notes": "Benefits, cache locations, RAM/LRU, file-based caching warning, and the explanation's skew and Redis features all appear in the passage."
+    },
+    {
+      "cardId": "sd-cache-query-vs-object",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": "Query-level caching suffers from expiration issues because one changed piece of data can affect many cached queries. Object-level caching treats data as objects, as your application code does, and removes an object from the cache when its underlying data changes.",
+      "notes": "Key points match. Explanation rewritten: the claim that object caching 'maps more cleanly onto invalidation' is an inference not stated in the passage."
+    },
+    {
+      "cardId": "sd-cache-aside",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {
+        "kp6": "A failed node is replaced by a new, empty node, which increases latency"
+      },
+      "explanation": null,
+      "notes": "kp6's 'until it warms up' is not in the passage; reworded. Everything else, including Memcached in the explanation, matches."
+    },
+    {
+      "cardId": "sd-write-through-behind",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {
+        "kp2": "Write-through: slow writes, but reads of just-written data are fast and the cache isn't stale"
+      },
+      "explanation": "The primer notes that users are generally more tolerant of latency when updating data than when reading it. Refresh-ahead can cut latency compared with read-through only if the cache accurately predicts which items will be needed.",
+      "notes": "kp2 tightened to 'just-written data'. Explanation rewritten: 'which is why write-through's slow writes are often acceptable' is an inference not in the passage."
+    },
+    {
+      "cardId": "sd-message-queues",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {
+        "kp3": "User isn't blocked; the client can make the task seem done (e.g. a tweet shows on your timeline before it reaches all followers)"
+      },
+      "explanation": null,
+      "notes": "kp3's 'fan-out' term is not in the passage; reworded to its wording. Broker tradeoffs in the explanation match the passage."
+    },
+    {
+      "cardId": "sd-back-pressure",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {
+        "kp1": "If a queue grows significantly it can become larger than memory, causing cache misses, disk reads, and slower performance"
+      },
+      "explanation": "Back pressure limits the queue size so jobs already in the queue keep a high throughput rate and good response times; clients that are turned away are told to try again later.",
+      "notes": "kp1 said 'unbounded queue'; passage says a queue that grows significantly. Explanation rewritten: 'fail fast at the edge' is not in the passage."
+    },
+    {
+      "cardId": "sd-http-verbs",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": "Idempotent means a verb can be called many times without different outcomes. The primer's table also marks GET as cacheable, PUT and DELETE as not cacheable, and POST/PATCH as cacheable only when the response includes freshness info.",
+      "notes": "Key points match the table. Explanation rewritten: the retry/duplicate-creation reasoning is not in the passage."
+    },
+    {
+      "cardId": "sd-tcp-vs-udp",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "notes": "TCP guarantees, use cases, UDP behavior, broadcast/DHCP, and the explanation's connection pooling and error-correction points all match the passages."
+    },
+    {
+      "cardId": "sd-rpc-vs-rest",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": "RPC calls are named after operations (e.g. `GET /someoperation?data=anId`), while REST calls name a resource and use a verb to act on it (e.g. `GET /someresources/anId`, `PUT /someresources/anId`).",
+      "notes": "Key points match. Explanation rewritten: the `POST /resign` vs `DELETE /persons/1234` example is not in the cited RPC/REST passages; replaced with the passages' own sample calls."
+    },
+    {
+      "cardId": "sd-interview-steps",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": "You might be asked to do back-of-the-envelope estimates by hand; the primer's powers-of-two and latency-number tables help. Everything is a trade-off.",
+      "notes": "Key points match. Explanation reworded: 'often come up' overstates the passage's 'you might be asked'."
+    },
+    {
+      "cardId": "sd-design-pastebin",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "notes": "Checked all 14 key points against the full solution doc: requirements, assumptions, every estimate, the Write/Read API flow, schema, MD5+Base62 shortlink, REST/RPC, MapReduce analytics, expiry scan, and scaling steps all appear. Explanation matches the Bit.ly note and 'do not jump to the final design' guidance."
+    }
+  ]
+}
