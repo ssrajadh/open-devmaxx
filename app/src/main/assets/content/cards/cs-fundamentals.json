@@ -1,0 +1,402 @@
+{
+  "cards": [
+    {
+      "id": "cs-tcp-handshake",
+      "trackId": "cs-fundamentals",
+      "topicId": "cs-networking",
+      "kind": "concept",
+      "difficulty": 2,
+      "prompt": "Walk through TCP's three-way handshake. Why does each side pick a random initial sequence number?",
+      "keyPoints": [
+        {
+          "id": "kp1",
+          "text": "The client does an active open; the server has already done a passive open (LISTEN)"
+        },
+        {
+          "id": "kp2",
+          "text": "1: client sends SYN with its initial sequence number x"
+        },
+        {
+          "id": "kp3",
+          "text": "2: server replies with one segment carrying both SYN (its own sequence number y) and ACK = x + 1"
+        },
+        {
+          "id": "kp4",
+          "text": "3: client sends ACK = y + 1"
+        },
+        {
+          "id": "kp5",
+          "text": "The ACK field names the next sequence number expected, which implicitly acknowledges everything before it"
+        },
+        {
+          "id": "kp6",
+          "text": "Timers on the first two segments trigger retransmission if no reply arrives"
+        },
+        {
+          "id": "kp7",
+          "text": "Random initial sequence numbers keep two incarnations of the same connection from reusing the same sequence numbers too soon, while a segment from the earlier incarnation could still interfere with the later one"
+        }
+      ],
+      "explanation": "The handshake is how the two sides agree on parameters, here the starting sequence numbers for each direction's byte stream. Data flows only after setup completes.",
+      "sources": [
+        {
+          "title": "Computer Networks: A Systems Approach",
+          "url": "https://book.systemsapproach.org/e2e/tcp.html",
+          "section": "5.2.3 Connection Establishment and Termination"
+        }
+      ],
+      "prereqs": [],
+      "version": 2,
+      "verified": {
+        "status": "verified",
+        "checkedAt": "2026-11-15"
+      }
+    },
+    {
+      "id": "cs-tcp-teardown",
+      "trackId": "cs-fundamentals",
+      "topicId": "cs-networking",
+      "kind": "concept",
+      "difficulty": 3,
+      "prompt": "How does TCP close a connection, and why does the side that closes first wait in TIME_WAIT?",
+      "keyPoints": [
+        {
+          "id": "kp1",
+          "text": "Setup is asymmetric (active vs passive open) but teardown is symmetric: each side closes its own direction independently"
+        },
+        {
+          "id": "kp2",
+          "text": "One side can close (no more sending) while the other keeps sending on its half"
+        },
+        {
+          "id": "kp3",
+          "text": "Closing first: ESTABLISHED → FIN_WAIT_1 → FIN_WAIT_2 → TIME_WAIT → CLOSED"
+        },
+        {
+          "id": "kp4",
+          "text": "Other side closing first: ESTABLISHED → CLOSE_WAIT → LAST_ACK → CLOSED"
+        },
+        {
+          "id": "kp5",
+          "text": "TIME_WAIT lasts twice the maximum IP datagram lifetime (120 seconds)"
+        },
+        {
+          "id": "kp6",
+          "text": "Reason: the final ACK to the peer's FIN might be lost, so the peer may retransmit its FIN; a delayed FIN could otherwise tear down a new connection reusing the same ports"
+        }
+      ],
+      "explanation": "A third path exists when both sides close at the same time: ESTABLISHED → FIN_WAIT_1 → CLOSING → TIME_WAIT → CLOSED.",
+      "sources": [
+        {
+          "title": "Computer Networks: A Systems Approach",
+          "url": "https://book.systemsapproach.org/e2e/tcp.html",
+          "section": "5.2.3 Connection Establishment and Termination"
+        }
+      ],
+      "prereqs": [
+        "cs-tcp-handshake"
+      ],
+      "version": 1,
+      "verified": {
+        "status": "verified",
+        "checkedAt": "2026-11-15"
+      }
+    },
+    {
+      "id": "cs-tcp-flow-control",
+      "trackId": "cs-fundamentals",
+      "topicId": "cs-networking",
+      "kind": "concept",
+      "difficulty": 2,
+      "prompt": "How does TCP flow control keep a fast sender from overrunning a slow receiver?",
+      "keyPoints": [
+        {
+          "id": "kp1",
+          "text": "TCP's sliding window gives reliable delivery, in-order delivery, and flow control"
+        },
+        {
+          "id": "kp2",
+          "text": "The receiver advertises a window (AdvertisedWindow header field) sized to its free buffer space"
+        },
+        {
+          "id": "kp3",
+          "text": "The sender keeps unacknowledged data (LastByteSent − LastByteAcked) at or below AdvertisedWindow"
+        },
+        {
+          "id": "kp4",
+          "text": "EffectiveWindow = AdvertisedWindow − (LastByteSent − LastByteAcked); the sender can send only while it's above 0"
+        },
+        {
+          "id": "kp5",
+          "text": "If the receiving app reads slowly, the advertised window shrinks with each segment, down to 0, which stops the sender"
+        },
+        {
+          "id": "kp6",
+          "text": "On the send side, TCP blocks the writing app when the send buffer is full"
+        }
+      ],
+      "explanation": "This is how a slow receiving process ends up stopping a fast sending process: its buffer fills, the advertised window hits zero, and back-pressure propagates to the sender's application.",
+      "sources": [
+        {
+          "title": "Computer Networks: A Systems Approach",
+          "url": "https://book.systemsapproach.org/e2e/tcp.html",
+          "section": "5.2.4 Sliding Window Revisited"
+        }
+      ],
+      "prereqs": [],
+      "version": 1,
+      "verified": {
+        "status": "verified",
+        "checkedAt": "2026-11-15"
+      }
+    },
+    {
+      "id": "cs-tcp-aimd",
+      "trackId": "cs-fundamentals",
+      "topicId": "cs-networking",
+      "kind": "concept",
+      "difficulty": 2,
+      "prompt": "Explain TCP's additive increase / multiplicative decrease. Why cut fast and grow slowly?",
+      "keyPoints": [
+        {
+          "id": "kp1",
+          "text": "The sender keeps a CongestionWindow; the max in flight is min(CongestionWindow, AdvertisedWindow)"
+        },
+        {
+          "id": "kp2",
+          "text": "No one tells the sender the right congestion window; it infers congestion from the network"
+        },
+        {
+          "id": "kp3",
+          "text": "A timeout is read as congestion, because packets are rarely lost to transmission errors"
+        },
+        {
+          "id": "kp4",
+          "text": "Multiplicative decrease: on each timeout, halve the window, but never below one packet (MSS)"
+        },
+        {
+          "id": "kp5",
+          "text": "Additive increase: grow by about one packet per RTT, done as a fraction (MSS/CongestionWindow) per ACK"
+        },
+        {
+          "id": "kp6",
+          "text": "Over time the window traces a sawtooth"
+        },
+        {
+          "id": "kp7",
+          "text": "Cut fast because too large a window compounds: dropped packets get retransmitted and make congestion worse"
+        }
+      ],
+      "explanation": "AIMD is described as a necessary condition for a congestion-control mechanism to be stable, in contrast to additive increase/additive decrease.",
+      "sources": [
+        {
+          "title": "Computer Networks: A Systems Approach",
+          "url": "https://book.systemsapproach.org/congestion/tcpcc.html",
+          "section": "6.3.1 Additive Increase/Multiplicative Decrease"
+        }
+      ],
+      "prereqs": [
+        "cs-tcp-flow-control"
+      ],
+      "version": 1,
+      "verified": {
+        "status": "verified",
+        "checkedAt": "2026-11-15"
+      }
+    },
+    {
+      "id": "cs-tcp-slow-start",
+      "trackId": "cs-fundamentals",
+      "topicId": "cs-networking",
+      "kind": "concept",
+      "difficulty": 2,
+      "prompt": "What is TCP slow start, and how does it combine with additive increase after a loss?",
+      "keyPoints": [
+        {
+          "id": "kp1",
+          "text": "Additive increase is too slow to ramp up a connection from a cold start"
+        },
+        {
+          "id": "kp2",
+          "text": "Slow start begins with a congestion window of one packet and adds one packet per ACK"
+        },
+        {
+          "id": "kp3",
+          "text": "That doubles the packets in flight every RTT: exponential, not linear, growth"
+        },
+        {
+          "id": "kp4",
+          "text": "After a timeout, CongestionThreshold is set to the halved window and the window is reset to one packet"
+        },
+        {
+          "id": "kp5",
+          "text": "Slow start runs until the window reaches CongestionThreshold, then additive increase takes over (one packet per RTT)"
+        }
+      ],
+      "explanation": "Despite its name, slow start grows the window quickly. It's \"slow\" only compared with dumping a whole advertised window onto the network at once.",
+      "sources": [
+        {
+          "title": "Computer Networks: A Systems Approach",
+          "url": "https://book.systemsapproach.org/congestion/tcpcc.html",
+          "section": "6.3.2 Slow Start"
+        }
+      ],
+      "prereqs": [
+        "cs-tcp-aimd"
+      ],
+      "version": 2,
+      "verified": {
+        "status": "verified",
+        "checkedAt": "2026-11-15"
+      }
+    },
+    {
+      "id": "cs-tcp-fast-retransmit",
+      "trackId": "cs-fundamentals",
+      "topicId": "cs-networking",
+      "kind": "concept",
+      "difficulty": 3,
+      "prompt": "How do fast retransmit and fast recovery work, and what do they improve?",
+      "keyPoints": [
+        {
+          "id": "kp1",
+          "text": "The receiver ACKs every arriving packet; an out-of-order packet triggers a duplicate of the last ACK"
+        },
+        {
+          "id": "kp2",
+          "text": "Duplicate ACKs suggest an earlier packet was lost (or only delayed)"
+        },
+        {
+          "id": "kp3",
+          "text": "After three duplicate ACKs, the sender retransmits the missing packet without waiting for a timeout"
+        },
+        {
+          "id": "kp4",
+          "text": "It adds to timeouts rather than replacing them; with small windows there aren't enough packets in flight to produce duplicate ACKs"
+        },
+        {
+          "id": "kp5",
+          "text": "It removes about half of coarse-grained timeouts, for roughly 20% more throughput"
+        },
+        {
+          "id": "kp6",
+          "text": "Fast recovery: instead of dropping to one packet and running slow start, use the ACKs still in the pipe to clock sending"
+        }
+      ],
+      "explanation": "When the retransmitted packet arrives, the receiver sends one cumulative ACK covering everything it has buffered since.",
+      "sources": [
+        {
+          "title": "Computer Networks: A Systems Approach",
+          "url": "https://book.systemsapproach.org/congestion/tcpcc.html",
+          "section": "6.3.3 Fast Retransmit and Fast Recovery"
+        }
+      ],
+      "prereqs": [
+        "cs-tcp-slow-start"
+      ],
+      "version": 1,
+      "verified": {
+        "status": "verified",
+        "checkedAt": "2026-11-15"
+      }
+    },
+    {
+      "id": "cs-isolation-phenomena",
+      "trackId": "cs-fundamentals",
+      "topicId": "cs-databases",
+      "kind": "concept",
+      "difficulty": 2,
+      "prompt": "Define dirty reads, nonrepeatable reads, phantom reads, and serialization anomalies. What does Serializable guarantee?",
+      "keyPoints": [
+        {
+          "id": "kp1",
+          "text": "Dirty read: reading data written by a concurrent transaction that hasn't committed"
+        },
+        {
+          "id": "kp2",
+          "text": "Nonrepeatable read: re-reading data you read earlier and finding another transaction modified it (and committed since the first read)"
+        },
+        {
+          "id": "kp3",
+          "text": "Phantom read: re-running a query and finding the set of matching rows changed because of another committed transaction"
+        },
+        {
+          "id": "kp4",
+          "text": "Serialization anomaly: the result of committing a group of transactions matches no one-at-a-time ordering of them"
+        },
+        {
+          "id": "kp5",
+          "text": "Serializable: concurrent execution has the same effect as running the transactions one at a time in some order, so none of these can happen"
+        }
+      ],
+      "explanation": "The SQL standard defines the three weaker levels by which of these phenomena they must prevent.",
+      "sources": [
+        {
+          "title": "PostgreSQL 17 Documentation: Transaction Isolation",
+          "url": "https://www.postgresql.org/docs/17/transaction-iso.html",
+          "section": "13.2. Transaction Isolation"
+        }
+      ],
+      "prereqs": [],
+      "version": 2,
+      "verified": {
+        "status": "verified",
+        "checkedAt": "2026-11-15"
+      }
+    },
+    {
+      "id": "cs-isolation-levels",
+      "trackId": "cs-fundamentals",
+      "topicId": "cs-databases",
+      "kind": "concept",
+      "difficulty": 3,
+      "prompt": "Compare Read Committed, Repeatable Read, and Serializable, using PostgreSQL's behavior as the example.",
+      "keyPoints": [
+        {
+          "id": "kp1",
+          "text": "Read Uncommitted is allowed to show dirty reads in the standard, but in PostgreSQL it behaves like Read Committed"
+        },
+        {
+          "id": "kp2",
+          "text": "Read Committed (PostgreSQL's default): each statement sees a snapshot as of when that statement started, so two SELECTs in one transaction can differ"
+        },
+        {
+          "id": "kp3",
+          "text": "Read Committed allows nonrepeatable reads, phantoms, and serialization anomalies"
+        },
+        {
+          "id": "kp4",
+          "text": "Repeatable Read: the snapshot is taken at the start of the transaction's first non-transaction-control statement, so successive SELECTs see the same data"
+        },
+        {
+          "id": "kp5",
+          "text": "PostgreSQL's Repeatable Read also prevents phantom reads; only serialization anomalies remain possible"
+        },
+        {
+          "id": "kp6",
+          "text": "Repeatable Read and Serializable apps must be ready to retry on serialization failures"
+        },
+        {
+          "id": "kp7",
+          "text": "Serializable prevents all four phenomena"
+        }
+      ],
+      "explanation": "Read Committed works well for simple updates to predetermined rows (like adjusting one account balance) but can give inconsistent results for commands with complex search conditions.",
+      "sources": [
+        {
+          "title": "PostgreSQL 17 Documentation: Transaction Isolation",
+          "url": "https://www.postgresql.org/docs/17/transaction-iso.html",
+          "section": "13.2. Transaction Isolation"
+        }
+      ],
+      "prereqs": [
+        "cs-isolation-phenomena"
+      ],
+      "version": 2,
+      "verified": {
+        "status": "verified",
+        "checkedAt": "2026-11-15"
+      }
+    }
+  ]
+}

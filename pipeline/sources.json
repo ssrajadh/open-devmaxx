@@ -10,6 +10,48 @@
       "attribution": "The System Design Primer by Donne Martin, CC BY 4.0. Cards paraphrase and summarize it; changes were made.",
       "files": ["README.md", "solutions/system_design/pastebin/README.md"],
       "tracks": ["system-design"]
+    },
+    {
+      "id": "cnsa",
+      "title": "Computer Networks: A Systems Approach",
+      "repo": "https://github.com/SystemsApproach/book.git",
+      "baseUrl": "https://book.systemsapproach.org",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "Computer Networks: A Systems Approach by Larry Peterson and Bruce Davie, CC BY 4.0. Cards paraphrase it; changes were made.",
+      "files": ["e2e/tcp.rst", "e2e/udp.rst", "congestion/tcpcc.rst"],
+      "urlFiles": {
+        "https://book.systemsapproach.org/e2e/tcp.html": "e2e/tcp.rst",
+        "https://book.systemsapproach.org/congestion/tcpcc.html": "congestion/tcpcc.rst"
+      },
+      "tracks": ["cs-fundamentals"]
+    },
+    {
+      "id": "pgdocs",
+      "title": "PostgreSQL 17 Documentation",
+      "baseUrl": "https://www.postgresql.org/docs/17/",
+      "license": "PostgreSQL License",
+      "licenseUrl": "https://www.postgresql.org/about/licence/",
+      "attribution": "PostgreSQL Documentation, Copyright The PostgreSQL Global Development Group, PostgreSQL License. Cards paraphrase it.",
+      "pages": [
+        { "url": "https://www.postgresql.org/docs/17/transaction-iso.html", "file": "transaction-iso.html" }
+      ],
+      "tracks": ["cs-fundamentals"]
+    },
+    {
+      "id": "hfllm",
+      "title": "Hugging Face LLM Course",
+      "repo": "https://github.com/huggingface/course.git",
+      "baseUrl": "https://huggingface.co/learn/llm-course",
+      "license": "Apache 2.0",
+      "licenseUrl": "https://github.com/huggingface/course/blob/main/LICENSE",
+      "attribution": "Hugging Face LLM Course, Apache License 2.0. Cards paraphrase it.",
+      "files": ["chapters/en/chapter1/6.mdx", "chapters/en/chapter1/8.mdx"],
+      "urlFiles": {
+        "https://huggingface.co/learn/llm-course/chapter1/6": "chapters/en/chapter1/6.mdx",
+        "https://huggingface.co/learn/llm-course/chapter1/8": "chapters/en/chapter1/8.mdx"
+      },
+      "tracks": ["applied-ai"]
     }
   ]
 }

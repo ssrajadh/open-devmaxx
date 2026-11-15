@@ -1,0 +1,342 @@
+{
+  "cards": [
+    {
+      "id": "ai-transformer-architectures",
+      "trackId": "applied-ai",
+      "topicId": "ai-llm-basics",
+      "kind": "concept",
+      "difficulty": 2,
+      "prompt": "Compare encoder-only, decoder-only, and encoder-decoder transformers: attention pattern, pretraining, best tasks, and examples.",
+      "keyPoints": [
+        {
+          "id": "kp1",
+          "text": "Encoder-only: attention sees the whole sentence (bidirectional); also called auto-encoding"
+        },
+        {
+          "id": "kp2",
+          "text": "Encoder pretraining usually corrupts a sentence (e.g. masks words) and has the model reconstruct it"
+        },
+        {
+          "id": "kp3",
+          "text": "Encoders suit understanding the full input: sentence classification, named entity recognition, extractive QA (e.g. BERT)"
+        },
+        {
+          "id": "kp4",
+          "text": "Decoder-only: each word attends only to earlier words; auto-regressive; pretrained to predict the next word; suited to generation (e.g. Llama, Gemma)"
+        },
+        {
+          "id": "kp5",
+          "text": "Encoder-decoder (seq2seq): bidirectional encoder plus a decoder that sees only earlier positions"
+        },
+        {
+          "id": "kp6",
+          "text": "Seq2seq suits generating text from an input: summarization, translation, generative QA (e.g. T5, BART)"
+        },
+        {
+          "id": "kp7",
+          "text": "T5 pretraining replaces random spans with a single mask token and predicts the span"
+        }
+      ],
+      "explanation": "To choose: ask whether the task needs bidirectional understanding, whether you're generating or analyzing text, and whether you're transforming one sequence into another.",
+      "sources": [
+        {
+          "title": "Hugging Face LLM Course",
+          "url": "https://huggingface.co/learn/llm-course/chapter1/6",
+          "section": "Transformer Architectures"
+        }
+      ],
+      "prereqs": [],
+      "version": 1,
+      "verified": {
+        "status": "verified",
+        "checkedAt": "2026-11-15"
+      }
+    },
+    {
+      "id": "ai-llm-training-phases",
+      "trackId": "applied-ai",
+      "topicId": "ai-llm-basics",
+      "kind": "concept",
+      "difficulty": 1,
+      "prompt": "Which architecture do most modern LLMs use, and what are the two phases they're typically trained in?",
+      "keyPoints": [
+        {
+          "id": "kp1",
+          "text": "Most modern LLMs are decoder-only"
+        },
+        {
+          "id": "kp2",
+          "text": "Phase 1, pretraining: predict the next token over vast amounts of text"
+        },
+        {
+          "id": "kp3",
+          "text": "Phase 2, instruction tuning: fine-tune the model to follow instructions and give helpful responses"
+        }
+      ],
+      "explanation": "Some of the largest of these models have hundreds of billions of parameters.",
+      "sources": [
+        {
+          "title": "Hugging Face LLM Course",
+          "url": "https://huggingface.co/learn/llm-course/chapter1/6",
+          "section": "Modern Large Language Models (LLMs)"
+        }
+      ],
+      "prereqs": [
+        "ai-transformer-architectures"
+      ],
+      "version": 1,
+      "verified": {
+        "status": "verified",
+        "checkedAt": "2026-11-15"
+      }
+    },
+    {
+      "id": "ai-prefill-decode",
+      "trackId": "applied-ai",
+      "topicId": "ai-inference",
+      "kind": "concept",
+      "difficulty": 2,
+      "prompt": "LLM inference runs in two phases. Describe prefill and decode, and whether each is compute- or memory-intensive.",
+      "keyPoints": [
+        {
+          "id": "kp1",
+          "text": "Prefill: tokenize the input, convert tokens to embeddings, and run them through the model"
+        },
+        {
+          "id": "kp2",
+          "text": "Prefill processes all input tokens at once, so it is compute-intensive"
+        },
+        {
+          "id": "kp3",
+          "text": "Decode: generate one token at a time, autoregressively (each token depends on all previous ones)"
+        },
+        {
+          "id": "kp4",
+          "text": "Each decode step: attend over previous tokens, compute next-token probabilities, pick a token, decide whether to stop"
+        },
+        {
+          "id": "kp5",
+          "text": "Decode is memory-intensive because it keeps track of all previous tokens"
+        }
+      ],
+      "explanation": "A useful mental model: prefill is reading the whole prompt, decode is writing the answer word by word.",
+      "sources": [
+        {
+          "title": "Hugging Face LLM Course",
+          "url": "https://huggingface.co/learn/llm-course/chapter1/8",
+          "section": "The Two-Phase Inference Process"
+        }
+      ],
+      "prereqs": [
+        "ai-llm-training-phases"
+      ],
+      "version": 2,
+      "verified": {
+        "status": "verified",
+        "checkedAt": "2026-11-15"
+      }
+    },
+    {
+      "id": "ai-sampling",
+      "trackId": "applied-ai",
+      "topicId": "ai-inference",
+      "kind": "concept",
+      "difficulty": 2,
+      "prompt": "How do temperature, top-p, and top-k shape token selection? How do you control repetition and output length?",
+      "keyPoints": [
+        {
+          "id": "kp1",
+          "text": "The model starts with raw probabilities (logits) for every word in its vocabulary"
+        },
+        {
+          "id": "kp2",
+          "text": "Temperature above 1 makes choices more random; below 1, more focused and deterministic"
+        },
+        {
+          "id": "kp3",
+          "text": "Top-p (nucleus): consider only the most likely tokens whose probabilities add up to a threshold (e.g. 90%)"
+        },
+        {
+          "id": "kp4",
+          "text": "Top-k: consider only the k most likely tokens"
+        },
+        {
+          "id": "kp5",
+          "text": "Presence penalty: a fixed penalty on any token that already appeared; frequency penalty grows with how often it appeared"
+        },
+        {
+          "id": "kp6",
+          "text": "Penalties adjust raw probabilities before other sampling steps"
+        },
+        {
+          "id": "kp7",
+          "text": "Length controls: min/max token limits, stop sequences, and end-of-sequence detection"
+        }
+      ],
+      "explanation": "Example from the course: for a single paragraph, cap at about 100 tokens and use a blank line (\"\\n\\n\") as a stop sequence.",
+      "sources": [
+        {
+          "title": "Hugging Face LLM Course",
+          "url": "https://huggingface.co/learn/llm-course/chapter1/8",
+          "section": "Sampling Strategies"
+        }
+      ],
+      "prereqs": [
+        "ai-prefill-decode"
+      ],
+      "version": 2,
+      "verified": {
+        "status": "verified",
+        "checkedAt": "2026-11-15"
+      }
+    },
+    {
+      "id": "ai-beam-search",
+      "trackId": "applied-ai",
+      "topicId": "ai-inference",
+      "kind": "concept",
+      "difficulty": 2,
+      "prompt": "What is beam search, how does it work, and what does it trade off?",
+      "keyPoints": [
+        {
+          "id": "kp1",
+          "text": "Instead of committing to one token per step, it explores several candidate sequences at once"
+        },
+        {
+          "id": "kp2",
+          "text": "Keep multiple candidates per step (typically 5–10)"
+        },
+        {
+          "id": "kp3",
+          "text": "Score next tokens for each candidate and keep only the most promising combinations"
+        },
+        {
+          "id": "kp4",
+          "text": "Repeat until the length limit or a stop condition, then pick the sequence with the highest overall probability"
+        },
+        {
+          "id": "kp5",
+          "text": "Often more coherent and grammatical, but costs more compute"
+        }
+      ],
+      "explanation": "Contrast with sampling strategies, which decide one token at a time.",
+      "sources": [
+        {
+          "title": "Hugging Face LLM Course",
+          "url": "https://huggingface.co/learn/llm-course/chapter1/8",
+          "section": "Beam Search: Looking Ahead for Better Coherence"
+        }
+      ],
+      "prereqs": [
+        "ai-sampling"
+      ],
+      "version": 1,
+      "verified": {
+        "status": "verified",
+        "checkedAt": "2026-11-15"
+      }
+    },
+    {
+      "id": "ai-inference-metrics",
+      "trackId": "applied-ai",
+      "topicId": "ai-inference",
+      "kind": "concept",
+      "difficulty": 2,
+      "prompt": "Name four key metrics for LLM inference performance and what each one affects.",
+      "keyPoints": [
+        {
+          "id": "kp1",
+          "text": "Time to first token (TTFT): how fast the first output appears; mainly driven by prefill"
+        },
+        {
+          "id": "kp2",
+          "text": "Time per output token (TPOT): speed of generating subsequent tokens; sets overall generation speed"
+        },
+        {
+          "id": "kp3",
+          "text": "Throughput: how many requests you can handle at once; affects scaling and cost"
+        },
+        {
+          "id": "kp4",
+          "text": "VRAM usage: GPU memory needed; often the main real-world constraint"
+        }
+      ],
+      "explanation": "The source frames these four as the metrics that shape implementation decisions; of them, TTFT is the one it calls crucial for user experience.",
+      "sources": [
+        {
+          "title": "Hugging Face LLM Course",
+          "url": "https://huggingface.co/learn/llm-course/chapter1/8",
+          "section": "Key Performance Metrics"
+        }
+      ],
+      "prereqs": [
+        "ai-prefill-decode"
+      ],
+      "version": 3,
+      "verified": {
+        "status": "partial",
+        "checkedAt": "2026-11-15"
+      }
+    },
+    {
+      "id": "ai-context-kv-cache",
+      "trackId": "applied-ai",
+      "topicId": "ai-inference",
+      "kind": "concept",
+      "difficulty": 2,
+      "prompt": "What is context length, what does a long context cost, and how does KV caching help?",
+      "keyPoints": [
+        {
+          "id": "kp1",
+          "text": "Context length: the maximum number of tokens the model can consider at once (its working memory)"
+        },
+        {
+          "id": "kp2",
+          "text": "It's limited by model architecture and size, compute resources, and input/output complexity"
+        },
+        {
+          "id": "kp3",
+          "text": "Longer context: memory usage grows quadratically and processing gets slower"
+        },
+        {
+          "id": "kp4",
+          "text": "Very long context windows (e.g. 1M tokens) come with much slower inference"
+        },
+        {
+          "id": "kp5",
+          "text": "KV (key-value) caching stores and reuses intermediate calculations instead of recomputing them"
+        },
+        {
+          "id": "kp6",
+          "text": "KV caching speeds up generation and makes long contexts practical, at the cost of extra memory"
+        }
+      ],
+      "explanation": "Different models pick different context lengths to balance capability against efficiency.",
+      "sources": [
+        {
+          "title": "Hugging Face LLM Course",
+          "url": "https://huggingface.co/learn/llm-course/chapter1/8",
+          "section": "Context Length and Attention Span"
+        },
+        {
+          "title": "Hugging Face LLM Course",
+          "url": "https://huggingface.co/learn/llm-course/chapter1/8",
+          "section": "The Context Length Challenge"
+        },
+        {
+          "title": "Hugging Face LLM Course",
+          "url": "https://huggingface.co/learn/llm-course/chapter1/8",
+          "section": "The KV Cache Optimization"
+        }
+      ],
+      "prereqs": [
+        "ai-prefill-decode"
+      ],
+      "version": 1,
+      "verified": {
+        "status": "verified",
+        "checkedAt": "2026-11-15"
+      }
+    }
+  ]
+}

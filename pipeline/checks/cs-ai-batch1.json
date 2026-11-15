@@ -1,0 +1,135 @@
+{
+  "checkedAt": "2026-11-15",
+  "results": [
+    {
+      "cardId": "cs-tcp-handshake",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {
+        "kp7": "Random initial sequence numbers keep two incarnations of the same connection from reusing the same sequence numbers too soon, while a segment from the earlier incarnation could still interfere with the later one"
+      },
+      "explanation": null,
+      "notes": "kp1-kp6 and the explanation match 5.2.3 (active/passive open, SYN x, SYN+ACK with Ack = x + 1, Ack = y + 1, next-expected semantics, timers on the first two segments, data only after setup). kp7 reworded to the passage's framing; 'delayed segment' was not the source's wording."
+    },
+    {
+      "cardId": "cs-tcp-teardown",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "notes": "Asymmetric setup vs symmetric teardown, half-close, the three state paths (incl. the simultaneous-close path in the explanation), TIME_WAIT = 2x max datagram lifetime (120 s), and the lost-ACK/delayed-FIN reason all appear in 5.2.3."
+    },
+    {
+      "cardId": "cs-tcp-flow-control",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "notes": "Sliding window's three purposes, AdvertisedWindow sized to free buffer space, LastByteSent - LastByteAcked <= AdvertisedWindow, the EffectiveWindow formula, window shrinking to 0 for a slow reader, blocking the writer, and the explanation's back-pressure chain all match 5.2.4."
+    },
+    {
+      "cardId": "cs-tcp-aimd",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "notes": "MaxWindow = MIN(CongestionWindow, AdvertisedWindow), sender infers congestion, timeouts read as congestion because transmission-error drops are rare, halving down to one MSS, MSS x (MSS/CongestionWindow) per ACK, sawtooth, compounding reason, and the stability claim vs AIAD all match 6.3.1."
+    },
+    {
+      "cardId": "cs-tcp-slow-start",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {
+        "kp4": "After a timeout, CongestionThreshold is set to the halved window and the window is reset to one packet"
+      },
+      "explanation": null,
+      "notes": "kp1-kp3, kp5 and the 'slow only vs dumping a whole advertised window' explanation match 6.3.2. kp4 said 'after a loss'; the passage ties the threshold-and-reset to a timeout (fast recovery avoids it for other losses), so reworded."
+    },
+    {
+      "cardId": "cs-tcp-fast-retransmit",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "notes": "Duplicate ACKs, lost-or-delayed ambiguity, three dup ACKs, enhances rather than replaces timeouts (small windows), ~half of coarse-grained timeouts and ~20% throughput, fast recovery clocking on in-pipe ACKs, and the cumulative-ACK explanation all match 6.3.3."
+    },
+    {
+      "cardId": "cs-isolation-phenomena",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {
+        "kp2": "Nonrepeatable read: re-reading data you read earlier and finding another transaction modified it (and committed since the first read)"
+      },
+      "explanation": null,
+      "notes": "Definitions of dirty read, phantom read, serialization anomaly, Serializable's guarantee, and the explanation (other three levels defined by phenomena that must not occur) match 13.2. kp2 narrowed 'data' to 'a row'; reworded to the source's definition."
+    },
+    {
+      "cardId": "cs-isolation-levels",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {
+        "kp4": "Repeatable Read: the snapshot is taken at the start of the transaction's first non-transaction-control statement, so successive SELECTs see the same data"
+      },
+      "explanation": null,
+      "notes": "Table 13.1, Read Uncommitted behaving as Read Committed, per-statement snapshots, PG Repeatable Read preventing phantoms, retry on serialization failures, and the bank-balance vs complex-search-condition explanation match 13.2/13.2.1-13.2.3. kp4 tightened to the source's 'first non-transaction-control statement'."
+    },
+    {
+      "cardId": "ai-transformer-architectures",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "notes": "Attention patterns, auto-encoding/auto-regressive names, pretraining objectives, task fits, examples (BERT; Llama, Gemma; T5, BART), T5 span masking, and the three choosing questions in the explanation all appear in the Transformer Architectures section."
+    },
+    {
+      "cardId": "ai-llm-training-phases",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "notes": "Decoder-only, pretraining on next-token prediction, instruction tuning, and 'hundreds of billions of parameters' are all stated in the Modern LLMs subsection."
+    },
+    {
+      "cardId": "ai-prefill-decode",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "notes": "Prefill's three steps, compute-intensive because all input tokens at once, autoregressive decode, its four per-token steps, memory-intensive tracking of previous tokens, and the reading/writing analogy match the passage. The prompt says 'bound by'; the source only says compute-/memory-intensive, which the key points correctly use."
+    },
+    {
+      "cardId": "ai-sampling",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {
+        "kp1": "The model starts with raw probabilities (logits) for every word in its vocabulary"
+      },
+      "explanation": null,
+      "notes": "Temperature, top-p (e.g. 90%), top-k, presence vs frequency penalty, penalties applied before other sampling, length controls, and the 100-token / \"\\n\\n\" example match the passage. kp1 said 'raw scores'; the source calls logits 'raw probabilities', so reworded to its wording."
+    },
+    {
+      "cardId": "ai-beam-search",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "notes": "Multiple paths instead of one choice, 5-10 candidates, per-candidate next-token probabilities, keep most promising, stop then pick highest overall probability, coherence vs compute trade-off, and the one-token-at-a-time contrast all match the passage."
+    },
+    {
+      "cardId": "ai-inference-metrics",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": "The source frames these four as the metrics that shape implementation decisions; of them, TTFT is the one it calls crucial for user experience.",
+      "notes": "All four key points match the passage. The old explanation's 'TTFT matters most' superlative and 'VRAM matters most for cost' are not in the source (VRAM is called the primary real-world constraint, not tied to cost), so it was replaced. The prompt asks 'what drives each', but the source names a driver only for TTFT (prefill)."
+    },
+    {
+      "cardId": "ai-context-kv-cache",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "notes": "Context length as max tokens / working memory, the three limiting factors, quadratic memory and slower processing, 1M-token windows with significantly slower inference (Qwen2.5-1M), KV caching's reuse, speed and long-context benefits at a memory cost, and the explanation all match the three cited subsections."
+    }
+  ]
+}

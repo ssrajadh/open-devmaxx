@@ -41,17 +41,47 @@ def source_files_for(url: str):
             if m:  # URL names a specific file in the repo: search only that file
                 f = base / m.group(1)
                 return [f] if f.exists() else []
+            page = url.split("#")[0]
+            if page in s.get("urlFiles", {}):  # public URL maps to one file in the repo
+                f = base / s["urlFiles"][page]
+                return [f] if f.exists() else []
             files = [base / f for f in s.get("files", [])]
             files += [base / p["file"] for p in s.get("pages", []) if url.split("#")[0] == p["url"].split("#")[0]]
             return [f for f in files if f.exists()]
     return []
 
 
+ANCHOR = re.compile(r"\[\[[^\]]*\]\]")  # MDX heading anchors like "Title[[title]]"
+RST_UNDERLINE = re.compile(r"^([=\-~^\"'`#*+])\1{2,}\s*$")
+
+
+def rst_to_md(text: str) -> str:
+    """Turn reStructuredText underlined headings into Markdown '#' headings."""
+    lines = text.splitlines()
+    levels: list = []
+    out = []
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        nxt = lines[i + 1] if i + 1 < len(lines) else ""
+        m = RST_UNDERLINE.match(nxt)
+        if line.strip() and not RST_UNDERLINE.match(line) and m and len(nxt.rstrip()) >= len(line.rstrip()):
+            ch = m.group(1)
+            if ch not in levels:
+                levels.append(ch)
+            out.append("#" * min(levels.index(ch) + 1, 6) + " " + line.strip())
+            i += 2
+            continue
+        out.append(line)
+        i += 1
+    return "\n".join(out)
+
+
 def md_section(text: str, section: str):
     lines = text.splitlines()
     for i, line in enumerate(lines):
         m = HEADING.match(line)
-        if m and m.group(2).strip() == section:
+        if m and ANCHOR.sub("", m.group(2)).strip() == section:
             level = len(m.group(1))
             out = [line]
             for nxt in lines[i + 1:]:
@@ -69,7 +99,7 @@ def html_to_text(raw: str) -> str:
     raw = re.sub(r"(?i)</h[1-6]>", "\n", raw)
     raw = re.sub(r"(?i)<(br|p|li|div|tr)[^>]*>", "\n", raw)
     raw = re.sub(r"<[^>]+>", "", raw)
-    text = html.unescape(raw)
+    text = html.unescape(raw).replace("\xa0", " ")
     return re.sub(r"\n\s*\n+", "\n\n", text)
 
 
@@ -78,6 +108,8 @@ def find_section(files, section):
         text = f.read_text(errors="replace")
         if f.suffix in (".html", ".htm"):
             text = html_to_text(text)
+        elif f.suffix == ".rst":
+            text = rst_to_md(text)
         found = md_section(text, section)
         if found:
             return f, found
@@ -86,7 +118,7 @@ def find_section(files, section):
 
 def main(argv):
     if len(argv) >= 3 and argv[1] == "--section":
-        files = sorted(WORK.rglob("*.md")) + sorted(WORK.rglob("*.html"))
+        files = [f for ext in ("*.md", "*.mdx", "*.rst", "*.html") for f in sorted(WORK.rglob(ext))]
         f, found = find_section(files, argv[2])
         print(found or f"NOT FOUND: {argv[2]}")
         return 0 if found else 1
