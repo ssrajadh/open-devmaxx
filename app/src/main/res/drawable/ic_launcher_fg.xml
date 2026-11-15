@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A stacked-cards glyph inside the adaptive icon safe zone. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <path android:fillColor="#9CC5B8" android:pathData="M38,36h36a4,4 0,0 1,4 4v30a4,4 0,0 1,-4 4h-36a4,4 0,0 1,-4 -4v-30a4,4 0,0 1,4 -4z" />
+    <path android:fillColor="#FFFFFF" android:pathData="M32,42h36a4,4 0,0 1,4 4v26a4,4 0,0 1,-4 4h-36a4,4 0,0 1,-4 -4v-26a4,4 0,0 1,4 -4z" />
+    <path android:fillColor="#2F5D50" android:pathData="M38,52l4,4 8,-8 2.5,2.5 -10.5,10.5 -6.5,-6.5z" />
+    <path android:fillColor="#2F5D50" android:pathData="M55,53h11v3h-11zM55,60h8v3h-8z" />
+</vector>

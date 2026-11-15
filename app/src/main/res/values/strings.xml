@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Interview Prep</string>
+    <string name="reminder_channel">Daily reminder</string>
+</resources>
