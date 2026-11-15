@@ -1,0 +1,16 @@
+{
+  "tracks": [
+    { "id": "system-design", "name": "System Design", "description": "Scalability, availability, data stores, caching, async processing, and how to run a design interview." },
+    { "id": "cs-fundamentals", "name": "CS Fundamentals", "description": "Operating systems, concurrency, networking, and databases." },
+    { "id": "applied-ai", "name": "Applied AI", "description": "LLM basics, RAG, evals, agents, serving, and cost/latency tradeoffs." }
+  ],
+  "topics": [
+    { "id": "sd-tradeoffs", "trackId": "system-design", "name": "Core tradeoffs", "order": 1 },
+    { "id": "sd-availability", "trackId": "system-design", "name": "Availability and consistency", "order": 2 },
+    { "id": "sd-edge", "trackId": "system-design", "name": "DNS, CDNs, and load balancing", "order": 3 },
+    { "id": "sd-databases", "trackId": "system-design", "name": "Databases", "order": 4 },
+    { "id": "sd-caching", "trackId": "system-design", "name": "Caching", "order": 5 },
+    { "id": "sd-async-comm", "trackId": "system-design", "name": "Async work and communication", "order": 6 },
+    { "id": "sd-interview", "trackId": "system-design", "name": "Interview approach and designs", "order": 7 }
+  ]
+}

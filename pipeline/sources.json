@@ -1,0 +1,15 @@
+{
+  "sources": [
+    {
+      "id": "sdp",
+      "title": "The System Design Primer",
+      "repo": "https://github.com/donnemartin/system-design-primer.git",
+      "baseUrl": "https://github.com/donnemartin/system-design-primer",
+      "license": "CC BY 4.0",
+      "licenseUrl": "http://creativecommons.org/licenses/by/4.0/",
+      "attribution": "The System Design Primer by Donne Martin, CC BY 4.0. Cards paraphrase and summarize it; changes were made.",
+      "files": ["README.md", "solutions/system_design/pastebin/README.md"],
+      "tracks": ["system-design"]
+    }
+  ]
+}

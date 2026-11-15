@@ -1,0 +1,491 @@
+{
+  "cards": [
+    {
+      "id": "sd-performance-vs-scalability",
+      "trackId": "system-design", "topicId": "sd-tradeoffs", "kind": "concept", "difficulty": 1,
+      "prompt": "What is the difference between a performance problem and a scalability problem?",
+      "keyPoints": [
+        { "id": "kp1", "text": "A system is scalable if adding resources increases performance proportionally" },
+        { "id": "kp2", "text": "More performance can mean handling more units of work or larger units of work (e.g. growing datasets)" },
+        { "id": "kp3", "text": "Performance problem: the system is slow even for a single user" },
+        { "id": "kp4", "text": "Scalability problem: fast for one user, but slow under heavy load" }
+      ],
+      "explanation": "Scalability is about how performance responds to added resources. If adding machines gives you a proportional gain in capacity, the system scales.\n\nA quick diagnostic: if one user already sees slowness, look at **performance** (algorithms, queries, I/O). If a single user is fine but things degrade as load grows, it is a **scalability** issue (contention, bottlenecks, missing horizontal scale-out).",
+      "sources": [{ "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#performance-vs-scalability", "section": "Performance vs scalability" }],
+      "prereqs": [], "version": 1, "verified": { "status": "unchecked", "checkedAt": null }
+    },
+    {
+      "id": "sd-latency-vs-throughput",
+      "trackId": "system-design", "topicId": "sd-tradeoffs", "kind": "concept", "difficulty": 1,
+      "prompt": "Define latency and throughput. What is the usual goal when trading them off?",
+      "keyPoints": [
+        { "id": "kp1", "text": "Latency: the time it takes to perform an action or produce a result" },
+        { "id": "kp2", "text": "Throughput: the number of actions or results per unit of time" },
+        { "id": "kp3", "text": "Aim for maximal throughput while keeping latency acceptable" }
+      ],
+      "explanation": "Latency is measured per operation (e.g. milliseconds per request). Throughput is a rate (e.g. requests per second). The two often pull against each other, so the common target is to push throughput as high as you can without letting latency exceed what users will accept.",
+      "sources": [{ "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#latency-vs-throughput", "section": "Latency vs throughput" }],
+      "prereqs": [], "version": 1, "verified": { "status": "unchecked", "checkedAt": null }
+    },
+    {
+      "id": "sd-cap-theorem",
+      "trackId": "system-design", "topicId": "sd-availability", "kind": "concept", "difficulty": 2,
+      "prompt": "State the CAP theorem. Since networks are unreliable, what choice are you really making, and when would you pick each side?",
+      "keyPoints": [
+        { "id": "kp1", "text": "Consistency: every read gets the most recent write or an error" },
+        { "id": "kp2", "text": "Availability: every request gets a response, which may not be the latest data" },
+        { "id": "kp3", "text": "Partition tolerance: the system keeps working despite network partitions" },
+        { "id": "kp4", "text": "Networks are unreliable, so you must tolerate partitions; the real choice is consistency vs availability" },
+        { "id": "kp5", "text": "CP: may time out waiting on a partitioned node; good when you need atomic reads and writes" },
+        { "id": "kp6", "text": "AP: returns the most readily available (possibly stale) version; writes propagate after the partition heals; good when eventual consistency is acceptable" }
+      ],
+      "explanation": "A distributed system can only guarantee two of consistency, availability, and partition tolerance. Because partitions will happen, the practical tradeoff is between **CP** (refuse or time out rather than return stale data) and **AP** (always answer, possibly with stale data, and reconcile later).\n\nPick CP when correctness of reads and writes is a business requirement. Pick AP when the system must keep working and eventual consistency is acceptable.",
+      "sources": [{ "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#cap-theorem", "section": "CAP theorem" }],
+      "prereqs": [], "version": 1, "verified": { "status": "unchecked", "checkedAt": null }
+    },
+    {
+      "id": "sd-consistency-patterns",
+      "trackId": "system-design", "topicId": "sd-availability", "kind": "concept", "difficulty": 2,
+      "prompt": "Compare weak, eventual, and strong consistency. Give an example system or use case for each.",
+      "keyPoints": [
+        { "id": "kp1", "text": "Weak: after a write, reads may or may not see it (best effort)" },
+        { "id": "kp2", "text": "Weak fits real-time uses like VoIP, video chat, and multiplayer games; memcached is an example" },
+        { "id": "kp3", "text": "Eventual: reads will see the write eventually (typically milliseconds); replication is asynchronous" },
+        { "id": "kp4", "text": "Eventual is used by DNS and email and suits highly available systems" },
+        { "id": "kp5", "text": "Strong: reads see the write right away; replication is synchronous" },
+        { "id": "kp6", "text": "Strong is used by file systems and RDBMSes and suits systems that need transactions" }
+      ],
+      "explanation": "These patterns describe how copies of the same data are kept in sync.\n\n- **Weak**: no promise. If you drop off a call for a few seconds, you don't hear what was said while you were gone.\n- **Eventual**: asynchronous replication, so there's a short window where reads can be stale.\n- **Strong**: synchronous replication, so a read after a write always reflects it.",
+      "sources": [{ "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#consistency-patterns", "section": "Consistency patterns" }],
+      "prereqs": ["sd-cap-theorem"], "version": 1, "verified": { "status": "unchecked", "checkedAt": null }
+    },
+    {
+      "id": "sd-failover",
+      "trackId": "system-design", "topicId": "sd-availability", "kind": "concept", "difficulty": 2,
+      "prompt": "Explain active-passive vs active-active fail-over. What are the downsides of fail-over?",
+      "keyPoints": [
+        { "id": "kp1", "text": "Active-passive: heartbeats between active and standby; if heartbeats stop, the passive takes over the active's IP" },
+        { "id": "kp2", "text": "Active-passive downtime depends on hot vs cold standby; only the active serves traffic" },
+        { "id": "kp3", "text": "Active-active: both servers handle traffic and share the load" },
+        { "id": "kp4", "text": "Active-active needs DNS (public) or app logic (internal) to know about both servers" },
+        { "id": "kp5", "text": "Downside: more hardware and complexity" },
+        { "id": "kp6", "text": "Downside: data loss if the active fails before new writes replicate to the passive" }
+      ],
+      "explanation": "Fail-over and replication are the two complementary patterns for high availability.\n\nActive-passive is also called master-slave fail-over; active-active is also called master-master fail-over.",
+      "sources": [{ "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#fail-over", "section": "Fail-over" }],
+      "prereqs": [], "version": 1, "verified": { "status": "unchecked", "checkedAt": null }
+    },
+    {
+      "id": "sd-availability-numbers",
+      "trackId": "system-design", "topicId": "sd-availability", "kind": "concept", "difficulty": 2,
+      "prompt": "How is availability measured? How does overall availability change when two components are in sequence vs in parallel?",
+      "keyPoints": [
+        { "id": "kp1", "text": "Availability is uptime as a percentage, described in 9s (99.99% = four 9s)" },
+        { "id": "kp2", "text": "Rough scale: three 9s allows about 8.75 hours of downtime per year; four 9s about 53 minutes" },
+        { "id": "kp3", "text": "In sequence: total = A(foo) × A(bar), so availability goes down" },
+        { "id": "kp4", "text": "In parallel: total = 1 − (1 − A(foo)) × (1 − A(bar)), so availability goes up" },
+        { "id": "kp5", "text": "Example: two 99.9% parts give 99.8% in sequence and 99.9999% in parallel" }
+      ],
+      "explanation": "Every component you put in the request path multiplies in its chance of failure. Redundant components in parallel only fail together, which is why replicas and multiple load balancers raise availability.\n\nThe primer's table puts 99.9% at 8h 45min 57s of downtime per year and 99.99% at 52min 35.7s per year.",
+      "sources": [{ "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#availability-in-numbers", "section": "Availability in numbers" }],
+      "prereqs": ["sd-failover"], "version": 1, "verified": { "status": "unchecked", "checkedAt": null }
+    },
+    {
+      "id": "sd-dns",
+      "trackId": "system-design", "topicId": "sd-edge", "kind": "concept", "difficulty": 1,
+      "prompt": "What does DNS do, how does caching affect it, and what are the common record types?",
+      "keyPoints": [
+        { "id": "kp1", "text": "Translates a domain name to an IP address" },
+        { "id": "kp2", "text": "Hierarchical, with authoritative servers at the top" },
+        { "id": "kp3", "text": "Results are cached by lower-level DNS servers, the OS, and the browser for a TTL, so they can go stale" },
+        { "id": "kp4", "text": "Records: NS (name servers), MX (mail servers), A (name to IP), CNAME (name to another name)" },
+        { "id": "kp5", "text": "Managed DNS can route by weighted round robin, latency, or geolocation" },
+        { "id": "kp6", "text": "Downsides: lookup adds slight delay, management is complex, DNS can be a DDoS target" }
+      ],
+      "explanation": "Caching keeps DNS fast but means changes take time to propagate. Weighted round robin can steer traffic away from servers under maintenance, balance clusters of different sizes, or split traffic for A/B tests.",
+      "sources": [{ "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#domain-name-system", "section": "Domain name system" }],
+      "prereqs": [], "version": 1, "verified": { "status": "unchecked", "checkedAt": null }
+    },
+    {
+      "id": "sd-cdn-push-pull",
+      "trackId": "system-design", "topicId": "sd-edge", "kind": "concept", "difficulty": 2,
+      "prompt": "What does a CDN buy you? Compare push and pull CDNs and say which kind of site suits each.",
+      "keyPoints": [
+        { "id": "kp1", "text": "A CDN is a globally distributed network of proxy servers serving content close to users" },
+        { "id": "kp2", "text": "Two wins: users get content from nearby data centers, and your servers skip requests the CDN handles" },
+        { "id": "kp3", "text": "Push: you upload content to the CDN when it changes; minimizes traffic, maximizes storage" },
+        { "id": "kp4", "text": "Push suits low-traffic sites or content that rarely changes" },
+        { "id": "kp5", "text": "Pull: the CDN fetches from your server on the first request, then caches for a TTL; first request is slower" },
+        { "id": "kp6", "text": "Pull minimizes CDN storage but can re-pull unchanged files after expiry; suits heavy-traffic sites" },
+        { "id": "kp7", "text": "Downsides: cost, stale content before TTL expiry, and URLs must be rewritten to point at the CDN" }
+      ],
+      "explanation": "CDNs mostly serve static files (HTML/CSS/JS, images, video), though some support dynamic content. With pull CDNs, traffic spreads evenly because only recently requested content stays cached.",
+      "sources": [{ "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#content-delivery-network", "section": "Content delivery network" }],
+      "prereqs": ["sd-dns"], "version": 1, "verified": { "status": "unchecked", "checkedAt": null }
+    },
+    {
+      "id": "sd-load-balancer",
+      "trackId": "system-design", "topicId": "sd-edge", "kind": "concept", "difficulty": 1,
+      "prompt": "What does a load balancer do, what extra benefits can it provide, and what are its downsides?",
+      "keyPoints": [
+        { "id": "kp1", "text": "Distributes client requests across resources like app servers and databases, and returns responses to clients" },
+        { "id": "kp2", "text": "Keeps requests away from unhealthy servers and prevents overloading" },
+        { "id": "kp3", "text": "Helps eliminate a single point of failure" },
+        { "id": "kp4", "text": "SSL termination: decrypts requests and encrypts responses so backends don't have to" },
+        { "id": "kp5", "text": "Session persistence: routes a client to the same instance via cookies" },
+        { "id": "kp6", "text": "Routing options include random, least loaded, session/cookies, layer 4, layer 7" },
+        { "id": "kp7", "text": "Downsides: can bottleneck if under-resourced, adds complexity; a single LB is itself a SPOF, so run several (active-passive or active-active)" }
+      ],
+      "explanation": "Load balancers come as hardware (expensive) or software like HAProxy. SSL termination also means you don't need to install X.509 certificates on every server.",
+      "sources": [{ "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#load-balancer", "section": "Load balancer" }],
+      "prereqs": [], "version": 1, "verified": { "status": "unchecked", "checkedAt": null }
+    },
+    {
+      "id": "sd-l4-vs-l7",
+      "trackId": "system-design", "topicId": "sd-edge", "kind": "concept", "difficulty": 2,
+      "prompt": "Compare layer 4 and layer 7 load balancing. What does each look at, and what is the tradeoff?",
+      "keyPoints": [
+        { "id": "kp1", "text": "Layer 4 looks at transport-layer info: source/destination IPs and ports, not packet contents" },
+        { "id": "kp2", "text": "Layer 4 forwards packets to and from upstream servers using NAT" },
+        { "id": "kp3", "text": "Layer 7 looks at the application layer: headers, message body, cookies" },
+        { "id": "kp4", "text": "Layer 7 terminates traffic, reads the message, decides, then opens a connection to the chosen server" },
+        { "id": "kp5", "text": "Layer 7 enables content routing, e.g. video traffic to video servers, billing to hardened servers" },
+        { "id": "kp6", "text": "Layer 4 is cheaper in time and compute but less flexible; the gap is often small on modern hardware" }
+      ],
+      "explanation": "The layers refer to the network model: layer 4 is transport (TCP/UDP), layer 7 is application (HTTP). The more the balancer understands about a request, the smarter its routing can be, at the price of doing more work per request.",
+      "sources": [{ "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#layer-4-load-balancing", "section": "Layer 4 load balancing" }, { "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#layer-7-load-balancing", "section": "Layer 7 load balancing" }],
+      "prereqs": ["sd-load-balancer"], "version": 1, "verified": { "status": "unchecked", "checkedAt": null }
+    },
+    {
+      "id": "sd-horizontal-scaling",
+      "trackId": "system-design", "topicId": "sd-edge", "kind": "concept", "difficulty": 2,
+      "prompt": "Why scale horizontally instead of vertically, and what does horizontal scaling require of your servers?",
+      "keyPoints": [
+        { "id": "kp1", "text": "Vertical scaling = a bigger, more expensive single server; horizontal = more commodity machines" },
+        { "id": "kp2", "text": "Horizontal is more cost efficient and gives higher availability" },
+        { "id": "kp3", "text": "Servers must be stateless: no user data like sessions or profile pictures on the box" },
+        { "id": "kp4", "text": "Keep sessions in a central store such as a database or persistent cache (Redis, Memcached)" },
+        { "id": "kp5", "text": "Downstream caches and databases must handle more simultaneous connections" }
+      ],
+      "explanation": "A load balancer in front of cloned servers is the usual way to scale out. The primer also notes it is easier to hire people who know commodity hardware than specialized enterprise systems.",
+      "sources": [{ "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#horizontal-scaling", "section": "Horizontal scaling" }],
+      "prereqs": ["sd-load-balancer"], "version": 1, "verified": { "status": "unchecked", "checkedAt": null }
+    },
+    {
+      "id": "sd-reverse-proxy",
+      "trackId": "system-design", "topicId": "sd-edge", "kind": "concept", "difficulty": 2,
+      "prompt": "What is a reverse proxy, what does it give you, and how is it different from a load balancer?",
+      "keyPoints": [
+        { "id": "kp1", "text": "A web server that centralizes internal services behind a unified public interface and forwards requests to a server that can fulfill them" },
+        { "id": "kp2", "text": "Security: hides backend details, can block IPs and limit connections per client" },
+        { "id": "kp3", "text": "Scalability/flexibility: clients only see the proxy's IP, so backends can change freely" },
+        { "id": "kp4", "text": "Can do SSL termination, compression, caching, and serve static content" },
+        { "id": "kp5", "text": "A load balancer is useful when you have multiple servers doing the same job; a reverse proxy helps even with one server" },
+        { "id": "kp6", "text": "NGINX and HAProxy can do both; downsides are complexity and a single proxy being a SPOF" }
+      ],
+      "explanation": "Think of a load balancer as being about spreading load, and a reverse proxy as being about putting a managed front door on your services. In practice the same software often plays both roles.",
+      "sources": [{ "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#reverse-proxy-web-server", "section": "Reverse proxy (web server)" }],
+      "prereqs": ["sd-load-balancer"], "version": 1, "verified": { "status": "unchecked", "checkedAt": null }
+    },
+    {
+      "id": "sd-acid",
+      "trackId": "system-design", "topicId": "sd-databases", "kind": "concept", "difficulty": 1,
+      "prompt": "What does ACID stand for in relational database transactions? Define each property.",
+      "keyPoints": [
+        { "id": "kp1", "text": "Atomicity: each transaction is all or nothing" },
+        { "id": "kp2", "text": "Consistency: a transaction moves the database from one valid state to another" },
+        { "id": "kp3", "text": "Isolation: concurrent transactions produce the same result as running them serially" },
+        { "id": "kp4", "text": "Durability: once committed, a transaction stays committed" }
+      ],
+      "explanation": "Note that the C in ACID (valid states) is not the same as the C in CAP (reads see the latest write).",
+      "sources": [{ "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#relational-database-management-system-rdbms", "section": "Relational database management system (RDBMS)" }],
+      "prereqs": [], "version": 1, "verified": { "status": "unchecked", "checkedAt": null }
+    },
+    {
+      "id": "sd-replication",
+      "trackId": "system-design", "topicId": "sd-databases", "kind": "concept", "difficulty": 2,
+      "prompt": "Compare master-slave and master-master replication. What downsides do all replication setups share?",
+      "keyPoints": [
+        { "id": "kp1", "text": "Master-slave: the master handles reads and writes and replicates writes to slaves, which serve reads only" },
+        { "id": "kp2", "text": "If the master dies, the system runs read-only until a slave is promoted or a new master is provisioned (promotion needs extra logic)" },
+        { "id": "kp3", "text": "Master-master: both masters serve reads and writes and coordinate on writes; either can fail without losing writes" },
+        { "id": "kp4", "text": "Master-master needs an LB or app logic to choose where to write; is usually loosely consistent or has higher write latency; needs conflict resolution" },
+        { "id": "kp5", "text": "Shared: data loss if the master fails before new writes replicate" },
+        { "id": "kp6", "text": "Shared: replaying many writes can bog down read replicas, and more replicas means more replication lag" },
+        { "id": "kp7", "text": "Shared: more hardware and complexity" }
+      ],
+      "explanation": "Slaves can also replicate to further slaves in a tree. One subtle point: some systems write to the master with multiple threads in parallel, while replicas apply writes sequentially on a single thread, which is one reason replicas fall behind.",
+      "sources": [{ "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#master-slave-replication", "section": "Master-slave replication" }, { "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#master-master-replication", "section": "Master-master replication" }],
+      "prereqs": ["sd-acid"], "version": 1, "verified": { "status": "unchecked", "checkedAt": null }
+    },
+    {
+      "id": "sd-federation-vs-sharding",
+      "trackId": "system-design", "topicId": "sd-databases", "kind": "concept", "difficulty": 2,
+      "prompt": "Compare federation and sharding as ways to scale a relational database. What do they have in common, and what problems does each bring?",
+      "keyPoints": [
+        { "id": "kp1", "text": "Federation (functional partitioning) splits databases by function, e.g. forums, users, products" },
+        { "id": "kp2", "text": "Sharding splits one dataset across databases so each holds a subset, e.g. users by last-name initial or geography" },
+        { "id": "kp3", "text": "Both: less read/write traffic per DB, less replication, more cache hits, and parallel writes with no single central master" },
+        { "id": "kp4", "text": "Sharding also shrinks index size; if one shard fails others keep working" },
+        { "id": "kp5", "text": "Both need app logic to pick the right database and make cross-database joins harder" },
+        { "id": "kp6", "text": "Sharding risk: lopsided shards (e.g. power users); rebalancing is complex; consistent hashing reduces data moved" },
+        { "id": "kp7", "text": "Federation doesn't help if the schema needs huge functions or tables" }
+      ],
+      "explanation": "Federation answers \"split by what the data is\"; sharding answers \"split the same kind of data by key\". Smaller databases fit more data in memory, which improves cache locality. Add replication to shards so a failed shard doesn't mean lost data.",
+      "sources": [{ "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#federation", "section": "Federation" }, { "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#sharding", "section": "Sharding" }],
+      "prereqs": ["sd-replication"], "version": 1, "verified": { "status": "unchecked", "checkedAt": null }
+    },
+    {
+      "id": "sd-denormalization",
+      "trackId": "system-design", "topicId": "sd-databases", "kind": "concept", "difficulty": 2,
+      "prompt": "What is denormalization, why would you use it, and what does it cost?",
+      "keyPoints": [
+        { "id": "kp1", "text": "Writes redundant copies of data into multiple tables to avoid expensive joins" },
+        { "id": "kp2", "text": "Improves read performance at some cost to write performance" },
+        { "id": "kp3", "text": "Reads often outnumber writes 100:1 or 1000:1, and complex joins can be disk-heavy" },
+        { "id": "kp4", "text": "Helps avoid cross-datacenter joins once data is federated or sharded" },
+        { "id": "kp5", "text": "Materialized views (PostgreSQL, Oracle) can manage the redundant copies" },
+        { "id": "kp6", "text": "Costs: duplicated data, constraints to keep copies in sync add complexity, can be slower than normalized under heavy writes" }
+      ],
+      "explanation": "Denormalization is a read-optimization. It pays off when reads dominate and joins are the bottleneck, and backfires for write-heavy workloads.",
+      "sources": [{ "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#denormalization", "section": "Denormalization" }],
+      "prereqs": ["sd-acid"], "version": 1, "verified": { "status": "unchecked", "checkedAt": null }
+    },
+    {
+      "id": "sd-indices",
+      "trackId": "system-design", "topicId": "sd-databases", "kind": "concept", "difficulty": 2,
+      "prompt": "When do database indices help, how are they usually structured, and what do they cost?",
+      "keyPoints": [
+        { "id": "kp1", "text": "Help columns you query with SELECT, GROUP BY, ORDER BY, JOIN" },
+        { "id": "kp2", "text": "Usually a self-balancing B-tree: sorted data with logarithmic search, sequential access, inserts, and deletes" },
+        { "id": "kp3", "text": "Indices take extra space (and memory)" },
+        { "id": "kp4", "text": "Writes get slower because the index must also be updated" },
+        { "id": "kp5", "text": "For bulk loads it can be faster to drop indices, load, then rebuild" }
+      ],
+      "explanation": "Indexing is one of several SQL tuning techniques. Benchmark and profile first (e.g. with a slow query log) so you index what actually matters.",
+      "sources": [{ "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#use-good-indices", "section": "Use good indices" }],
+      "prereqs": ["sd-acid"], "version": 1, "verified": { "status": "unchecked", "checkedAt": null }
+    },
+    {
+      "id": "sd-nosql-types",
+      "trackId": "system-design", "topicId": "sd-databases", "kind": "concept", "difficulty": 2,
+      "prompt": "Name the four main kinds of NoSQL store. For each, give its core abstraction and what it is good for.",
+      "keyPoints": [
+        { "id": "kp1", "text": "Key-value (hash table): ~O(1) reads/writes, simple or rapidly changing data like a cache layer; complexity moves to the app" },
+        { "id": "kp2", "text": "Document (key-value with documents as values): query by document structure; flexible, for occasionally changing data (MongoDB, CouchDB)" },
+        { "id": "kp3", "text": "Wide column (nested map of column families): high availability and scale for very large datasets (Bigtable, HBase, Cassandra)" },
+        { "id": "kp4", "text": "Graph (nodes and relationships): complex, many-to-many relationships like social networks" },
+        { "id": "kp5", "text": "Generally: data is denormalized, joins happen in app code, most lack full ACID and favor eventual consistency" }
+      ],
+      "explanation": "Some key-value and wide column stores keep keys in lexicographic order, which makes range scans efficient. Wide column values carry timestamps for versioning and conflict resolution. Graph databases are newer, so tooling can be thinner.",
+      "sources": [{ "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#nosql", "section": "NoSQL" }],
+      "prereqs": [], "version": 1, "verified": { "status": "unchecked", "checkedAt": null }
+    },
+    {
+      "id": "sd-base",
+      "trackId": "system-design", "topicId": "sd-databases", "kind": "concept", "difficulty": 2,
+      "prompt": "What does BASE stand for, and how does it relate to CAP?",
+      "keyPoints": [
+        { "id": "kp1", "text": "Basically available: the system guarantees availability" },
+        { "id": "kp2", "text": "Soft state: state may change over time even without input" },
+        { "id": "kp3", "text": "Eventual consistency: becomes consistent over time if no new input arrives" },
+        { "id": "kp4", "text": "BASE chooses availability over consistency in CAP terms" }
+      ],
+      "explanation": "BASE is the usual shorthand for NoSQL behavior, in contrast to ACID for relational transactions.",
+      "sources": [{ "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#nosql", "section": "NoSQL" }],
+      "prereqs": ["sd-cap-theorem", "sd-acid"], "version": 1, "verified": { "status": "unchecked", "checkedAt": null }
+    },
+    {
+      "id": "sd-sql-vs-nosql",
+      "trackId": "system-design", "topicId": "sd-databases", "kind": "concept", "difficulty": 2,
+      "prompt": "What are the reasons to choose SQL vs NoSQL? Give a few kinds of data that suit NoSQL.",
+      "keyPoints": [
+        { "id": "kp1", "text": "SQL: structured data, strict schema, relational data, complex joins, transactions" },
+        { "id": "kp2", "text": "SQL: clear scaling patterns, mature ecosystem, fast index lookups" },
+        { "id": "kp3", "text": "NoSQL: semi-structured data, flexible schema, non-relational data, no complex joins" },
+        { "id": "kp4", "text": "NoSQL: many TB/PB of data, data-intensive workloads, very high IOPS" },
+        { "id": "kp5", "text": "NoSQL-friendly data: clickstream/log ingest, leaderboards, temporary data like carts, hot tables, metadata/lookup tables" }
+      ],
+      "explanation": "In an interview, tie the choice back to the requirements you gathered: access patterns, need for joins and transactions, data volume, and write rate.",
+      "sources": [{ "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#sql-or-nosql", "section": "SQL or NoSQL" }],
+      "prereqs": ["sd-nosql-types"], "version": 1, "verified": { "status": "unchecked", "checkedAt": null }
+    },
+    {
+      "id": "sd-cache-layers",
+      "trackId": "system-design", "topicId": "sd-caching", "kind": "concept", "difficulty": 1,
+      "prompt": "Why cache, and where can caches live in a system?",
+      "keyPoints": [
+        { "id": "kp1", "text": "Speeds up page loads and reduces load on servers and databases" },
+        { "id": "kp2", "text": "Absorbs uneven load and traffic spikes caused by popular items" },
+        { "id": "kp3", "text": "Layers: client (OS/browser), CDN, web server/reverse proxy, database, application (Memcached, Redis)" },
+        { "id": "kp4", "text": "App caches hold data in RAM; since RAM is limited, eviction like LRU keeps hot data" },
+        { "id": "kp5", "text": "Avoid file-based caching; it makes cloning and auto-scaling harder" }
+      ],
+      "explanation": "Popular items skew how reads spread across database partitions, so a cache in front helps even out the load. Redis adds persistence and data structures like sorted sets and lists on top of plain key-value caching.",
+      "sources": [{ "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#cache", "section": "Cache" }],
+      "prereqs": [], "version": 1, "verified": { "status": "unchecked", "checkedAt": null }
+    },
+    {
+      "id": "sd-cache-query-vs-object",
+      "trackId": "system-design", "topicId": "sd-caching", "kind": "concept", "difficulty": 2,
+      "prompt": "Compare caching at the database query level with caching at the object level.",
+      "keyPoints": [
+        { "id": "kp1", "text": "Query level: hash the query as the key and store the result" },
+        { "id": "kp2", "text": "Query level is hard to expire: complex queries are hard to delete, and one changed cell can invalidate many cached queries" },
+        { "id": "kp3", "text": "Object level: the app assembles data into objects and caches those" },
+        { "id": "kp4", "text": "Object level: remove the object when its underlying data changes; enables async workers that build objects" },
+        { "id": "kp5", "text": "Good things to cache: sessions, fully rendered pages, activity streams, user graph data" }
+      ],
+      "explanation": "Object-level caching maps more cleanly onto how you invalidate, since you know which object a write touches.",
+      "sources": [{ "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#caching-at-the-database-query-level", "section": "Caching at the database query level" }, { "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#caching-at-the-object-level", "section": "Caching at the object level" }],
+      "prereqs": ["sd-cache-layers"], "version": 1, "verified": { "status": "unchecked", "checkedAt": null }
+    },
+    {
+      "id": "sd-cache-aside",
+      "trackId": "system-design", "topicId": "sd-caching", "kind": "concept", "difficulty": 2,
+      "prompt": "Walk through the cache-aside (lazy loading) pattern. What are its strengths and weaknesses?",
+      "keyPoints": [
+        { "id": "kp1", "text": "The app talks to both cache and storage; the cache never talks to storage directly" },
+        { "id": "kp2", "text": "Read flow: check cache, miss, load from DB, add to cache, return" },
+        { "id": "kp3", "text": "Only requested data gets cached; later reads are fast" },
+        { "id": "kp4", "text": "A miss costs three trips, which can add noticeable delay" },
+        { "id": "kp5", "text": "Data can go stale if the DB is updated; mitigate with a TTL or write-through" },
+        { "id": "kp6", "text": "A failed node is replaced by an empty one, raising latency until it warms up" }
+      ],
+      "explanation": "Memcached is typically used this way.",
+      "sources": [{ "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#cache-aside", "section": "Cache-aside" }],
+      "prereqs": ["sd-cache-layers"], "version": 1, "verified": { "status": "unchecked", "checkedAt": null }
+    },
+    {
+      "id": "sd-write-through-behind",
+      "trackId": "system-design", "topicId": "sd-caching", "kind": "concept", "difficulty": 3,
+      "prompt": "Compare write-through, write-behind, and refresh-ahead caching. What can go wrong with each?",
+      "keyPoints": [
+        { "id": "kp1", "text": "Write-through: app writes to cache, cache synchronously writes to the DB" },
+        { "id": "kp2", "text": "Write-through: slow writes, fast reads of fresh data, cache isn't stale" },
+        { "id": "kp3", "text": "Write-through issues: new nodes stay empty until entries are updated (pair with cache-aside); much written data is never read (use TTL)" },
+        { "id": "kp4", "text": "Write-behind: write to cache, then write to the DB asynchronously, improving write performance" },
+        { "id": "kp5", "text": "Write-behind issues: data loss if the cache dies before flushing; more complex to build" },
+        { "id": "kp6", "text": "Refresh-ahead: cache refreshes recently accessed entries before they expire; hurts performance if predictions are wrong" }
+      ],
+      "explanation": "Users tend to tolerate latency on updates more than on reads, which is why write-through's slow writes are often acceptable. Refresh-ahead can beat read-through latency only if the cache predicts well which items will be needed.",
+      "sources": [{ "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#when-to-update-the-cache", "section": "When to update the cache" }],
+      "prereqs": ["sd-cache-aside"], "version": 1, "verified": { "status": "unchecked", "checkedAt": null }
+    },
+    {
+      "id": "sd-message-queues",
+      "trackId": "system-design", "topicId": "sd-async-comm", "kind": "concept", "difficulty": 2,
+      "prompt": "How do message queues and task queues help with slow operations? When is async the wrong choice?",
+      "keyPoints": [
+        { "id": "kp1", "text": "Async workflows cut request times for expensive operations and allow precomputing work (e.g. periodic aggregation)" },
+        { "id": "kp2", "text": "Flow: app publishes a job and tells the user its status; a worker processes it and signals completion" },
+        { "id": "kp3", "text": "User isn't blocked; the client can fake immediate completion (e.g. tweet shows on your timeline before fan-out)" },
+        { "id": "kp4", "text": "Task queues run tasks and deliver results, and can support scheduling (e.g. Celery)" },
+        { "id": "kp5", "text": "Async is a poor fit for cheap calculations and real-time workflows, where queues add delay and complexity" }
+      ],
+      "explanation": "Broker tradeoffs the primer calls out: Redis is simple but can lose messages; RabbitMQ needs the AMQP protocol and self-managed nodes; Amazon SQS is hosted but can be high-latency and may deliver a message twice.",
+      "sources": [{ "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#asynchronism", "section": "Asynchronism" }],
+      "prereqs": [], "version": 1, "verified": { "status": "unchecked", "checkedAt": null }
+    },
+    {
+      "id": "sd-back-pressure",
+      "trackId": "system-design", "topicId": "sd-async-comm", "kind": "concept", "difficulty": 2,
+      "prompt": "What problem does back pressure solve in a queue-based system, and how do clients react to it?",
+      "keyPoints": [
+        { "id": "kp1", "text": "An unbounded queue can outgrow memory, causing cache misses, disk reads, and slower processing" },
+        { "id": "kp2", "text": "Back pressure caps the queue size to keep throughput and response times good for queued jobs" },
+        { "id": "kp3", "text": "When full, clients get a server-busy / HTTP 503 response" },
+        { "id": "kp4", "text": "Clients retry later, e.g. with exponential backoff" }
+      ],
+      "explanation": "The idea is to fail fast at the edge rather than accept work you can't finish in reasonable time.",
+      "sources": [{ "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#back-pressure", "section": "Back pressure" }],
+      "prereqs": ["sd-message-queues"], "version": 1, "verified": { "status": "unchecked", "checkedAt": null }
+    },
+    {
+      "id": "sd-http-verbs",
+      "trackId": "system-design", "topicId": "sd-async-comm", "kind": "concept", "difficulty": 2,
+      "prompt": "For GET, POST, PUT, PATCH, and DELETE: which are idempotent, and which are safe?",
+      "keyPoints": [
+        { "id": "kp1", "text": "Idempotent means calling it many times gives the same outcome" },
+        { "id": "kp2", "text": "GET: reads; idempotent and safe" },
+        { "id": "kp3", "text": "PUT (create or replace) and DELETE: idempotent but not safe" },
+        { "id": "kp4", "text": "POST (create / trigger processing) and PATCH (partial update): neither idempotent nor safe" },
+        { "id": "kp5", "text": "HTTP is an application-layer request/response protocol over lower layers like TCP and UDP" }
+      ],
+      "explanation": "Idempotency matters when clients retry: retrying a PUT or DELETE is harmless, retrying a POST may create duplicates. The primer's table also marks GET as cacheable, and POST/PATCH as cacheable only when the response includes freshness info.",
+      "sources": [{ "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#hypertext-transfer-protocol-http", "section": "Hypertext transfer protocol (HTTP)" }],
+      "prereqs": [], "version": 1, "verified": { "status": "unchecked", "checkedAt": null }
+    },
+    {
+      "id": "sd-tcp-vs-udp",
+      "trackId": "system-design", "topicId": "sd-async-comm", "kind": "concept", "difficulty": 1,
+      "prompt": "Compare TCP and UDP. When should you use each?",
+      "keyPoints": [
+        { "id": "kp1", "text": "TCP is connection-oriented with a handshake; packets arrive in order and uncorrupted (sequence numbers, checksums, resends)" },
+        { "id": "kp2", "text": "TCP has flow control and congestion control; these guarantees add delay" },
+        { "id": "kp3", "text": "Use TCP when all data must arrive intact: web servers, databases, SMTP, FTP, SSH" },
+        { "id": "kp4", "text": "UDP is connectionless; datagrams may arrive out of order or not at all; no congestion control; more efficient" },
+        { "id": "kp5", "text": "Use UDP for lowest latency, when late data is worse than lost data: VoIP, video chat, streaming, games" },
+        { "id": "kp6", "text": "UDP can broadcast to a subnet, which DHCP relies on" }
+      ],
+      "explanation": "Lots of open TCP connections cost memory, so connection pooling helps. UDP is also a fit when you want to implement your own error correction.",
+      "sources": [{ "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#transmission-control-protocol-tcp", "section": "Transmission control protocol (TCP)" }, { "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#user-datagram-protocol-udp", "section": "User datagram protocol (UDP)" }],
+      "prereqs": [], "version": 1, "verified": { "status": "unchecked", "checkedAt": null }
+    },
+    {
+      "id": "sd-rpc-vs-rest",
+      "trackId": "system-design", "topicId": "sd-async-comm", "kind": "concept", "difficulty": 2,
+      "prompt": "Compare RPC and REST. What is each focused on, where is each typically used, and what are their downsides?",
+      "keyPoints": [
+        { "id": "kp1", "text": "RPC runs a procedure in another address space as if it were a local call; focused on exposing behaviors" },
+        { "id": "kp2", "text": "RPC is common for internal calls where performance matters (Protobuf, Thrift, Avro)" },
+        { "id": "kp3", "text": "RPC downsides: tight coupling to the implementation, a new API per operation, harder debugging and caching" },
+        { "id": "kp4", "text": "REST: clients act on server-managed resources; stateless and cacheable; focused on exposing data" },
+        { "id": "kp5", "text": "REST uses URIs for resources, verbs for actions, status codes for errors; common for public APIs; statelessness helps horizontal scaling" },
+        { "id": "kp6", "text": "REST downsides: awkward for non-hierarchical queries or actions outside the verbs, multiple round trips for nested data, payload bloat over time" }
+      ],
+      "explanation": "Example from the primer: RPC-style `POST /resign {personid}` vs REST-style `DELETE /persons/1234`.",
+      "sources": [{ "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#remote-procedure-call-rpc", "section": "Remote procedure call (RPC)" }, { "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#representational-state-transfer-rest", "section": "Representational state transfer (REST)" }],
+      "prereqs": ["sd-http-verbs"], "version": 1, "verified": { "status": "unchecked", "checkedAt": null }
+    },
+    {
+      "id": "sd-interview-steps",
+      "trackId": "system-design", "topicId": "sd-interview", "kind": "concept", "difficulty": 1,
+      "prompt": "What are the four steps for approaching a system design interview question?",
+      "keyPoints": [
+        { "id": "kp1", "text": "1. Outline use cases, constraints, and assumptions: who uses it, how, how many users, data volume, requests/sec, read:write ratio" },
+        { "id": "kp2", "text": "2. High-level design: sketch the main components and connections, and justify them" },
+        { "id": "kp3", "text": "3. Design core components in detail (e.g. for a URL shortener: hashing, collisions, SQL vs NoSQL, schema, API)" },
+        { "id": "kp4", "text": "4. Scale the design: find bottlenecks and address them (LB, horizontal scaling, caching, sharding), discussing tradeoffs" },
+        { "id": "kp5", "text": "It's an open-ended conversation you are expected to lead" }
+      ],
+      "explanation": "Back-of-the-envelope estimates often come up along the way; powers-of-two and latency-number tables help. Everything is a tradeoff.",
+      "sources": [{ "title": "The System Design Primer", "url": "https://github.com/donnemartin/system-design-primer#how-to-approach-a-system-design-interview-question", "section": "How to approach a system design interview question" }],
+      "prereqs": [], "version": 1, "verified": { "status": "unchecked", "checkedAt": null }
+    },
+    {
+      "id": "sd-design-pastebin",
+      "trackId": "system-design", "topicId": "sd-interview", "kind": "design", "difficulty": 3,
+      "prompt": "Design Pastebin (or a URL shortener like Bit.ly): users paste text and get a short random link; anyone with the link can view it. Walk through requirements, estimates, high-level design, core components, and scaling.",
+      "keyPoints": [
+        { "id": "kp1", "group": "Requirements", "text": "Core: create paste → short link; view by link; optional expiration (default never)" },
+        { "id": "kp2", "group": "Requirements", "text": "Also: anonymous users, monthly page analytics, delete expired pastes, high availability" },
+        { "id": "kp3", "group": "Requirements", "text": "Assumptions: uneven traffic, fast reads, 10M writes and 100M reads per month (10:1 read:write)" },
+        { "id": "kp4", "group": "Estimates", "text": "~1.27 KB per paste → ~12.7 GB/month, ~450 GB and 360M links over 3 years" },
+        { "id": "kp5", "group": "Estimates", "text": "~4 writes/sec and ~40 reads/sec on average (about 2.5M seconds per month)" },
+        { "id": "kp6", "group": "High-level design", "text": "Client → web server (reverse proxy) → separate Write API and Read API → SQL DB for metadata + object store (e.g. S3) for contents" },
+        { "id": "kp7", "group": "Data model", "text": "pastes table: shortlink (PK), expiration_length_in_minutes, created_at, paste_path; extra index on created_at" },
+        { "id": "kp8", "group": "Core components", "text": "Short link: MD5 of IP + timestamp (or random data), Base62-encode, take first 7 chars (62^7 values); check DB for duplicates" },
+        { "id": "kp9", "group": "Core components", "text": "Base62 over Base64 because + and / cause URL problems" },
+        { "id": "kp10", "group": "Core components", "text": "Public REST API for create/read; RPC is an option internally" },
+        { "id": "kp11", "group": "Core components", "text": "Analytics: MapReduce over web server logs since realtime isn't required; expiry: scan and delete/mark expired rows" },
+        { "id": "kp12", "group": "Scaling", "text": "Iterate: benchmark/load test, profile, address bottlenecks with tradeoffs, repeat" },
+        { "id": "kp13", "group": "Scaling", "text": "Memory cache for popular content and spikes; SQL read replicas for cache misses; single write master is fine at ~4 writes/sec" },
+        { "id": "kp14", "group": "Scaling", "text": "Analytics in a data warehouse (Redshift/BigQuery); consider NoSQL and further SQL scaling if needed" }
+      ],
+      "explanation": "Bit.ly is the same problem except you store the original long URL instead of paste contents.\n\nDon't jump straight to the final scaled design. Start simple, then explain which bottlenecks each added component (load balancer, CDN, replicas, cache) addresses and what it costs.",
+      "sources": [{ "title": "The System Design Primer: Design Pastebin.com (or Bit.ly)", "url": "https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/pastebin/README.md", "section": "Design Pastebin.com (or Bit.ly)" }],
+      "prereqs": ["sd-interview-steps", "sd-sql-vs-nosql", "sd-cache-layers"], "version": 1, "verified": { "status": "unchecked", "checkedAt": null }
+    }
+  ]
+}
