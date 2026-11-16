@@ -59,7 +59,7 @@ fun SettingsScreen(onBack: () -> Unit) {
     val snackbar = remember { SnackbarHostState() }
     val s by app.settings.settings.collectAsState(initial = null)
     val content by produceState<Content?>(null) { value = app.study.content() }
-    val flagCount by app.study.observeFlagCount().collectAsState(initial = 0)
+    val flagCount by remember { app.study.observeFlagCount() }.collectAsState(initial = 0)
 
     // Storage Access Framework: the system file picker chooses where the export goes,
     // so the app needs no storage permission.
@@ -196,7 +196,8 @@ private fun IntSlider(label: String, value: Int, range: IntRange, onDone: (Int) 
             onValueChange = { v = it },
             onValueChangeFinished = { onDone(v.roundToInt()) },
             valueRange = range.first.toFloat()..range.last.toFloat(),
-            steps = range.last - range.first - 1,
+            // Tick marks only when there are few enough to read.
+            steps = if (range.last - range.first <= 20) range.last - range.first - 1 else 0,
         )
     }
 }

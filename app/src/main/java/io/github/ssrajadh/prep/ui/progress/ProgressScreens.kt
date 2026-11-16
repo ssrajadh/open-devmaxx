@@ -99,7 +99,7 @@ private fun CountsRow(c: Counts) {
 fun ProgressScreen(onBack: () -> Unit, onTopic: (String) -> Unit) {
     val app = prepApp()
     val content = rememberContent()
-    val states by app.study.observeStates().collectAsState(initial = emptyList())
+    val states by remember { app.study.observeStates() }.collectAsState(initial = emptyList())
     val byId = states.associateBy { it.cardId }
     val today = app.study.today()
     BackScaffold("Progress", onBack) { mod ->
@@ -147,7 +147,7 @@ fun ProgressScreen(onBack: () -> Unit, onTopic: (String) -> Unit) {
 fun TopicScreen(topicId: String, onBack: () -> Unit, onCard: (String) -> Unit) {
     val app = prepApp()
     val content = rememberContent()
-    val states by app.study.observeStates().collectAsState(initial = emptyList())
+    val states by remember { app.study.observeStates() }.collectAsState(initial = emptyList())
     val byId = states.associateBy { it.cardId }
     val today = app.study.today()
     val topic = content?.topicsById?.get(topicId)

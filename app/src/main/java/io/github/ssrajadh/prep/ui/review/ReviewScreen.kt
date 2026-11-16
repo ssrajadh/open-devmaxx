@@ -1,5 +1,6 @@
 package io.github.ssrajadh.prep.ui.review
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,7 +21,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
@@ -53,7 +53,9 @@ import io.github.ssrajadh.prep.ui.prepApp
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 data class ReviewUi(
     val loading: Boolean = true,
@@ -87,13 +89,21 @@ class ReviewViewModel(private val study: StudyRepository, private val settings: 
 
     fun toggle(kpId: String) = _ui.update { it.copy(ticked = if (kpId in it.ticked) it.ticked - kpId else it.ticked + kpId) }
 
+    private var saving = false
+
     fun rate(rating: Rating) {
         val state = _ui.value
         val card = state.card ?: return
-        // Advance the UI first so the screen feels instant; the write happens in the background.
-        _ui.update { it.copy(index = it.index + 1, revealed = false, ticked = emptySet()) }
+        if (saving) return // ignore double taps
+        saving = true
         viewModelScope.launch {
-            study.recordReview(card, card.keyPoints.filter { it.id in state.ticked }.map { it.id }, rating)
+            // NonCancellable: if the user closes the screen right after rating, leaving
+            // clears this ViewModel and cancels its scope. The save must still finish.
+            withContext(NonCancellable) {
+                study.recordReview(card, card.keyPoints.filter { it.id in state.ticked }.map { it.id }, rating)
+            }
+            _ui.update { it.copy(index = it.index + 1, revealed = false, ticked = emptySet()) }
+            saving = false
         }
     }
 
@@ -127,7 +137,14 @@ fun ReviewScreen(onClose: () -> Unit) {
     ) { pad ->
         Column(Modifier.padding(pad).fillMaxSize()) {
             if (ui.queue.isNotEmpty()) {
-                LinearProgressIndicator(progress = { ui.index.toFloat() / ui.queue.size }, modifier = Modifier.fillMaxWidth())
+                // A plain drawn bar: no animation, so the screen is fully idle between taps.
+                val fraction = ui.index.toFloat() / ui.queue.size
+                val track = MaterialTheme.colorScheme.surfaceVariant
+                val fill = MaterialTheme.colorScheme.primary
+                Canvas(Modifier.fillMaxWidth().height(4.dp)) {
+                    drawRect(track)
+                    drawRect(fill, size = size.copy(width = size.width * fraction))
+                }
             }
             val card = ui.card
             when {
