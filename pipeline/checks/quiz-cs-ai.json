@@ -1,0 +1,232 @@
+{
+  "checkedAt": "2026-11-15",
+  "results": [
+    {
+      "cardId": "cs-tcp-handshake",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {},
+      "notes": "Key points, explanation and all 3 questions match 5.2.3. Each distractor contradicts the passage: SYN+ACK with Ack = x + 1, no data before setup, ACK = next expected, and random ISNs required by TCP spec to protect against incarnation reuse."
+    },
+    {
+      "cardId": "cs-tcp-teardown",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {},
+      "notes": "Key points, explanation (simultaneous-close path) and questions match 5.2.3. The wrong state paths in q3 are the passage's own other paths or not closing paths; the TIME_WAIT duration and reason distractors contradict the stated 120 s and lost-ACK/delayed-FIN reason."
+    },
+    {
+      "cardId": "cs-tcp-flow-control",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {
+        "q2": {
+          "id": "q2",
+          "stem": "The receiving application stops reading. What happens?",
+          "options": [
+            {
+              "id": "a",
+              "text": "The advertised window shrinks to 0 and the sender can't transmit"
+            },
+            {
+              "id": "b",
+              "text": "The sender doubles its window"
+            },
+            {
+              "id": "c",
+              "text": "The receiver keeps advertising its full buffer size (MaxRcvBuffer)"
+            },
+            {
+              "id": "d",
+              "text": "The connection enters TIME_WAIT"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "As the receive buffer fills, the advertised window shrinks to zero, stopping the sender."
+        }
+      },
+      "notes": "q2 option c ('receiver drops packets silently') isn't clearly contradicted, since the passage says zero-window probe bytes will probably not be accepted; replaced with 'keeps advertising its full buffer size', which the passage contradicts (the window stays at MaxRcvBuffer only if the app reads as fast as data arrives). Key points and explanation match 5.2.4."
+    },
+    {
+      "cardId": "cs-tcp-aimd",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {},
+      "notes": "Key points, explanation and all 3 questions match 6.3.1. Distractors contradict halving per timeout, timeouts read as congestion because error drops are rare and nobody sends the sender a window, and MaxWindow = MIN(...)."
+    },
+    {
+      "cardId": "cs-tcp-slow-start",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {},
+      "notes": "Key points, explanation and both questions match 6.3.2. Distractors contradict exponential doubling per RTT and the timeout sequence (threshold = halved window, reset to one packet, slow start up to threshold)."
+    },
+    {
+      "cardId": "cs-tcp-fast-retransmit",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {},
+      "notes": "Key points, explanation (cumulative ACK after the retransmit) and both questions match 6.3.3. Distractors contradict the three-duplicate-ACK rule, enhancing (not replacing) timeouts, and the receiver re-ACKing out-of-order packets."
+    },
+    {
+      "cardId": "cs-isolation-phenomena",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {
+        "q2": {
+          "id": "q2",
+          "stem": "A transaction re-runs a query and finds the set of matching rows has changed because another transaction committed. What is this?",
+          "options": [
+            {
+              "id": "a",
+              "text": "A phantom read"
+            },
+            {
+              "id": "b",
+              "text": "A dirty read"
+            },
+            {
+              "id": "c",
+              "text": "A nonrepeatable read"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "A phantom read is about the set of rows matching a condition changing; a nonrepeatable read is about previously read data changing."
+        }
+      },
+      "notes": "q2 option d ('A lost update') names a phenomenon the passage never defines, so the passage can't rule it out; removed it, leaving 3 options. Key points and explanation match the four phenomenon definitions and the standard's phenomenon-based level definitions in 13.2."
+    },
+    {
+      "cardId": "cs-isolation-levels",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {},
+      "notes": "Key points, explanation and all 3 questions match 13.2, Table 13.1 and 13.2.1-13.2.2. Distractors contradict per-statement snapshots in Read Committed, RR blocking dirty/nonrepeatable/phantom reads in PG, and Read Uncommitted mapping to Read Committed (all four levels can be requested)."
+    },
+    {
+      "cardId": "ai-transformer-architectures",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {},
+      "notes": "Key points, explanation and all 3 questions match the section, including the architecture-choice table (classification/NER/extractive QA -> encoder; summarization/translation/generative QA -> seq2seq)."
+    },
+    {
+      "cardId": "ai-llm-training-phases",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {},
+      "notes": "Key points, explanation and both questions match: decoder-only, pretraining on next-token prediction then instruction tuning. Distractors contradict the stated architecture and phase order."
+    },
+    {
+      "cardId": "ai-prefill-decode",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {},
+      "notes": "Key points, explanation (reading vs writing mental model) and both questions match. The passage names only prefill and decode as the phases, gives compute intensity for prefill and memory for decode, and its stated reasons rule out the distractors."
+    },
+    {
+      "cardId": "ai-sampling",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {},
+      "notes": "Key points, explanation (100 tokens, \\n\\n stop) and all 3 questions match. Distractors contradict the temperature direction, top-p vs top-k vs the full vocabulary, and the presence-vs-frequency penalty definitions."
+    },
+    {
+      "cardId": "ai-beam-search",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {
+        "q2": {
+          "id": "q2",
+          "stem": "What is the tradeoff of beam search?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Often more coherent text, but it needs more compute"
+            },
+            {
+              "id": "b",
+              "text": "Faster than greedy decoding, but less coherent"
+            },
+            {
+              "id": "c",
+              "text": "No extra cost, but only works for encoders"
+            },
+            {
+              "id": "d",
+              "text": "Less compute than simpler methods, but less grammatical text"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Beam search tends to produce more coherent, grammatical text at higher computational cost."
+        }
+      },
+      "notes": "q2 option d ('Lower memory, but more repetition') isn't settled by the passage, which mentions compute but neither memory nor repetition; replaced with 'Less compute than simpler methods, but less grammatical text', which the passage contradicts on both halves. Key points and explanation match."
+    },
+    {
+      "cardId": "ai-inference-metrics",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {},
+      "notes": "Key points, explanation and both questions match: TTFT primarily affected by prefill and called crucial for UX, VRAM often the primary constraint."
+    },
+    {
+      "cardId": "ai-context-kv-cache",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {},
+      "notes": "Key points, explanation and both questions match the three cited subsections (quadratic memory, slower processing, KV cache reuses intermediate calculations at extra memory cost)."
+    }
+  ]
+}

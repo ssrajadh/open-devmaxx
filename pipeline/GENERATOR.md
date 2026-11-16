@@ -20,4 +20,14 @@ You turn sections of a vetted source into cards. You do not use your own knowled
 - `explanation`: short Markdown. Context, a mnemonic, or a nuance from the same source. Still no unsupported claims.
 - `prereqs`: only cards the learner really needs first. Keep chains shallow.
 - `difficulty`: 1 = definition, 2 = compare/contrast or tradeoff, 3 = multi-part or design.
+- `questions`: 2–4 multiple-choice questions per card. The app is quiz-first: these are what the learner answers, and the key points, explanation, and sources are shown as feedback afterward.
 - No behavioral content, no timers, nothing about specific companies' interview processes.
+
+## Question rules
+
+- Each question has `id` (`q1`, `q2`...), `stem`, 3–5 `options` (`{id, text}`), `answers` (one or more option ids), and `why` (one or two sentences shown after answering).
+- More than one answer makes it "select all that apply"; the app adds that label, so don't write it into the stem. At least one option must be wrong.
+- The correct options must be stated by the cited passage.
+- Wrong options (distractors) must be **contradicted** by the passage, not merely absent from it. The safest way is to misattribute facts from the same passage: swap push and pull CDN traits, give layer 7's behavior to layer 4, use the in-sequence availability number for the in-parallel case. A distractor that might be true in some reading is a bug.
+- Keep options similar in length and style so the answer doesn't stand out. Avoid "all of the above" and "none of the above"; the app shuffles option order.
+- Test understanding and application where the source allows (scenarios, "which would you choose"), not just definitions.

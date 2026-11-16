@@ -5,13 +5,14 @@ A free, fully offline Android app for technical interview prep: system design, C
 ## How it works
 
 - **Daily mix.** Each day you get the cards due for review (up to a cap) plus a few new cards rotated across your active tracks. Cards over the cap wait for the next day, so a missed week never turns into a wall of reviews.
-- **Self-grading against key points.** Answer from memory, reveal, and tick the key points you covered. The app suggests a rating (Again / Hard / Good / Easy) from the fraction you hit, and you can override it.
+- **Quiz cards.** Each card is 2–4 multiple-choice questions (some "select all that apply"), with instant feedback and a short reason after each answer. After the last question you see your score, the card's key points, the explanation, and the source. The app suggests a rating (Again / Hard / Good / Easy) from the fraction you got right, and you can override it.
+- **Calm UI.** No screen transitions or ripple animations.
 - **Prereqs.** A card becomes eligible as new only after its prereqs have been seen.
 - **Sources on every card.** Each card links the exact source section it came from and shows when it was checked. A flag button records "seems wrong / unclear", and Settings exports flags as JSON so the card can be re-checked.
 
 ## Content
 
-Cards are generated on a laptop and bundled as JSON in `app/src/main/assets/content/`. The pipeline in [`pipeline/`](pipeline/README.md) grounds every card in a vetted free source, has a separate checker pass compare each card against its cited passage, and validates the schema. Only cards the checker marked `verified` or `partial` ship in the app.
+Cards are generated on a laptop and bundled as JSON in `app/src/main/assets/content/`. The pipeline in [`pipeline/`](pipeline/README.md) grounds every card in a vetted free source, has a separate checker pass compare each card (including every right and wrong answer) against its cited passage, and validates the schema. Only cards the checker marked `verified` or `partial` ship in the app.
 
 Current content: 31 System Design, 8 CS Fundamentals (TCP, transaction isolation), and 7 Applied AI (transformer architectures, LLM inference) cards.
 

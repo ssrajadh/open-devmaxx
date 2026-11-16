@@ -24,9 +24,11 @@ class ContentRepository(private val assets: AssetManager) {
         val meta = json.decodeFromString<TracksFile>(read("content/tracks.json"))
         val cardFiles = assets.list("content/cards").orEmpty().filter { it.endsWith(".json") }.sorted()
         val cards = cardFiles.flatMap { json.decodeFromString<CardsFile>(read("content/cards/$it")).cards }
-        // Only keep cards that passed (or partially passed) the checker. Unchecked cards
-        // are hidden so unverified content never reaches review.
-        val usable = cards.filter { it.verified.status == "verified" || it.verified.status == "partial" }
+        // Only keep cards that passed (or partially passed) the checker and have questions.
+        // Unchecked cards are hidden so unverified content never reaches review.
+        val usable = cards.filter {
+            (it.verified.status == "verified" || it.verified.status == "partial") && it.questions.isNotEmpty()
+        }
         return Content(meta.tracks, meta.topics, usable)
     }
 

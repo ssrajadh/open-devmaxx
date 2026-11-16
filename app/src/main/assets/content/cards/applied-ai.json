@@ -46,11 +46,93 @@
         }
       ],
       "prereqs": [],
-      "version": 1,
+      "version": 2,
       "verified": {
         "status": "verified",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "Which architecture's attention can only see words before the current position, and is best suited to text generation?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Decoder-only"
+            },
+            {
+              "id": "b",
+              "text": "Encoder-only"
+            },
+            {
+              "id": "c",
+              "text": "Encoder-decoder's encoder"
+            },
+            {
+              "id": "d",
+              "text": "Bidirectional auto-encoding models"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Decoder models are auto-regressive: each word attends only to earlier words."
+        },
+        {
+          "id": "q2",
+          "stem": "Which architecture is best for sentence classification, named entity recognition, and extractive question answering?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Encoder-only (e.g. BERT)"
+            },
+            {
+              "id": "b",
+              "text": "Decoder-only (e.g. Llama)"
+            },
+            {
+              "id": "c",
+              "text": "Encoder-decoder (e.g. T5)"
+            },
+            {
+              "id": "d",
+              "text": "None; these need a CNN"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Encoder models see the whole sentence, which suits understanding tasks."
+        },
+        {
+          "id": "q3",
+          "stem": "Which tasks does the course pair with sequence-to-sequence models?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Summarization"
+            },
+            {
+              "id": "b",
+              "text": "Translation"
+            },
+            {
+              "id": "c",
+              "text": "Generative question answering"
+            },
+            {
+              "id": "d",
+              "text": "Named entity recognition"
+            }
+          ],
+          "answers": [
+            "a",
+            "b",
+            "c"
+          ],
+          "why": "NER is listed as an encoder task."
+        }
+      ]
     },
     {
       "id": "ai-llm-training-phases",
@@ -84,11 +166,65 @@
       "prereqs": [
         "ai-transformer-architectures"
       ],
-      "version": 1,
+      "version": 2,
       "verified": {
         "status": "verified",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "What architecture do most modern LLMs use?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Decoder-only"
+            },
+            {
+              "id": "b",
+              "text": "Encoder-only"
+            },
+            {
+              "id": "c",
+              "text": "Encoder-decoder"
+            },
+            {
+              "id": "d",
+              "text": "Recurrent networks"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Most modern LLMs use the decoder-only architecture."
+        },
+        {
+          "id": "q2",
+          "stem": "What are the two typical training phases of a modern LLM, in order?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Pretraining on next-token prediction, then instruction tuning"
+            },
+            {
+              "id": "b",
+              "text": "Instruction tuning, then pretraining"
+            },
+            {
+              "id": "c",
+              "text": "Masked-word pretraining, then span corruption"
+            },
+            {
+              "id": "d",
+              "text": "Beam search, then sampling"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Pretraining learns to predict the next token on vast text; instruction tuning teaches it to follow instructions."
+        }
+      ]
     },
     {
       "id": "ai-prefill-decode",
@@ -130,11 +266,65 @@
       "prereqs": [
         "ai-llm-training-phases"
       ],
-      "version": 2,
+      "version": 3,
       "verified": {
         "status": "verified",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "Which inference phase processes all input tokens at once and is compute-intensive?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Prefill"
+            },
+            {
+              "id": "b",
+              "text": "Decode"
+            },
+            {
+              "id": "c",
+              "text": "Sampling"
+            },
+            {
+              "id": "d",
+              "text": "Beam search"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Prefill tokenizes, embeds, and processes the whole input at once."
+        },
+        {
+          "id": "q2",
+          "stem": "Why is the decode phase memory-intensive?",
+          "options": [
+            {
+              "id": "a",
+              "text": "It keeps track of all previously generated tokens and their relationships"
+            },
+            {
+              "id": "b",
+              "text": "It loads the whole vocabulary for each prompt"
+            },
+            {
+              "id": "c",
+              "text": "It re-tokenizes the input every step"
+            },
+            {
+              "id": "d",
+              "text": "It stores multiple copies of the model"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Decode generates one token at a time and must track everything generated so far."
+        }
+      ]
     },
     {
       "id": "ai-sampling",
@@ -184,11 +374,91 @@
       "prereqs": [
         "ai-prefill-decode"
       ],
-      "version": 2,
+      "version": 3,
       "verified": {
         "status": "verified",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "What does raising temperature above 1.0 do?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Makes token choices more random"
+            },
+            {
+              "id": "b",
+              "text": "Makes choices more focused and deterministic"
+            },
+            {
+              "id": "c",
+              "text": "Limits output to k tokens"
+            },
+            {
+              "id": "d",
+              "text": "Penalizes repeated tokens"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Higher temperature = more random; below 1.0 = more focused."
+        },
+        {
+          "id": "q2",
+          "stem": "What does top-p (nucleus) sampling consider?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Only the most likely tokens whose probabilities add up to a threshold, such as 90%"
+            },
+            {
+              "id": "b",
+              "text": "Only the k most likely tokens"
+            },
+            {
+              "id": "c",
+              "text": "Every token in the vocabulary equally"
+            },
+            {
+              "id": "d",
+              "text": "Only tokens not used before"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Top-p uses a cumulative probability threshold; top-k uses a fixed count."
+        },
+        {
+          "id": "q3",
+          "stem": "How does a frequency penalty differ from a presence penalty?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Frequency grows with how often a token has appeared; presence is a fixed penalty for any token that appeared"
+            },
+            {
+              "id": "b",
+              "text": "Presence grows with frequency; frequency is fixed"
+            },
+            {
+              "id": "c",
+              "text": "Both are identical"
+            },
+            {
+              "id": "d",
+              "text": "Frequency penalizes only the first token"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Presence is fixed regardless of count; frequency scales with use."
+        }
+      ]
     },
     {
       "id": "ai-beam-search",
@@ -230,11 +500,65 @@
       "prereqs": [
         "ai-sampling"
       ],
-      "version": 1,
+      "version": 3,
       "verified": {
-        "status": "verified",
+        "status": "partial",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "What does beam search do at each step?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Keeps several candidate sequences and only the most promising combinations"
+            },
+            {
+              "id": "b",
+              "text": "Commits to the single most likely token"
+            },
+            {
+              "id": "c",
+              "text": "Samples randomly from the top-k tokens"
+            },
+            {
+              "id": "d",
+              "text": "Removes tokens that already appeared"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Beam search explores multiple paths at once (typically 5–10 candidates)."
+        },
+        {
+          "id": "q2",
+          "stem": "What is the tradeoff of beam search?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Often more coherent text, but it needs more compute"
+            },
+            {
+              "id": "b",
+              "text": "Faster than greedy decoding, but less coherent"
+            },
+            {
+              "id": "c",
+              "text": "No extra cost, but only works for encoders"
+            },
+            {
+              "id": "d",
+              "text": "Less compute than simpler methods, but less grammatical text"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Beam search tends to produce more coherent, grammatical text at higher computational cost."
+        }
+      ]
     },
     {
       "id": "ai-inference-metrics",
@@ -272,11 +596,65 @@
       "prereqs": [
         "ai-prefill-decode"
       ],
-      "version": 3,
+      "version": 4,
       "verified": {
-        "status": "partial",
+        "status": "verified",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "Which metric is mainly affected by the prefill phase?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Time to first token (TTFT)"
+            },
+            {
+              "id": "b",
+              "text": "Time per output token (TPOT)"
+            },
+            {
+              "id": "c",
+              "text": "Throughput"
+            },
+            {
+              "id": "d",
+              "text": "VRAM usage"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "TTFT is how quickly the first response arrives, primarily affected by prefill."
+        },
+        {
+          "id": "q2",
+          "stem": "Which metric does the course say often becomes the primary constraint in real-world applications?",
+          "options": [
+            {
+              "id": "a",
+              "text": "VRAM usage"
+            },
+            {
+              "id": "b",
+              "text": "Time to first token"
+            },
+            {
+              "id": "c",
+              "text": "Time per output token"
+            },
+            {
+              "id": "d",
+              "text": "Number of stop sequences"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "GPU memory often becomes the primary constraint."
+        }
+      ]
     },
     {
       "id": "ai-context-kv-cache",
@@ -332,11 +710,66 @@
       "prereqs": [
         "ai-prefill-decode"
       ],
-      "version": 1,
+      "version": 2,
       "verified": {
         "status": "verified",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "What does KV caching do?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Stores and reuses intermediate calculations to speed up generation"
+            },
+            {
+              "id": "b",
+              "text": "Compresses the prompt to fewer tokens"
+            },
+            {
+              "id": "c",
+              "text": "Caches final answers to identical prompts"
+            },
+            {
+              "id": "d",
+              "text": "Shrinks the vocabulary"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "KV caching reduces repeated calculations, at the cost of extra memory."
+        },
+        {
+          "id": "q2",
+          "stem": "According to the course, how do costs grow with longer context?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Memory usage grows quadratically"
+            },
+            {
+              "id": "b",
+              "text": "Processing speed decreases"
+            },
+            {
+              "id": "c",
+              "text": "Memory usage stays constant"
+            },
+            {
+              "id": "d",
+              "text": "Processing speeds up"
+            }
+          ],
+          "answers": [
+            "a",
+            "b"
+          ],
+          "why": "Longer contexts cost more memory (quadratic per the course) and slow processing."
+        }
+      ]
     }
   ]
 }

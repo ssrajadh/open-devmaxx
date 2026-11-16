@@ -132,7 +132,7 @@ fun TodayScreen(onStart: () -> Unit, onProgress: () -> Unit, onSettings: () -> U
                 )
             }
             Text(
-                "Say your answer out loud or jot it down, then reveal and tick the key points you covered.",
+                "Each card is a short quiz. After its questions you'll see the key points and the source.",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )

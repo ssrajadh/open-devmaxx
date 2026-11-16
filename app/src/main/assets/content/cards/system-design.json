@@ -34,11 +34,88 @@
         }
       ],
       "prereqs": [],
-      "version": 2,
+      "version": 4,
       "verified": {
         "status": "partial",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "Your service is fast when one person uses it but slows down badly under heavy load. What kind of problem is this?",
+          "options": [
+            {
+              "id": "a",
+              "text": "A scalability problem"
+            },
+            {
+              "id": "b",
+              "text": "A performance problem"
+            },
+            {
+              "id": "c",
+              "text": "Both a performance and a scalability problem"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "A scalability problem means the system is fast for a single user but slow under heavy load. A performance problem means it's slow even for one user."
+        },
+        {
+          "id": "q2",
+          "stem": "When is a service called scalable?",
+          "options": [
+            {
+              "id": "a",
+              "text": "When adding resources increases its performance proportionally"
+            },
+            {
+              "id": "b",
+              "text": "When it is fast for a single user"
+            },
+            {
+              "id": "c",
+              "text": "When it never needs more resources"
+            },
+            {
+              "id": "d",
+              "text": "When its latency stays constant regardless of resources"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "A service is scalable if adding resources results in a proportional increase in performance."
+        },
+        {
+          "id": "q3",
+          "stem": "Increasing performance can mean which of the following?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Serving more units of work"
+            },
+            {
+              "id": "b",
+              "text": "Handling larger units of work, such as growing datasets"
+            },
+            {
+              "id": "c",
+              "text": "Only serving more units of work, never larger ones"
+            },
+            {
+              "id": "d",
+              "text": "Making the system slower for a single user"
+            }
+          ],
+          "answers": [
+            "a",
+            "b"
+          ],
+          "why": "Generally it means serving more units of work, but it can also mean handling larger units of work, such as when datasets grow."
+        }
+      ]
     },
     {
       "id": "sd-latency-vs-throughput",
@@ -70,11 +147,65 @@
         }
       ],
       "prereqs": [],
-      "version": 2,
+      "version": 3,
       "verified": {
-        "status": "partial",
+        "status": "verified",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "Which definition describes throughput?",
+          "options": [
+            {
+              "id": "a",
+              "text": "The number of actions or results per unit of time"
+            },
+            {
+              "id": "b",
+              "text": "The time to perform one action or produce one result"
+            },
+            {
+              "id": "c",
+              "text": "The fraction of time a service is available"
+            },
+            {
+              "id": "d",
+              "text": "The delay before the first byte arrives"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Throughput is a rate: actions or results per unit of time. Latency is the time for one action."
+        },
+        {
+          "id": "q2",
+          "stem": "What does the primer say you should generally aim for?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Maximal throughput with acceptable latency"
+            },
+            {
+              "id": "b",
+              "text": "Minimal latency at any throughput"
+            },
+            {
+              "id": "c",
+              "text": "Maximal latency with acceptable throughput"
+            },
+            {
+              "id": "d",
+              "text": "Equal latency and throughput"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "The general guideline is maximal throughput while keeping latency acceptable."
+        }
+      ]
     },
     {
       "id": "sd-cap-theorem",
@@ -118,11 +249,91 @@
         }
       ],
       "prereqs": [],
-      "version": 2,
+      "version": 3,
       "verified": {
-        "status": "partial",
+        "status": "verified",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "Why is the real CAP tradeoff between consistency and availability?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Networks aren't reliable, so you have to support partition tolerance"
+            },
+            {
+              "id": "b",
+              "text": "Consistency and availability can always both be guaranteed"
+            },
+            {
+              "id": "c",
+              "text": "Partition tolerance is optional in most systems"
+            },
+            {
+              "id": "d",
+              "text": "Availability always implies consistency"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Because networks aren't reliable, partition tolerance is required, leaving a software tradeoff between consistency and availability."
+        },
+        {
+          "id": "q2",
+          "stem": "Under CAP, what does consistency mean?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Every read receives the most recent write or an error"
+            },
+            {
+              "id": "b",
+              "text": "Every request receives a response, possibly not the latest"
+            },
+            {
+              "id": "c",
+              "text": "The system keeps working despite network partitions"
+            },
+            {
+              "id": "d",
+              "text": "Transactions move the database between valid states"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "CAP consistency: every read receives the most recent write or an error. A response that may not be the latest describes availability."
+        },
+        {
+          "id": "q3",
+          "stem": "Your business needs atomic reads and writes. Which choice does the primer suggest?",
+          "options": [
+            {
+              "id": "a",
+              "text": "CP: consistency and partition tolerance"
+            },
+            {
+              "id": "b",
+              "text": "AP: availability and partition tolerance"
+            },
+            {
+              "id": "c",
+              "text": "CA: consistency and availability, ignoring partitions"
+            },
+            {
+              "id": "d",
+              "text": "Eventual consistency"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "CP is a good choice when the business needs atomic reads and writes. AP fits when eventual consistency is acceptable."
+        }
+      ]
     },
     {
       "id": "sd-consistency-patterns",
@@ -168,11 +379,89 @@
       "prereqs": [
         "sd-cap-theorem"
       ],
-      "version": 1,
+      "version": 3,
       "verified": {
-        "status": "verified",
+        "status": "partial",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "Data is replicated asynchronously and reads see a write eventually, typically within milliseconds. Which pattern is this?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Eventual consistency"
+            },
+            {
+              "id": "b",
+              "text": "Weak consistency"
+            },
+            {
+              "id": "c",
+              "text": "Strong consistency"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Eventual consistency: reads will eventually see the write; replication is asynchronous."
+        },
+        {
+          "id": "q2",
+          "stem": "Which systems does the primer give as examples of strong consistency?",
+          "options": [
+            {
+              "id": "a",
+              "text": "File systems and RDBMSes"
+            },
+            {
+              "id": "b",
+              "text": "DNS and email"
+            },
+            {
+              "id": "c",
+              "text": "Memcached and VoIP"
+            },
+            {
+              "id": "d",
+              "text": "Video chat and multiplayer games"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Strong consistency is seen in file systems and RDBMSes. DNS and email are eventual; memcached is weak."
+        },
+        {
+          "id": "q3",
+          "stem": "Which use cases fit weak consistency well?",
+          "options": [
+            {
+              "id": "a",
+              "text": "VoIP"
+            },
+            {
+              "id": "b",
+              "text": "Video chat"
+            },
+            {
+              "id": "c",
+              "text": "Realtime multiplayer games"
+            },
+            {
+              "id": "d",
+              "text": "Systems that need transactions"
+            }
+          ],
+          "answers": [
+            "a",
+            "b",
+            "c"
+          ],
+          "why": "Weak consistency works well in real-time uses like VoIP, video chat, and multiplayer games. Systems needing transactions want strong consistency."
+        }
+      ]
     },
     {
       "id": "sd-failover",
@@ -221,11 +510,92 @@
         }
       ],
       "prereqs": [],
-      "version": 3,
+      "version": 5,
       "verified": {
-        "status": "verified",
+        "status": "partial",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "In active-passive fail-over, what happens when the heartbeat is interrupted?",
+          "options": [
+            {
+              "id": "a",
+              "text": "The passive server takes over the active's IP address and resumes service"
+            },
+            {
+              "id": "b",
+              "text": "Both servers start handling traffic and share the load"
+            },
+            {
+              "id": "c",
+              "text": "The active server keeps handling all traffic"
+            },
+            {
+              "id": "d",
+              "text": "The active server restarts from cold standby"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "In active-passive, heartbeats run between active and passive; if they stop, the passive takes over the active's IP address."
+        },
+        {
+          "id": "q2",
+          "stem": "Which statements about active-active fail-over are true?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Both servers manage traffic and spread the load"
+            },
+            {
+              "id": "b",
+              "text": "If public-facing, DNS needs to know both servers' public IPs"
+            },
+            {
+              "id": "c",
+              "text": "Only one server handles traffic at a time"
+            },
+            {
+              "id": "d",
+              "text": "Downtime depends on whether the standby is hot or cold"
+            }
+          ],
+          "answers": [
+            "a",
+            "b"
+          ],
+          "why": "In active-active both servers handle traffic. Hot vs cold standby and single-server traffic describe active-passive."
+        },
+        {
+          "id": "q3",
+          "stem": "What is a disadvantage of fail-over?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Data can be lost if the active fails before new writes replicate to the passive"
+            },
+            {
+              "id": "b",
+              "text": "It removes the need for any extra hardware"
+            },
+            {
+              "id": "c",
+              "text": "It reduces overall system complexity"
+            },
+            {
+              "id": "d",
+              "text": "It guarantees strong consistency"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Fail-over adds hardware and complexity, and data can be lost if the active fails before newly written data is replicated."
+        }
+      ]
     },
     {
       "id": "sd-availability-numbers",
@@ -267,11 +637,91 @@
       "prereqs": [
         "sd-failover"
       ],
-      "version": 2,
+      "version": 3,
       "verified": {
-        "status": "partial",
+        "status": "verified",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "Two components, each 99.9% available, are placed in sequence. What is the total availability?",
+          "options": [
+            {
+              "id": "a",
+              "text": "About 99.8%"
+            },
+            {
+              "id": "b",
+              "text": "About 99.9999%"
+            },
+            {
+              "id": "c",
+              "text": "Exactly 99.9%"
+            },
+            {
+              "id": "d",
+              "text": "About 99.99%"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "In sequence, availabilities multiply: 0.999 × 0.999 ≈ 99.8%."
+        },
+        {
+          "id": "q2",
+          "stem": "The same two 99.9% components are placed in parallel. What is the total availability?",
+          "options": [
+            {
+              "id": "a",
+              "text": "About 99.9999%"
+            },
+            {
+              "id": "b",
+              "text": "About 99.8%"
+            },
+            {
+              "id": "c",
+              "text": "Exactly 99.9%"
+            },
+            {
+              "id": "d",
+              "text": "About 99.0%"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "In parallel: 1 − (1 − 0.999) × (1 − 0.999) = 99.9999%."
+        },
+        {
+          "id": "q3",
+          "stem": "Roughly how much downtime per year does 99.99% availability (four 9s) allow?",
+          "options": [
+            {
+              "id": "a",
+              "text": "About 52.5 minutes"
+            },
+            {
+              "id": "b",
+              "text": "About 8 hours 46 minutes"
+            },
+            {
+              "id": "c",
+              "text": "About 4 minutes"
+            },
+            {
+              "id": "d",
+              "text": "About 1.5 days"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Four 9s allows about 52 minutes 35.7 seconds per year; three 9s allows about 8 hours 46 minutes."
+        }
+      ]
     },
     {
       "id": "sd-dns",
@@ -291,7 +741,7 @@
         },
         {
           "id": "kp3",
-          "text": "Results are cached by lower-level DNS servers, the OS, and the browser for a TTL, so they can go stale"
+          "text": "Lower-level DNS servers cache mappings, and the browser or OS caches results for a TTL, so answers can go stale"
         },
         {
           "id": "kp4",
@@ -315,11 +765,93 @@
         }
       ],
       "prereqs": [],
-      "version": 1,
+      "version": 3,
       "verified": {
-        "status": "verified",
+        "status": "partial",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "Which DNS record points a name to an IP address?",
+          "options": [
+            {
+              "id": "a",
+              "text": "A record"
+            },
+            {
+              "id": "b",
+              "text": "CNAME record"
+            },
+            {
+              "id": "c",
+              "text": "MX record"
+            },
+            {
+              "id": "d",
+              "text": "NS record"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "A points a name to an IP. CNAME points a name to another name, MX names mail servers, NS names the DNS servers."
+        },
+        {
+          "id": "q2",
+          "stem": "Why can a DNS lookup return a stale answer?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Lower-level DNS servers cache mappings, and the browser or OS caches results for a TTL"
+            },
+            {
+              "id": "b",
+              "text": "DNS results are never cached anywhere"
+            },
+            {
+              "id": "c",
+              "text": "DNS is not hierarchical"
+            },
+            {
+              "id": "d",
+              "text": "Every lookup goes straight to the top-level servers"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Lower-level DNS servers cache mappings that can go stale due to propagation delays, and browsers and OSes cache results for a TTL."
+        },
+        {
+          "id": "q3",
+          "stem": "What does the primer list as uses of weighted round robin routing in managed DNS?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Keeping traffic away from servers under maintenance"
+            },
+            {
+              "id": "b",
+              "text": "Balancing between clusters of different sizes"
+            },
+            {
+              "id": "c",
+              "text": "A/B testing"
+            },
+            {
+              "id": "d",
+              "text": "Encrypting traffic between client and server"
+            }
+          ],
+          "answers": [
+            "a",
+            "b",
+            "c"
+          ],
+          "why": "Weighted round robin can avoid servers under maintenance, balance varying cluster sizes, and support A/B testing."
+        }
+      ]
     },
     {
       "id": "sd-cdn-push-pull",
@@ -369,11 +901,89 @@
       "prereqs": [
         "sd-dns"
       ],
-      "version": 1,
+      "version": 3,
       "verified": {
-        "status": "verified",
+        "status": "partial",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "Which CDN type fetches content from your server the first time a user requests it?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Pull CDN"
+            },
+            {
+              "id": "b",
+              "text": "Push CDN"
+            },
+            {
+              "id": "c",
+              "text": "Both push and pull"
+            },
+            {
+              "id": "d",
+              "text": "Neither; CDNs only serve uploads"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Pull CDNs grab content from your server on the first request, so that first request is slower until it's cached."
+        },
+        {
+          "id": "q2",
+          "stem": "A site has little traffic and content that rarely changes. Which CDN type suits it?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Push CDN"
+            },
+            {
+              "id": "b",
+              "text": "Pull CDN"
+            },
+            {
+              "id": "c",
+              "text": "No CDN can serve it"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Push CDNs suit low-traffic sites or rarely updated content: content is placed once instead of re-pulled."
+        },
+        {
+          "id": "q3",
+          "stem": "Which statements describe pull CDNs?",
+          "options": [
+            {
+              "id": "a",
+              "text": "They minimize storage space on the CDN"
+            },
+            {
+              "id": "b",
+              "text": "They can create redundant traffic if files expire before they change"
+            },
+            {
+              "id": "c",
+              "text": "They work well for heavy-traffic sites"
+            },
+            {
+              "id": "d",
+              "text": "You upload content to the CDN whenever it changes"
+            }
+          ],
+          "answers": [
+            "a",
+            "b",
+            "c"
+          ],
+          "why": "Pull CDNs minimize storage but may re-pull unchanged files; they suit heavy traffic. Uploading on change is push."
+        }
+      ]
     },
     {
       "id": "sd-load-balancer",
@@ -421,11 +1031,67 @@
         }
       ],
       "prereqs": [],
-      "version": 1,
+      "version": 2,
       "verified": {
         "status": "verified",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "What is SSL termination at a load balancer?",
+          "options": [
+            {
+              "id": "a",
+              "text": "The load balancer decrypts incoming requests and encrypts responses so backends don't have to"
+            },
+            {
+              "id": "b",
+              "text": "Backends each decrypt their own requests"
+            },
+            {
+              "id": "c",
+              "text": "The load balancer refuses encrypted traffic"
+            },
+            {
+              "id": "d",
+              "text": "Sessions are pinned to one server using cookies"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "SSL termination offloads decryption/encryption from backend servers, and removes the need for certificates on each one."
+        },
+        {
+          "id": "q2",
+          "stem": "Which are disadvantages of load balancers?",
+          "options": [
+            {
+              "id": "a",
+              "text": "It can become a bottleneck if under-resourced or misconfigured"
+            },
+            {
+              "id": "b",
+              "text": "A single load balancer is a single point of failure"
+            },
+            {
+              "id": "c",
+              "text": "It adds complexity"
+            },
+            {
+              "id": "d",
+              "text": "It sends requests to unhealthy servers"
+            }
+          ],
+          "answers": [
+            "a",
+            "b",
+            "c"
+          ],
+          "why": "Load balancers prevent requests from going to unhealthy servers; their downsides are bottlenecks, complexity, and a single LB being a SPOF."
+        }
+      ]
     },
     {
       "id": "sd-l4-vs-l7",
@@ -476,11 +1142,87 @@
       "prereqs": [
         "sd-load-balancer"
       ],
-      "version": 2,
+      "version": 4,
       "verified": {
         "status": "partial",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "What does a layer 4 load balancer use to decide where to send traffic?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Transport-layer info such as source/destination IPs and ports"
+            },
+            {
+              "id": "b",
+              "text": "Headers, message contents, and cookies"
+            },
+            {
+              "id": "c",
+              "text": "The contents of the packet"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Layer 4 looks at transport-layer info (IPs and ports in the header), not the contents of the packet. Headers, message contents, and cookies are layer 7."
+        },
+        {
+          "id": "q2",
+          "stem": "Which load balancer can send video traffic to video servers and billing traffic to security-hardened servers?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Layer 7"
+            },
+            {
+              "id": "b",
+              "text": "Layer 4"
+            },
+            {
+              "id": "c",
+              "text": "Either, since both read message contents"
+            },
+            {
+              "id": "d",
+              "text": "Neither"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Layer 7 reads the application-layer message, so it can route by content."
+        },
+        {
+          "id": "q3",
+          "stem": "What is the tradeoff of layer 4 compared with layer 7?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Layer 4 needs less time and compute but is less flexible"
+            },
+            {
+              "id": "b",
+              "text": "Layer 4 is more flexible but slower"
+            },
+            {
+              "id": "c",
+              "text": "Layer 4 terminates traffic and reads the message"
+            },
+            {
+              "id": "d",
+              "text": "Layer 4 always has much worse performance on modern hardware"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Layer 4 trades flexibility for lower time and compute cost, though the gap can be minimal on modern hardware."
+        }
+      ]
     },
     {
       "id": "sd-horizontal-scaling",
@@ -522,11 +1264,66 @@
       "prereqs": [
         "sd-load-balancer"
       ],
-      "version": 2,
+      "version": 3,
       "verified": {
-        "status": "partial",
+        "status": "verified",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "What must servers be for horizontal scaling to work well?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Stateless: no user data like sessions or profile pictures on the server"
+            },
+            {
+              "id": "b",
+              "text": "Stateful, so each user sticks to one machine forever"
+            },
+            {
+              "id": "c",
+              "text": "Running on specialized enterprise hardware"
+            },
+            {
+              "id": "d",
+              "text": "Each holding a full copy of every user's session"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Servers should be stateless; sessions go in a central store like a database or a persistent cache."
+        },
+        {
+          "id": "q2",
+          "stem": "Compared with vertical scaling, what does the primer say horizontal scaling gives you?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Better cost efficiency"
+            },
+            {
+              "id": "b",
+              "text": "Higher availability"
+            },
+            {
+              "id": "c",
+              "text": "Less complexity"
+            },
+            {
+              "id": "d",
+              "text": "Fewer connections for downstream databases to handle"
+            }
+          ],
+          "answers": [
+            "a",
+            "b"
+          ],
+          "why": "Scaling out on commodity machines is more cost efficient with higher availability, but adds complexity and more downstream connections."
+        }
+      ]
     },
     {
       "id": "sd-reverse-proxy",
@@ -572,11 +1369,63 @@
       "prereqs": [
         "sd-load-balancer"
       ],
-      "version": 2,
+      "version": 4,
       "verified": {
         "status": "partial",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "When is a reverse proxy useful but a load balancer isn't?",
+          "options": [
+            {
+              "id": "a",
+              "text": "With just one web or application server"
+            },
+            {
+              "id": "b",
+              "text": "Only when you have many identical servers"
+            },
+            {
+              "id": "d",
+              "text": "Never; they are the same thing"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Load balancers help when you have multiple servers; a reverse proxy's benefits apply even with a single server."
+        },
+        {
+          "id": "q2",
+          "stem": "Which are benefits of a reverse proxy?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Hiding information about backend servers"
+            },
+            {
+              "id": "b",
+              "text": "Compressing server responses"
+            },
+            {
+              "id": "c",
+              "text": "Serving static content directly"
+            },
+            {
+              "id": "d",
+              "text": "Removing the single point of failure without any extra proxies"
+            }
+          ],
+          "answers": [
+            "a",
+            "b",
+            "c"
+          ],
+          "why": "A single reverse proxy is itself a single point of failure; its benefits include security, compression, caching, and static content."
+        }
+      ]
     },
     {
       "id": "sd-acid",
@@ -612,11 +1461,65 @@
         }
       ],
       "prereqs": [],
-      "version": 2,
+      "version": 3,
       "verified": {
-        "status": "partial",
+        "status": "verified",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "Which ACID property says each transaction is all or nothing?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Atomicity"
+            },
+            {
+              "id": "b",
+              "text": "Consistency"
+            },
+            {
+              "id": "c",
+              "text": "Isolation"
+            },
+            {
+              "id": "d",
+              "text": "Durability"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Atomicity: all or nothing. Durability: once committed, it stays committed."
+        },
+        {
+          "id": "q2",
+          "stem": "Which ACID property says concurrent transactions give the same results as running them serially?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Isolation"
+            },
+            {
+              "id": "b",
+              "text": "Atomicity"
+            },
+            {
+              "id": "c",
+              "text": "Consistency"
+            },
+            {
+              "id": "d",
+              "text": "Durability"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Isolation: concurrent execution has the same results as serial execution."
+        }
+      ]
     },
     {
       "id": "sd-replication",
@@ -671,11 +1574,92 @@
       "prereqs": [
         "sd-acid"
       ],
-      "version": 2,
+      "version": 3,
       "verified": {
-        "status": "partial",
+        "status": "verified",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "In master-slave replication, what happens if the master goes offline?",
+          "options": [
+            {
+              "id": "a",
+              "text": "The system can keep running read-only until a slave is promoted or a new master is provisioned"
+            },
+            {
+              "id": "b",
+              "text": "The system keeps serving reads and writes with no change"
+            },
+            {
+              "id": "c",
+              "text": "All data is lost"
+            },
+            {
+              "id": "d",
+              "text": "Slaves automatically accept writes in parallel"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Slaves serve only reads, so the system runs read-only until a new master exists. Promotion needs extra logic."
+        },
+        {
+          "id": "q2",
+          "stem": "Which are disadvantages of master-master replication?",
+          "options": [
+            {
+              "id": "a",
+              "text": "You need a load balancer or app logic to decide where to write"
+            },
+            {
+              "id": "b",
+              "text": "Most setups are loosely consistent or have higher write latency"
+            },
+            {
+              "id": "c",
+              "text": "If either master goes down, writes stop entirely"
+            },
+            {
+              "id": "d",
+              "text": "Only one master can serve reads"
+            }
+          ],
+          "answers": [
+            "a",
+            "b"
+          ],
+          "why": "In master-master, either master can go down and the system continues with reads and writes; the cost is write routing and consistency/latency tradeoffs."
+        },
+        {
+          "id": "q3",
+          "stem": "Why can adding more read replicas hurt?",
+          "options": [
+            {
+              "id": "a",
+              "text": "More replicas means more to replicate, which increases replication lag"
+            },
+            {
+              "id": "b",
+              "text": "Replicas can't serve reads"
+            },
+            {
+              "id": "c",
+              "text": "Replicas eliminate data loss, which slows writes"
+            },
+            {
+              "id": "d",
+              "text": "Each replica becomes a new master"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "The more read slaves, the more you have to replicate, leading to greater replication lag."
+        }
+      ]
     },
     {
       "id": "sd-federation-vs-sharding",
@@ -695,7 +1679,7 @@
         },
         {
           "id": "kp3",
-          "text": "Both: less read/write traffic per DB, less replication, more cache hits, and parallel writes with no single central master"
+          "text": "Both: less read/write traffic per database, less replication (lag), more cache hits, and parallel writes with no single central master"
         },
         {
           "id": "kp4",
@@ -730,11 +1714,93 @@
       "prereqs": [
         "sd-replication"
       ],
-      "version": 2,
+      "version": 4,
       "verified": {
         "status": "partial",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "The primer gives splitting a single database into forums, users, and products databases as an example of which technique?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Federation (functional partitioning)"
+            },
+            {
+              "id": "b",
+              "text": "Sharding"
+            },
+            {
+              "id": "c",
+              "text": "Denormalization"
+            },
+            {
+              "id": "d",
+              "text": "Master-master replication"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Federation splits databases by function. Sharding splits one dataset so each database holds a subset."
+        },
+        {
+          "id": "q2",
+          "stem": "The primer gives splitting a users table across databases by last-name initial as a common way to do which technique?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Sharding"
+            },
+            {
+              "id": "b",
+              "text": "Federation"
+            },
+            {
+              "id": "c",
+              "text": "Denormalization"
+            },
+            {
+              "id": "d",
+              "text": "A materialized view"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Sharding distributes data so each database manages a subset, e.g. users by last-name initial or location."
+        },
+        {
+          "id": "q3",
+          "stem": "What benefits do federation and sharding share?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Less read and write traffic per database"
+            },
+            {
+              "id": "b",
+              "text": "More cache hits"
+            },
+            {
+              "id": "c",
+              "text": "Parallel writes with no single central master"
+            },
+            {
+              "id": "d",
+              "text": "Easier joins across databases"
+            }
+          ],
+          "answers": [
+            "a",
+            "b",
+            "c"
+          ],
+          "why": "Both reduce traffic and replication, improve cache hits, and allow parallel writes. Both make cross-database joins harder."
+        }
+      ]
     },
     {
       "id": "sd-denormalization",
@@ -780,11 +1846,61 @@
       "prereqs": [
         "sd-acid"
       ],
-      "version": 2,
+      "version": 4,
       "verified": {
         "status": "partial",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "What does denormalization trade?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Some write performance for better read performance"
+            },
+            {
+              "id": "b",
+              "text": "Read performance for write performance"
+            },
+            {
+              "id": "c",
+              "text": "Slower reads in exchange for fewer redundant copies of data"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Denormalization writes redundant copies to avoid joins, improving reads at some cost to writes."
+        },
+        {
+          "id": "q2",
+          "stem": "When might a denormalized database perform worse than a normalized one?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Under heavy write load"
+            },
+            {
+              "id": "b",
+              "text": "Under heavy read load"
+            },
+            {
+              "id": "c",
+              "text": "When reads outnumber writes 1000:1"
+            },
+            {
+              "id": "d",
+              "text": "When data is federated"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Under heavy write load, keeping redundant copies in sync can make it slower than its normalized counterpart."
+        }
+      ]
     },
     {
       "id": "sd-indices",
@@ -815,7 +1931,7 @@
           "text": "For large data loads it might be faster to disable indices, load the data, then rebuild them"
         }
       ],
-      "explanation": "An index can keep data in memory, which speeds lookups on the columns you query but costs extra space and makes writes slower, since every write must also update the index.",
+      "explanation": "Indices can make queries on the columns you use in SELECT, GROUP BY, ORDER BY, and JOIN faster. Placing an index can keep the data in memory, which requires more space, and writes can be slower because the index also has to be updated.",
       "sources": [
         {
           "title": "The System Design Primer",
@@ -826,11 +1942,88 @@
       "prereqs": [
         "sd-acid"
       ],
-      "version": 2,
+      "version": 4,
       "verified": {
         "status": "partial",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "How are database indices usually represented?",
+          "options": [
+            {
+              "id": "a",
+              "text": "As a self-balancing B-tree"
+            },
+            {
+              "id": "b",
+              "text": "As an unsorted hash list"
+            },
+            {
+              "id": "c",
+              "text": "As a linked list of rows"
+            },
+            {
+              "id": "d",
+              "text": "As a separate replica database"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Indices are usually self-balancing B-trees, keeping data sorted with logarithmic searches, inserts, and deletes."
+        },
+        {
+          "id": "q2",
+          "stem": "Which are costs of adding an index?",
+          "options": [
+            {
+              "id": "a",
+              "text": "It takes more space"
+            },
+            {
+              "id": "b",
+              "text": "Writes can be slower because the index must also be updated"
+            },
+            {
+              "id": "c",
+              "text": "Reads on the indexed column get slower"
+            },
+            {
+              "id": "d",
+              "text": "The data can no longer be sorted"
+            }
+          ],
+          "answers": [
+            "a",
+            "b"
+          ],
+          "why": "Indices speed up queries on their columns but use space and slow writes."
+        },
+        {
+          "id": "q3",
+          "stem": "You need to load a large amount of data. What might be faster?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Disable the indices, load the data, then rebuild the indices"
+            },
+            {
+              "id": "b",
+              "text": "Add more indices before loading"
+            },
+            {
+              "id": "c",
+              "text": "Keep the indices enabled during the load, since indices make writes faster"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "When loading large amounts of data, it might be faster to disable indices, load, then rebuild them. Indices make writes slower, not faster, because each index must also be updated."
+        }
+      ]
     },
     {
       "id": "sd-nosql-types",
@@ -870,11 +2063,91 @@
         }
       ],
       "prereqs": [],
-      "version": 1,
+      "version": 2,
       "verified": {
         "status": "verified",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "Which NoSQL type has a graph abstraction and suits data with many-to-many relationships like a social network?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Graph database"
+            },
+            {
+              "id": "b",
+              "text": "Key-value store"
+            },
+            {
+              "id": "c",
+              "text": "Document store"
+            },
+            {
+              "id": "d",
+              "text": "Wide column store"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Graph databases are optimized for complex relationships with many foreign keys or many-to-many links."
+        },
+        {
+          "id": "q2",
+          "stem": "Bigtable, HBase, and Cassandra are examples of which kind of store?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Wide column store"
+            },
+            {
+              "id": "b",
+              "text": "Document store"
+            },
+            {
+              "id": "c",
+              "text": "Graph database"
+            },
+            {
+              "id": "d",
+              "text": "Key-value store only"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Bigtable was the first wide column store and influenced HBase and Cassandra."
+        },
+        {
+          "id": "q3",
+          "stem": "Which store is described as a key-value store with documents as values, queryable by the document's internal structure?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Document store"
+            },
+            {
+              "id": "b",
+              "text": "Wide column store"
+            },
+            {
+              "id": "c",
+              "text": "Graph database"
+            },
+            {
+              "id": "d",
+              "text": "Relational database"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Document stores center on documents (XML, JSON, binary) and let you query by their structure; e.g. MongoDB, CouchDB."
+        }
+      ]
     },
     {
       "id": "sd-base",
@@ -913,11 +2186,65 @@
         "sd-cap-theorem",
         "sd-acid"
       ],
-      "version": 2,
+      "version": 3,
       "verified": {
-        "status": "partial",
+        "status": "verified",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "In BASE, what does \"soft state\" mean?",
+          "options": [
+            {
+              "id": "a",
+              "text": "The state of the system may change over time, even without input"
+            },
+            {
+              "id": "b",
+              "text": "The system guarantees availability"
+            },
+            {
+              "id": "c",
+              "text": "Every read gets the latest write"
+            },
+            {
+              "id": "d",
+              "text": "Transactions are all or nothing"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Soft state: state may change over time even without input. \"Basically available\" is the availability guarantee."
+        },
+        {
+          "id": "q2",
+          "stem": "In CAP terms, what does BASE choose?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Availability over consistency"
+            },
+            {
+              "id": "b",
+              "text": "Consistency over availability"
+            },
+            {
+              "id": "c",
+              "text": "Consistency and availability, without partition tolerance"
+            },
+            {
+              "id": "d",
+              "text": "Strong consistency"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "BASE chooses availability over consistency."
+        }
+      ]
     },
     {
       "id": "sd-sql-vs-nosql",
@@ -959,11 +2286,67 @@
       "prereqs": [
         "sd-nosql-types"
       ],
-      "version": 2,
+      "version": 3,
       "verified": {
-        "status": "partial",
+        "status": "verified",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "Which are reasons to choose SQL?",
+          "options": [
+            {
+              "id": "a",
+              "text": "You need complex joins"
+            },
+            {
+              "id": "b",
+              "text": "You need transactions"
+            },
+            {
+              "id": "c",
+              "text": "Data is structured with a strict schema"
+            },
+            {
+              "id": "d",
+              "text": "You need to store many petabytes with very high IOPS"
+            }
+          ],
+          "answers": [
+            "a",
+            "b",
+            "c"
+          ],
+          "why": "SQL fits structured, relational data with joins and transactions. Huge volumes and very high IOPS are listed reasons for NoSQL."
+        },
+        {
+          "id": "q2",
+          "stem": "Which data does the primer list as well-suited for NoSQL?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Rapid ingest of clickstream and log data"
+            },
+            {
+              "id": "b",
+              "text": "Bank transfers that must be atomic"
+            },
+            {
+              "id": "c",
+              "text": "Highly relational data needing complex joins"
+            },
+            {
+              "id": "d",
+              "text": "Data with a strict, fixed schema"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Clickstream and log ingest, leaderboards, temporary data like carts, hot tables, and metadata/lookup tables suit NoSQL."
+        }
+      ]
     },
     {
       "id": "sd-cache-layers",
@@ -1003,11 +2386,89 @@
         }
       ],
       "prereqs": [],
-      "version": 1,
+      "version": 3,
       "verified": {
-        "status": "verified",
+        "status": "partial",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "Which are places a cache can live?",
+          "options": [
+            {
+              "id": "a",
+              "text": "The client (OS or browser)"
+            },
+            {
+              "id": "b",
+              "text": "A CDN"
+            },
+            {
+              "id": "c",
+              "text": "An in-memory app cache like Redis"
+            },
+            {
+              "id": "d",
+              "text": "Files on each web server's local disk, as the recommended default"
+            }
+          ],
+          "answers": [
+            "a",
+            "b",
+            "c"
+          ],
+          "why": "Caches can be on the client, in a CDN, in the web server/reverse proxy, in the database, or in an application cache. File-based caching is discouraged."
+        },
+        {
+          "id": "q2",
+          "stem": "Why does the primer say to avoid file-based caching?",
+          "options": [
+            {
+              "id": "a",
+              "text": "It makes cloning and auto-scaling more difficult"
+            },
+            {
+              "id": "b",
+              "text": "Files on disk are faster than data held in RAM"
+            },
+            {
+              "id": "c",
+              "text": "Disk is more limited than RAM, so file caches fill up too quickly"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "File-based caching makes cloning and auto-scaling harder. The primer says RAM is much faster than disk and more limited than disk."
+        },
+        {
+          "id": "q3",
+          "stem": "RAM is limited, so how does an app cache keep hot data in memory?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Eviction such as least recently used (LRU) removes cold entries"
+            },
+            {
+              "id": "b",
+              "text": "It never evicts anything, so all data stays in RAM"
+            },
+            {
+              "id": "c",
+              "text": "It evicts the hottest, most-used entries first"
+            },
+            {
+              "id": "d",
+              "text": "It moves hot data to disk, since disk is more limited than RAM"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "RAM is more limited than disk, so cache invalidation algorithms like LRU evict cold entries and keep hot data in RAM."
+        }
+      ]
     },
     {
       "id": "sd-cache-query-vs-object",
@@ -1054,11 +2515,67 @@
       "prereqs": [
         "sd-cache-layers"
       ],
-      "version": 2,
+      "version": 4,
       "verified": {
         "status": "partial",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "What is the main problem with caching at the database query level?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Expiration: one changed cell may require deleting every cached query that might include it"
+            },
+            {
+              "id": "b",
+              "text": "Queries can't be hashed"
+            },
+            {
+              "id": "c",
+              "text": "It caches only fully rendered HTML"
+            },
+            {
+              "id": "d",
+              "text": "Query results can't be stored in the cache"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Query-level caching hashes the query as a key and stores the result, but suffers from expiration issues: complex queries are hard to delete, and one change can affect many cached queries."
+        },
+        {
+          "id": "q2",
+          "stem": "Which does the primer suggest caching?",
+          "options": [
+            {
+              "id": "a",
+              "text": "User sessions"
+            },
+            {
+              "id": "b",
+              "text": "Fully rendered web pages"
+            },
+            {
+              "id": "c",
+              "text": "Activity streams"
+            },
+            {
+              "id": "d",
+              "text": "Results of complex queries, because they're easy to expire"
+            }
+          ],
+          "answers": [
+            "a",
+            "b",
+            "c"
+          ],
+          "why": "Sessions, rendered pages, activity streams, and user graph data are suggested. Complex query results are hard to expire."
+        }
+      ]
     },
     {
       "id": "sd-cache-aside",
@@ -1104,11 +2621,67 @@
       "prereqs": [
         "sd-cache-layers"
       ],
-      "version": 2,
+      "version": 3,
       "verified": {
-        "status": "partial",
+        "status": "verified",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "In cache-aside, who reads from and writes to storage?",
+          "options": [
+            {
+              "id": "a",
+              "text": "The application; the cache doesn't talk to storage directly"
+            },
+            {
+              "id": "b",
+              "text": "The cache, which writes through to storage"
+            },
+            {
+              "id": "c",
+              "text": "The database, which pushes updates to the cache"
+            },
+            {
+              "id": "d",
+              "text": "A background worker only"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "In cache-aside, the application loads from the DB on a miss and adds the entry to the cache."
+        },
+        {
+          "id": "q2",
+          "stem": "Which are weaknesses of cache-aside?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Each miss costs three trips, which can add noticeable delay"
+            },
+            {
+              "id": "b",
+              "text": "Data can go stale if it's updated in the database"
+            },
+            {
+              "id": "c",
+              "text": "A failed node is replaced by an empty one, increasing latency"
+            },
+            {
+              "id": "d",
+              "text": "Data that's never requested fills the cache"
+            }
+          ],
+          "answers": [
+            "a",
+            "b",
+            "c"
+          ],
+          "why": "Only requested data is cached, so unrequested data doesn't fill it. The weaknesses are miss cost, staleness, and empty replacement nodes."
+        }
+      ]
     },
     {
       "id": "sd-write-through-behind",
@@ -1143,7 +2716,7 @@
           "text": "Refresh-ahead: cache refreshes recently accessed entries before they expire; hurts performance if predictions are wrong"
         }
       ],
-      "explanation": "The primer notes that users are generally more tolerant of latency when updating data than when reading it. Refresh-ahead can cut latency compared with read-through only if the cache accurately predicts which items will be needed.",
+      "explanation": "The primer notes that users are generally more tolerant of latency when updating data than when reading it. Refresh-ahead can reduce latency compared with read-through if the cache can accurately predict which items will be needed in the future.",
       "sources": [
         {
           "title": "The System Design Primer",
@@ -1154,11 +2727,83 @@
       "prereqs": [
         "sd-cache-aside"
       ],
-      "version": 2,
+      "version": 4,
       "verified": {
         "status": "partial",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "Which strategy writes to the cache and then writes to the database asynchronously?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Write-behind (write-back)"
+            },
+            {
+              "id": "b",
+              "text": "Write-through"
+            },
+            {
+              "id": "c",
+              "text": "Cache-aside"
+            },
+            {
+              "id": "d",
+              "text": "Refresh-ahead"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Write-behind writes the DB asynchronously; write-through writes it synchronously."
+        },
+        {
+          "id": "q2",
+          "stem": "Which is a disadvantage of write-behind?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Data loss if the cache goes down before its contents reach the data store"
+            },
+            {
+              "id": "b",
+              "text": "Writes are slow because the database write happens synchronously"
+            },
+            {
+              "id": "c",
+              "text": "The database is written before the cache, so the cache can serve stale data"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Write-behind updates the cache, then writes to the data store asynchronously, which improves write performance; data can be lost if the cache fails before flushing. It's also more complex to implement."
+        },
+        {
+          "id": "q3",
+          "stem": "When does refresh-ahead hurt performance?",
+          "options": [
+            {
+              "id": "a",
+              "text": "When the cache can't accurately predict which items will be needed"
+            },
+            {
+              "id": "b",
+              "text": "When the cache accurately predicts which items will be needed"
+            },
+            {
+              "id": "c",
+              "text": "Never; refreshing entries early always improves performance"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Accurate predictions can reduce latency vs read-through; inaccurate predictions can result in worse performance than without refresh-ahead."
+        }
+      ]
     },
     {
       "id": "sd-message-queues",
@@ -1198,11 +2843,65 @@
         }
       ],
       "prereqs": [],
-      "version": 2,
+      "version": 3,
       "verified": {
-        "status": "partial",
+        "status": "verified",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "With a message queue, what happens to the user while a slow job runs?",
+          "options": [
+            {
+              "id": "a",
+              "text": "They aren't blocked; the job runs in the background and the user is told its status"
+            },
+            {
+              "id": "b",
+              "text": "They wait until the worker finishes"
+            },
+            {
+              "id": "c",
+              "text": "The request fails and must be retried"
+            },
+            {
+              "id": "d",
+              "text": "The job runs inline in the web server"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "The app publishes the job and notifies the user of status; a worker processes it in the background."
+        },
+        {
+          "id": "q2",
+          "stem": "When is async processing a poor fit?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Inexpensive calculations and realtime workflows"
+            },
+            {
+              "id": "b",
+              "text": "Expensive operations that would block a request"
+            },
+            {
+              "id": "c",
+              "text": "Periodic aggregation of data"
+            },
+            {
+              "id": "d",
+              "text": "Fanning a post out to many followers"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "For cheap calculations and realtime workflows, queues add delay and complexity, so synchronous operations may be better."
+        }
+      ]
     },
     {
       "id": "sd-back-pressure",
@@ -1240,11 +2939,65 @@
       "prereqs": [
         "sd-message-queues"
       ],
-      "version": 2,
+      "version": 4,
       "verified": {
         "status": "partial",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "What does back pressure do?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Limits the queue size to keep throughput and response times good for jobs already queued"
+            },
+            {
+              "id": "b",
+              "text": "Lets the queue grow without bound"
+            },
+            {
+              "id": "c",
+              "text": "Accepts every request with HTTP 200 and queues it regardless of queue size"
+            },
+            {
+              "id": "d",
+              "text": "Tells turned-away clients to retry immediately"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Back pressure limits queue size so a growing queue doesn't exceed memory and slow everything down. Once the queue is full, clients get a 503 and retry later."
+        },
+        {
+          "id": "q2",
+          "stem": "Once the queue is full, what do clients get, and what should they do?",
+          "options": [
+            {
+              "id": "a",
+              "text": "A server-busy / HTTP 503 response; retry later, e.g. with exponential backoff"
+            },
+            {
+              "id": "b",
+              "text": "An HTTP 200 and a queued job anyway"
+            },
+            {
+              "id": "c",
+              "text": "An HTTP 404; give up permanently"
+            },
+            {
+              "id": "d",
+              "text": "An HTTP 503; never retry the request"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Clients get a server busy or 503 status telling them to try again later, perhaps with exponential backoff."
+        }
+      ]
     },
     {
       "id": "sd-http-verbs",
@@ -1284,11 +3037,71 @@
         }
       ],
       "prereqs": [],
-      "version": 2,
+      "version": 3,
       "verified": {
-        "status": "partial",
+        "status": "verified",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "Which HTTP verbs are idempotent?",
+          "options": [
+            {
+              "id": "a",
+              "text": "GET"
+            },
+            {
+              "id": "b",
+              "text": "PUT"
+            },
+            {
+              "id": "c",
+              "text": "DELETE"
+            },
+            {
+              "id": "d",
+              "text": "POST"
+            },
+            {
+              "id": "e",
+              "text": "PATCH"
+            }
+          ],
+          "answers": [
+            "a",
+            "b",
+            "c"
+          ],
+          "why": "GET, PUT, and DELETE are idempotent; POST and PATCH are not."
+        },
+        {
+          "id": "q2",
+          "stem": "Which HTTP verb is both idempotent and safe?",
+          "options": [
+            {
+              "id": "a",
+              "text": "GET"
+            },
+            {
+              "id": "b",
+              "text": "PUT"
+            },
+            {
+              "id": "c",
+              "text": "DELETE"
+            },
+            {
+              "id": "d",
+              "text": "POST"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "GET is idempotent and safe. PUT and DELETE are idempotent but not safe."
+        }
+      ]
     },
     {
       "id": "sd-tcp-vs-udp",
@@ -1337,11 +3150,95 @@
         }
       ],
       "prereqs": [],
-      "version": 1,
+      "version": 3,
       "verified": {
-        "status": "verified",
+        "status": "partial",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "You need the lowest latency and late data is worse than lost data. Which protocol fits?",
+          "options": [
+            {
+              "id": "a",
+              "text": "UDP"
+            },
+            {
+              "id": "b",
+              "text": "TCP"
+            },
+            {
+              "id": "c",
+              "text": "HTTP over TCP"
+            },
+            {
+              "id": "d",
+              "text": "Either; they behave the same"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Use UDP when you need the lowest latency and late data is worse than loss."
+        },
+        {
+          "id": "q2",
+          "stem": "Which are true of TCP?",
+          "options": [
+            {
+              "id": "a",
+              "text": "It's connection-oriented with a handshake"
+            },
+            {
+              "id": "b",
+              "text": "Packets arrive in order and without corruption"
+            },
+            {
+              "id": "c",
+              "text": "It implements flow control and congestion control"
+            },
+            {
+              "id": "d",
+              "text": "It is generally more efficient than UDP"
+            }
+          ],
+          "answers": [
+            "a",
+            "b",
+            "c"
+          ],
+          "why": "TCP's guarantees cause delays and generally make it less efficient than UDP."
+        },
+        {
+          "id": "q3",
+          "stem": "Which uses does the primer give for UDP?",
+          "options": [
+            {
+              "id": "a",
+              "text": "VoIP"
+            },
+            {
+              "id": "b",
+              "text": "Video chat"
+            },
+            {
+              "id": "c",
+              "text": "Realtime multiplayer games"
+            },
+            {
+              "id": "d",
+              "text": "SSH"
+            }
+          ],
+          "answers": [
+            "a",
+            "b",
+            "c"
+          ],
+          "why": "SSH is listed as a TCP use, since it needs all data intact."
+        }
+      ]
     },
     {
       "id": "sd-rpc-vs-rest",
@@ -1392,11 +3289,67 @@
       "prereqs": [
         "sd-http-verbs"
       ],
-      "version": 2,
+      "version": 4,
       "verified": {
         "status": "partial",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "Which is focused on exposing data, and which on exposing behaviors?",
+          "options": [
+            {
+              "id": "a",
+              "text": "REST exposes data; RPC exposes behaviors"
+            },
+            {
+              "id": "b",
+              "text": "RPC exposes data; REST exposes behaviors"
+            },
+            {
+              "id": "c",
+              "text": "Both expose only data"
+            },
+            {
+              "id": "d",
+              "text": "Both expose only behaviors"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "REST is focused on exposing data (resources); RPC on exposing behaviors (operations)."
+        },
+        {
+          "id": "q2",
+          "stem": "Which are disadvantages of RPC?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Clients become tightly coupled to the service implementation"
+            },
+            {
+              "id": "b",
+              "text": "A new API is needed for every new operation"
+            },
+            {
+              "id": "c",
+              "text": "It can be harder to debug"
+            },
+            {
+              "id": "d",
+              "text": "Caching servers such as Squid cache RPC calls properly out of the box, so responses go stale"
+            }
+          ],
+          "answers": [
+            "a",
+            "b",
+            "c"
+          ],
+          "why": "RPC couples clients to the implementation, needs a new API per operation, and is harder to debug. Caching RPC calls on servers like Squid may take additional effort, not happen out of the box."
+        }
+      ]
     },
     {
       "id": "sd-interview-steps",
@@ -1436,11 +3389,67 @@
         }
       ],
       "prereqs": [],
-      "version": 2,
+      "version": 3,
       "verified": {
-        "status": "partial",
+        "status": "verified",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "What is the first step in approaching a system design question?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Outline use cases, constraints, and assumptions"
+            },
+            {
+              "id": "b",
+              "text": "Scale the design"
+            },
+            {
+              "id": "c",
+              "text": "Design core components in detail"
+            },
+            {
+              "id": "d",
+              "text": "Sketch the high-level design"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Start by gathering requirements: users, usage, scale, data volume, requests per second, read:write ratio."
+        },
+        {
+          "id": "q2",
+          "stem": "Which belong to step 4, scaling the design?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Identifying and addressing bottlenecks"
+            },
+            {
+              "id": "b",
+              "text": "Considering load balancers, caching, and sharding"
+            },
+            {
+              "id": "c",
+              "text": "Discussing tradeoffs"
+            },
+            {
+              "id": "d",
+              "text": "Asking who will use the system"
+            }
+          ],
+          "answers": [
+            "a",
+            "b",
+            "c"
+          ],
+          "why": "Asking who uses the system is step 1."
+        }
+      ]
     },
     {
       "id": "sd-design-pastebin",
@@ -1534,11 +3543,117 @@
         "sd-sql-vs-nosql",
         "sd-cache-layers"
       ],
-      "version": 1,
+      "version": 3,
       "verified": {
-        "status": "verified",
+        "status": "partial",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "How does the primer's Pastebin design generate a short link?",
+          "options": [
+            {
+              "id": "a",
+              "text": "MD5 hash of IP + timestamp, Base62-encode it, take the first 7 characters"
+            },
+            {
+              "id": "b",
+              "text": "Base64-encode the paste contents and take 7 characters"
+            },
+            {
+              "id": "c",
+              "text": "Use an auto-increment ID with no encoding"
+            },
+            {
+              "id": "d",
+              "text": "Let users always choose their own short link"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "MD5 of IP + timestamp (or random data), Base62-encoded, first 7 characters, checked for duplicates."
+        },
+        {
+          "id": "q2",
+          "stem": "Why Base62 instead of Base64 for the short link?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Base64's + and / characters cause problems in URLs"
+            },
+            {
+              "id": "b",
+              "text": "Base62 includes + and / characters, which Base64 lacks"
+            },
+            {
+              "id": "c",
+              "text": "Base62 is random, Base64 is deterministic"
+            },
+            {
+              "id": "d",
+              "text": "Base64 output works in URLs without escaping, but Base62 output doesn't"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Base62 encodes to [a-zA-Z0-9] and is deterministic, so it needs no escaping in URLs; Base64's extra + and / characters cause URL issues."
+        },
+        {
+          "id": "q3",
+          "stem": "With 10M writes and 100M reads per month, about how many requests per second is that on average?",
+          "options": [
+            {
+              "id": "a",
+              "text": "About 4 writes/s and 40 reads/s"
+            },
+            {
+              "id": "b",
+              "text": "About 40 writes/s and 400 reads/s"
+            },
+            {
+              "id": "c",
+              "text": "About 0.4 writes/s and 4 reads/s"
+            },
+            {
+              "id": "d",
+              "text": "About 400 writes/s and 4,000 reads/s"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "A month is about 2.5 million seconds, so 10M/2.5M ≈ 4 and 100M/2.5M ≈ 40."
+        },
+        {
+          "id": "q4",
+          "stem": "How does the design handle page analytics, given they don't need to be realtime?",
+          "options": [
+            {
+              "id": "a",
+              "text": "MapReduce over the web server logs"
+            },
+            {
+              "id": "b",
+              "text": "A synchronous counter update on every read"
+            },
+            {
+              "id": "c",
+              "text": "Write-through cache counters"
+            },
+            {
+              "id": "d",
+              "text": "A separate RPC call per page view"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Since realtime analytics aren't required, MapReduce the web server logs to get hit counts."
+        }
+      ]
     }
   ]
 }

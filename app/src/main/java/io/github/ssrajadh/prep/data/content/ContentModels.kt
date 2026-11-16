@@ -16,6 +16,22 @@ data class Topic(val id: String, val trackId: String, val name: String, val orde
 data class KeyPoint(val id: String, val text: String, val group: String? = null)
 
 @Serializable
+data class Option(val id: String, val text: String)
+
+/** A multiple-choice question. More than one answer means "select all that apply". */
+@Serializable
+data class Question(
+    val id: String,
+    val stem: String,
+    val options: List<Option>,
+    val answers: List<String>,
+    val why: String,
+) {
+    val isMulti: Boolean get() = answers.size > 1
+    fun isCorrect(selected: Set<String>) = selected == answers.toSet()
+}
+
+@Serializable
 data class Source(val title: String, val url: String, val section: String)
 
 @Serializable
@@ -35,15 +51,19 @@ data class Card(
     val prereqs: List<String> = emptyList(),
     val version: Int,
     val verified: Verified,
+    val questions: List<Question> = emptyList(),
 ) {
     val isDesign: Boolean get() = kind == "design"
 
     /**
-     * Fingerprint of the key points. If it changes between app versions, the card's
-     * scheduling is reset (the "answer" changed). Wording changes elsewhere keep progress.
+     * Fingerprint of what the learner is tested on: key points plus each question's
+     * stem and answers. If it changes between app versions, the card's scheduling is
+     * reset. Wording changes elsewhere (explanation, distractors) keep progress.
      */
-    val keyPointsHash: String
-        get() = keyPoints.joinToString("\u0001") { "${it.id}\u0002${it.text}" }.hashCode().toString(16)
+    val answerHash: String
+        get() = (keyPoints.map { "${it.id}\u0002${it.text}" } + questions.map { q ->
+            "${q.id}\u0002${q.stem}\u0002" + q.options.filter { it.id in q.answers }.joinToString("\u0003") { it.text }
+        }).joinToString("\u0001").hashCode().toString(16)
 }
 
 @Serializable

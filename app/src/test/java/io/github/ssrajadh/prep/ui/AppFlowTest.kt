@@ -38,15 +38,21 @@ class AppFlowTest {
         shot("01-today")
 
         compose.onNodeWithText("Start").performClick()
-        waitForText("Reveal key points")
-        compose.onNodeWithText("1 of", substring = true).assertExists()
-        shot("02-prompt")
+        waitForText("Question 1 of")
+        shot("02-question")
 
-        compose.onNodeWithText("Reveal key points").performClick()
-        waitForText("Tick what you covered")
-        shot("03-revealed")
+        compose.answerCurrentQuestion()
+        shot("03-answered")
 
-        // Interaction past this point is covered by ReviewLoopTest (no screenshots there).
+        // Jump through the rest of the card's questions to its results.
+        if (compose.onAllNodesWithText("Next question").fetchSemanticsNodes().isNotEmpty()) {
+            compose.onNodeWithText("Next question").performClick()
+            compose.answerWholeCard()
+        } else {
+            compose.onNodeWithText("See results").performClick()
+            waitForText("correct")
+        }
+        shot("04-results")
     }
 
     @Test fun progressAndSettings() {

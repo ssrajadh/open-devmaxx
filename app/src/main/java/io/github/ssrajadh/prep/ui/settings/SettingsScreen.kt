@@ -122,10 +122,10 @@ fun SettingsScreen(onBack: () -> Unit) {
 
             HorizontalDivider()
             Section("Grading")
-            Hint("After you tick key points, the app suggests a rating. You can always pick a different one.")
+            Hint("After each card, the app suggests a rating from how many questions you got right. You can always pick a different one.")
             PercentSlider("Again if under", cur.againBelow) { scope.launch { app.settings.setThresholds(it, cur.hardBelow) } }
             PercentSlider("Hard if under", cur.hardBelow) { scope.launch { app.settings.setThresholds(cur.againBelow, it) } }
-            Hint("Otherwise Good; all key points = Easy.")
+            Hint("Otherwise Good; all correct = Easy.")
 
             HorizontalDivider()
             Section("Reminder")
@@ -206,7 +206,7 @@ private fun IntSlider(label: String, value: Int, range: IntRange, onDone: (Int) 
 private fun PercentSlider(label: String, value: Float, onDone: (Float) -> Unit) {
     var v by remember(value) { mutableFloatStateOf(value) }
     Column {
-        Text("$label ${(v * 100).roundToInt()}% of key points", style = MaterialTheme.typography.bodyLarge)
+        Text("$label ${(v * 100).roundToInt()}% correct", style = MaterialTheme.typography.bodyLarge)
         Slider(
             value = v,
             onValueChange = { v = it },

@@ -1,0 +1,437 @@
+{
+  "checkedAt": "2026-11-15",
+  "results": [
+    {
+      "cardId": "sd-indices",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": "Indices can make queries on the columns you use in SELECT, GROUP BY, ORDER BY, and JOIN faster. Placing an index can keep the data in memory, which requires more space, and writes can be slower because the index also has to be updated.",
+      "dropQuestions": [],
+      "questionEdits": {
+        "q3": {
+          "id": "q3",
+          "stem": "You need to load a large amount of data. What might be faster?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Disable the indices, load the data, then rebuild the indices"
+            },
+            {
+              "id": "b",
+              "text": "Add more indices before loading"
+            },
+            {
+              "id": "c",
+              "text": "Keep the indices enabled during the load, since indices make writes faster"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "When loading large amounts of data, it might be faster to disable indices, load, then rebuild them. Indices make writes slower, not faster, because each index must also be updated."
+        }
+      },
+      "notes": "All key points match 'Use good indices'. Explanation tied memory to faster lookups, which the passage doesn't claim; rewritten. q3 distractors c (one row per transaction) and d (convert to graph DB) aren't contradicted by the passage; replaced."
+    },
+    {
+      "cardId": "sd-nosql-types",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {},
+      "notes": "Four store types, abstractions, uses, examples, and the general NoSQL properties match the NoSQL section; explanation (lexicographic keys, timestamps, thin graph tooling) is supported. All distractors are contradicted by the type descriptions."
+    },
+    {
+      "cardId": "sd-base",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {},
+      "notes": "BASE terms and 'chooses availability over consistency' match the NoSQL section verbatim in meaning; distractors are contradicted."
+    },
+    {
+      "cardId": "sd-sql-vs-nosql",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {},
+      "notes": "Both reason lists and the sample NoSQL data match 'SQL or NoSQL'. q2 distractors map to listed SQL reasons (transactions, complex joins, strict schema)."
+    },
+    {
+      "cardId": "sd-cache-layers",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {
+        "q2": {
+          "id": "q2",
+          "stem": "Why does the primer say to avoid file-based caching?",
+          "options": [
+            {
+              "id": "a",
+              "text": "It makes cloning and auto-scaling more difficult"
+            },
+            {
+              "id": "b",
+              "text": "Files on disk are faster than data held in RAM"
+            },
+            {
+              "id": "c",
+              "text": "Disk is more limited than RAM, so file caches fill up too quickly"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "File-based caching makes cloning and auto-scaling harder. The primer says RAM is much faster than disk and more limited than disk."
+        },
+        "q3": {
+          "id": "q3",
+          "stem": "RAM is limited, so how does an app cache keep hot data in memory?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Eviction such as least recently used (LRU) removes cold entries"
+            },
+            {
+              "id": "b",
+              "text": "It never evicts anything, so all data stays in RAM"
+            },
+            {
+              "id": "c",
+              "text": "It evicts the hottest, most-used entries first"
+            },
+            {
+              "id": "d",
+              "text": "It moves hot data to disk, since disk is more limited than RAM"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "RAM is more limited than disk, so cache invalidation algorithms like LRU evict cold entries and keep hot data in RAM."
+        }
+      },
+      "notes": "Key points and explanation match the Cache section. q2 options c (prevents LRU) and d (browsers can't read files) and q3 options b (writes to disk first) and d (newest write per table) aren't settled by the passage; replaced with distractors it contradicts."
+    },
+    {
+      "cardId": "sd-cache-query-vs-object",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {
+        "q1": {
+          "id": "q1",
+          "stem": "What is the main problem with caching at the database query level?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Expiration: one changed cell may require deleting every cached query that might include it"
+            },
+            {
+              "id": "b",
+              "text": "Queries can't be hashed"
+            },
+            {
+              "id": "c",
+              "text": "It caches only fully rendered HTML"
+            },
+            {
+              "id": "d",
+              "text": "Query results can't be stored in the cache"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Query-level caching hashes the query as a key and stores the result, but suffers from expiration issues: complex queries are hard to delete, and one change can affect many cached queries."
+        }
+      },
+      "notes": "Key points and explanation match both caching-level passages. q1 option d (can't be used with SQL databases) isn't contradicted; replaced with one the passage contradicts."
+    },
+    {
+      "cardId": "sd-cache-aside",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {},
+      "notes": "Read flow, app-only storage access, lazy loading, three-trip miss, staleness with TTL/write-through mitigation, empty replacement node, and Memcached note all match. Distractors are contradicted."
+    },
+    {
+      "cardId": "sd-write-through-behind",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": "The primer notes that users are generally more tolerant of latency when updating data than when reading it. Refresh-ahead can reduce latency compared with read-through if the cache can accurately predict which items will be needed in the future.",
+      "dropQuestions": [],
+      "questionEdits": {
+        "q2": {
+          "id": "q2",
+          "stem": "Which is a disadvantage of write-behind?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Data loss if the cache goes down before its contents reach the data store"
+            },
+            {
+              "id": "b",
+              "text": "Writes are slow because the database write happens synchronously"
+            },
+            {
+              "id": "c",
+              "text": "The database is written before the cache, so the cache can serve stale data"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Write-behind updates the cache, then writes to the data store asynchronously, which improves write performance; data can be lost if the cache fails before flushing. It's also more complex to implement."
+        },
+        "q3": {
+          "id": "q3",
+          "stem": "When does refresh-ahead hurt performance?",
+          "options": [
+            {
+              "id": "a",
+              "text": "When the cache can't accurately predict which items will be needed"
+            },
+            {
+              "id": "b",
+              "text": "When the cache accurately predicts which items will be needed"
+            },
+            {
+              "id": "c",
+              "text": "Never; refreshing entries early always improves performance"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Accurate predictions can reduce latency vs read-through; inaccurate predictions can result in worse performance than without refresh-ahead."
+        }
+      },
+      "notes": "Key points match. Explanation said refresh-ahead cuts latency 'only if' predictions are accurate; passage says 'if', so reworded. q2 distractors (slow reads, three trips, never refreshes) and q3 distractors (synchronous writes, sharding, TTL) aren't addressed by the passage for those strategies; replaced."
+    },
+    {
+      "cardId": "sd-message-queues",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {},
+      "notes": "Async benefits, queue workflow, tweet example, task queues/Celery, poor fit for cheap and realtime work, and broker tradeoffs all match Asynchronism. Distractors are contradicted (inline/blocking, expensive ops and aggregation are async use cases)."
+    },
+    {
+      "cardId": "sd-back-pressure",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {
+        "q1": {
+          "id": "q1",
+          "stem": "What does back pressure do?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Limits the queue size to keep throughput and response times good for jobs already queued"
+            },
+            {
+              "id": "b",
+              "text": "Lets the queue grow without bound"
+            },
+            {
+              "id": "c",
+              "text": "Accepts every request with HTTP 200 and queues it regardless of queue size"
+            },
+            {
+              "id": "d",
+              "text": "Tells turned-away clients to retry immediately"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Back pressure limits queue size so a growing queue doesn't exceed memory and slow everything down. Once the queue is full, clients get a 503 and retry later."
+        },
+        "q2": {
+          "id": "q2",
+          "stem": "Once the queue is full, what do clients get, and what should they do?",
+          "options": [
+            {
+              "id": "a",
+              "text": "A server-busy / HTTP 503 response; retry later, e.g. with exponential backoff"
+            },
+            {
+              "id": "b",
+              "text": "An HTTP 200 and a queued job anyway"
+            },
+            {
+              "id": "c",
+              "text": "An HTTP 404; give up permanently"
+            },
+            {
+              "id": "d",
+              "text": "An HTTP 503; never retry the request"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Clients get a server busy or 503 status telling them to try again later, perhaps with exponential backoff."
+        }
+      },
+      "notes": "Key points and explanation match 'Back pressure'. q1 option c (moves queue into DB) and q2 option d (redirect to another region) aren't addressed by the passage; replaced with contradicted distractors."
+    },
+    {
+      "cardId": "sd-http-verbs",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {},
+      "notes": "Idempotent/safe columns, definition, and the cacheable details in the explanation match the HTTP verb table."
+    },
+    {
+      "cardId": "sd-tcp-vs-udp",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {
+        "q2": {
+          "id": "q2",
+          "stem": "Which are true of TCP?",
+          "options": [
+            {
+              "id": "a",
+              "text": "It's connection-oriented with a handshake"
+            },
+            {
+              "id": "b",
+              "text": "Packets arrive in order and without corruption"
+            },
+            {
+              "id": "c",
+              "text": "It implements flow control and congestion control"
+            },
+            {
+              "id": "d",
+              "text": "It is generally more efficient than UDP"
+            }
+          ],
+          "answers": [
+            "a",
+            "b",
+            "c"
+          ],
+          "why": "TCP's guarantees cause delays and generally make it less efficient than UDP."
+        }
+      },
+      "notes": "Key points and explanation match the TCP and UDP sections. q2 option d (TCP can broadcast to a subnet) isn't explicitly contradicted by the passage; replaced with 'more efficient than UDP', which it contradicts."
+    },
+    {
+      "cardId": "sd-rpc-vs-rest",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {
+        "q2": {
+          "id": "q2",
+          "stem": "Which are disadvantages of RPC?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Clients become tightly coupled to the service implementation"
+            },
+            {
+              "id": "b",
+              "text": "A new API is needed for every new operation"
+            },
+            {
+              "id": "c",
+              "text": "It can be harder to debug"
+            },
+            {
+              "id": "d",
+              "text": "Caching servers such as Squid cache RPC calls properly out of the box, so responses go stale"
+            }
+          ],
+          "answers": [
+            "a",
+            "b",
+            "c"
+          ],
+          "why": "RPC couples clients to the implementation, needs a new API per operation, and is harder to debug. Caching RPC calls on servers like Squid may take additional effort, not happen out of the box."
+        }
+      },
+      "notes": "Key points and explanation match the RPC and REST sections. q2 option d (requires stateless, cacheable calls) isn't contradicted as an RPC property; replaced with a caching claim the passage contradicts."
+    },
+    {
+      "cardId": "sd-interview-steps",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {},
+      "notes": "Four steps, open-ended conversation you lead, back-of-the-envelope resources, and 'everything is a trade-off' match. Distractors are contradicted."
+    },
+    {
+      "cardId": "sd-design-pastebin",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {
+        "q2": {
+          "id": "q2",
+          "stem": "Why Base62 instead of Base64 for the short link?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Base64's + and / characters cause problems in URLs"
+            },
+            {
+              "id": "b",
+              "text": "Base62 includes + and / characters, which Base64 lacks"
+            },
+            {
+              "id": "c",
+              "text": "Base62 is random, Base64 is deterministic"
+            },
+            {
+              "id": "d",
+              "text": "Base64 output works in URLs without escaping, but Base62 output doesn't"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Base62 encodes to [a-zA-Z0-9] and is deterministic, so it needs no escaping in URLs; Base64's extra + and / characters cause URL issues."
+        }
+      },
+      "notes": "All 14 key points and the explanation match the Pastebin solution. q2 options b (Base62 longer) and c (Base64 can't encode MD5) aren't addressed by the passage; replaced with distractors it contradicts."
+    }
+  ]
+}

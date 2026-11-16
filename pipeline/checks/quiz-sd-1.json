@@ -1,0 +1,467 @@
+{
+  "checkedAt": "2026-11-15",
+  "results": [
+    {
+      "cardId": "sd-performance-vs-scalability",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {
+        "q1": {
+          "id": "q1",
+          "stem": "Your service is fast when one person uses it but slows down badly under heavy load. What kind of problem is this?",
+          "options": [
+            {
+              "id": "a",
+              "text": "A scalability problem"
+            },
+            {
+              "id": "b",
+              "text": "A performance problem"
+            },
+            {
+              "id": "c",
+              "text": "Both a performance and a scalability problem"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "A scalability problem means the system is fast for a single user but slow under heavy load. A performance problem means it's slow even for one user."
+        },
+        "q3": {
+          "id": "q3",
+          "stem": "Increasing performance can mean which of the following?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Serving more units of work"
+            },
+            {
+              "id": "b",
+              "text": "Handling larger units of work, such as growing datasets"
+            },
+            {
+              "id": "c",
+              "text": "Only serving more units of work, never larger ones"
+            },
+            {
+              "id": "d",
+              "text": "Making the system slower for a single user"
+            }
+          ],
+          "answers": [
+            "a",
+            "b"
+          ],
+          "why": "Generally it means serving more units of work, but it can also mean handling larger units of work, such as when datasets grow."
+        }
+      },
+      "notes": "Key points and explanation match the passage. q1 distractors 'latency-vs-throughput problem' and 'consistency problem' are not settled by the passage; replaced with 'both', which the passage rules out (fast for one user = not a performance problem). q3 option c 'using fewer servers for the same work' is not contradicted; replaced with 'only more units, never larger ones'."
+    },
+    {
+      "cardId": "sd-latency-vs-throughput",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {},
+      "notes": "Definitions and the maximal-throughput/acceptable-latency guideline match the passage; all distractors contradict the stated definitions or guideline."
+    },
+    {
+      "cardId": "sd-cap-theorem",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {},
+      "notes": "C/A/P definitions, the forced partition tolerance, CP timeouts/atomic reads-writes, and AP stale reads/propagation/eventual consistency all match. Distractors are contradicted (e.g. CA contradicts 'you'll need to support partition tolerance')."
+    },
+    {
+      "cardId": "sd-consistency-patterns",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {
+        "q1": {
+          "id": "q1",
+          "stem": "Data is replicated asynchronously and reads see a write eventually, typically within milliseconds. Which pattern is this?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Eventual consistency"
+            },
+            {
+              "id": "b",
+              "text": "Weak consistency"
+            },
+            {
+              "id": "c",
+              "text": "Strong consistency"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Eventual consistency: reads will eventually see the write; replication is asynchronous."
+        }
+      },
+      "notes": "Key points and explanation (including the dropped-call example) match the passage. q1 option d 'Serializable isolation' is not mentioned or ruled out by the passage; removed, leaving three options."
+    },
+    {
+      "cardId": "sd-failover",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {
+        "q1": {
+          "id": "q1",
+          "stem": "In active-passive fail-over, what happens when the heartbeat is interrupted?",
+          "options": [
+            {
+              "id": "a",
+              "text": "The passive server takes over the active's IP address and resumes service"
+            },
+            {
+              "id": "b",
+              "text": "Both servers start handling traffic and share the load"
+            },
+            {
+              "id": "c",
+              "text": "The active server keeps handling all traffic"
+            },
+            {
+              "id": "d",
+              "text": "The active server restarts from cold standby"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "In active-passive, heartbeats run between active and passive; if they stop, the passive takes over the active's IP address."
+        },
+        "q3": {
+          "id": "q3",
+          "stem": "What is a disadvantage of fail-over?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Data can be lost if the active fails before new writes replicate to the passive"
+            },
+            {
+              "id": "b",
+              "text": "It removes the need for any extra hardware"
+            },
+            {
+              "id": "c",
+              "text": "It reduces overall system complexity"
+            },
+            {
+              "id": "d",
+              "text": "It guarantees strong consistency"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Fail-over adds hardware and complexity, and data can be lost if the active fails before newly written data is replicated."
+        }
+      },
+      "notes": "Key points and explanation match the fail-over and disadvantages passages. q1 option c 'DNS is updated to list both public IPs' is not settled for active-passive; replaced with a distractor the passage contradicts (the passive takes over). q3 option c 'requires every server to be stateless' is not addressed; replaced with 'reduces complexity', contradicted by 'adds additional complexity'."
+    },
+    {
+      "cardId": "sd-availability-numbers",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {},
+      "notes": "Uptime-as-percentage/9s, the downtime tables, the sequence and parallel formulas, and the 99.8%/99.9999% examples all match. Distractor values are contradicted by the tables and the increase/decrease statements."
+    },
+    {
+      "cardId": "sd-dns",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {
+        "kp3": "Lower-level DNS servers cache mappings, and the browser or OS caches results for a TTL, so answers can go stale"
+      },
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {
+        "q2": {
+          "id": "q2",
+          "stem": "Why can a DNS lookup return a stale answer?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Lower-level DNS servers cache mappings, and the browser or OS caches results for a TTL"
+            },
+            {
+              "id": "b",
+              "text": "DNS results are never cached anywhere"
+            },
+            {
+              "id": "c",
+              "text": "DNS is not hierarchical"
+            },
+            {
+              "id": "d",
+              "text": "Every lookup goes straight to the top-level servers"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Lower-level DNS servers cache mappings that can go stale due to propagation delays, and browsers and OSes cache results for a TTL."
+        }
+      },
+      "notes": "kp3 reworded: the passage attributes the TTL to browser/OS caching, not to lower-level DNS servers; q2 option a and why aligned to the same wording. q2 option b 'authoritative servers rewrite records randomly' is not contradicted; replaced with 'never cached', which the passage contradicts. Everything else matches."
+    },
+    {
+      "cardId": "sd-cdn-push-pull",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {
+        "q2": {
+          "id": "q2",
+          "stem": "A site has little traffic and content that rarely changes. Which CDN type suits it?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Push CDN"
+            },
+            {
+              "id": "b",
+              "text": "Pull CDN"
+            },
+            {
+              "id": "c",
+              "text": "No CDN can serve it"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Push CDNs suit low-traffic sites or rarely updated content: content is placed once instead of re-pulled."
+        }
+      },
+      "notes": "Key points and explanation match the CDN passage. q2 option d 'A CDN with a very short TTL' is not clearly ruled out by the passage; removed, leaving three options."
+    },
+    {
+      "cardId": "sd-load-balancer",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {},
+      "notes": "Distribution, health/overload/SPOF benefits, SSL termination and certificates, cookie session persistence, routing methods, hardware vs HAProxy, and the disadvantages all match. All distractors are contradicted."
+    },
+    {
+      "cardId": "sd-l4-vs-l7",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {
+        "q1": {
+          "id": "q1",
+          "stem": "What does a layer 4 load balancer use to decide where to send traffic?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Transport-layer info such as source/destination IPs and ports"
+            },
+            {
+              "id": "b",
+              "text": "Headers, message contents, and cookies"
+            },
+            {
+              "id": "c",
+              "text": "The contents of the packet"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Layer 4 looks at transport-layer info (IPs and ports in the header), not the contents of the packet. Headers, message contents, and cookies are layer 7."
+        }
+      },
+      "notes": "Key points and explanation match. q1 options c 'geographic location from DNS' and d 'size of each response body' are not explicitly ruled out; replaced with 'the contents of the packet', which the passage explicitly excludes for layer 4."
+    },
+    {
+      "cardId": "sd-horizontal-scaling",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {},
+      "notes": "Commodity vs vertical scaling, cost efficiency and availability, hiring, statelessness, central session store, cloning/complexity, and downstream connections all match. Distractors are contradicted."
+    },
+    {
+      "cardId": "sd-reverse-proxy",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {
+        "q1": {
+          "id": "q1",
+          "stem": "When is a reverse proxy useful but a load balancer isn't?",
+          "options": [
+            {
+              "id": "a",
+              "text": "With just one web or application server"
+            },
+            {
+              "id": "b",
+              "text": "Only when you have many identical servers"
+            },
+            {
+              "id": "d",
+              "text": "Never; they are the same thing"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Load balancers help when you have multiple servers; a reverse proxy's benefits apply even with a single server."
+        }
+      },
+      "notes": "Key points and explanation match. q1 option c 'Only for UDP traffic' is not addressed by the passage; removed, leaving three options."
+    },
+    {
+      "cardId": "sd-acid",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {},
+      "notes": "The four ACID definitions and the relational-database definition match the passage; distractors are the other properties, each defined differently."
+    },
+    {
+      "cardId": "sd-replication",
+      "status": "verified",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {},
+      "notes": "Master-slave, master-master, and shared replication disadvantages (data loss, replay load, lag, single-threaded replica writes, hardware/complexity) all match. Distractors are contradicted."
+    },
+    {
+      "cardId": "sd-federation-vs-sharding",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {
+        "kp3": "Both: less read/write traffic per database, less replication (lag), more cache hits, and parallel writes with no single central master"
+      },
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {
+        "q1": {
+          "id": "q1",
+          "stem": "The primer gives splitting a single database into forums, users, and products databases as an example of which technique?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Federation (functional partitioning)"
+            },
+            {
+              "id": "b",
+              "text": "Sharding"
+            },
+            {
+              "id": "c",
+              "text": "Denormalization"
+            },
+            {
+              "id": "d",
+              "text": "Master-master replication"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Federation splits databases by function. Sharding splits one dataset so each database holds a subset."
+        },
+        "q2": {
+          "id": "q2",
+          "stem": "The primer gives splitting a users table across databases by last-name initial as a common way to do which technique?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Sharding"
+            },
+            {
+              "id": "b",
+              "text": "Federation"
+            },
+            {
+              "id": "c",
+              "text": "Denormalization"
+            },
+            {
+              "id": "d",
+              "text": "A materialized view"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Sharding distributes data so each database manages a subset, e.g. users by last-name initial or location."
+        }
+      },
+      "notes": "kp3 reworded: the federation passage says less replication lag while sharding says less replication. q1 and q2 stems reworded to ask which technique the primer names for the example, since this card's passage does not define denormalization, replication, or materialized views and so can only settle the attribution, not rule them out in general."
+    },
+    {
+      "cardId": "sd-denormalization",
+      "status": "partial",
+      "dropKeyPoints": [],
+      "keyPointEdits": {},
+      "explanation": null,
+      "dropQuestions": [],
+      "questionEdits": {
+        "q1": {
+          "id": "q1",
+          "stem": "What does denormalization trade?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Some write performance for better read performance"
+            },
+            {
+              "id": "b",
+              "text": "Read performance for write performance"
+            },
+            {
+              "id": "c",
+              "text": "Slower reads in exchange for fewer redundant copies of data"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Denormalization writes redundant copies to avoid joins, improving reads at some cost to writes."
+        }
+      },
+      "notes": "Key points and explanation match. q1 options c 'Durability for availability' and d 'Storage for consistency guarantees in CAP' are not contradicted (d is arguably partly true since data is duplicated); replaced with a distractor the passage contradicts (it improves reads by writing redundant copies)."
+    }
+  ]
+}

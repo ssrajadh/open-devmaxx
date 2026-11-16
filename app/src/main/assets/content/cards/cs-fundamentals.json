@@ -46,11 +46,91 @@
         }
       ],
       "prereqs": [],
-      "version": 2,
+      "version": 3,
       "verified": {
         "status": "verified",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "In the three-way handshake, what does the server send in the second segment?",
+          "options": [
+            {
+              "id": "a",
+              "text": "A segment with both SYN (its own sequence number y) and ACK = x + 1"
+            },
+            {
+              "id": "b",
+              "text": "Just an ACK = x"
+            },
+            {
+              "id": "c",
+              "text": "A FIN to close the client's half"
+            },
+            {
+              "id": "d",
+              "text": "Its first data bytes"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "The second segment acknowledges the client's sequence number and states the server's own, with both SYN and ACK set."
+        },
+        {
+          "id": "q2",
+          "stem": "Why does the client acknowledge y + 1 rather than y?",
+          "options": [
+            {
+              "id": "a",
+              "text": "The ACK field names the next sequence number expected, implicitly acknowledging everything before it"
+            },
+            {
+              "id": "b",
+              "text": "To signal that one packet was lost"
+            },
+            {
+              "id": "c",
+              "text": "Because sequence numbers always start at 1"
+            },
+            {
+              "id": "d",
+              "text": "To request a retransmission"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Acknowledgement identifies the next sequence number expected."
+        },
+        {
+          "id": "q3",
+          "stem": "Why must each side pick its initial sequence number at random?",
+          "options": [
+            {
+              "id": "a",
+              "text": "So a segment from an earlier incarnation of the same connection can't interfere with a later one"
+            },
+            {
+              "id": "b",
+              "text": "To encrypt the connection"
+            },
+            {
+              "id": "c",
+              "text": "To make the handshake faster"
+            },
+            {
+              "id": "d",
+              "text": "Because starting at 0 is not allowed by IP"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Random starting numbers keep incarnations of the same connection from reusing sequence numbers too soon."
+        }
+      ]
     },
     {
       "id": "cs-tcp-teardown",
@@ -96,11 +176,91 @@
       "prereqs": [
         "cs-tcp-handshake"
       ],
-      "version": 1,
+      "version": 2,
       "verified": {
         "status": "verified",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "How long does a connection stay in TIME_WAIT?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Twice the maximum IP datagram lifetime (120 seconds)"
+            },
+            {
+              "id": "b",
+              "text": "One round-trip time"
+            },
+            {
+              "id": "c",
+              "text": "Until the application calls close again"
+            },
+            {
+              "id": "d",
+              "text": "Exactly one second"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "TIME_WAIT lasts two times the maximum time an IP datagram might live in the Internet."
+        },
+        {
+          "id": "q2",
+          "stem": "Why does TIME_WAIT exist?",
+          "options": [
+            {
+              "id": "a",
+              "text": "The final ACK may be lost, so the peer might retransmit its FIN; a delayed FIN could otherwise end a new connection on the same ports"
+            },
+            {
+              "id": "b",
+              "text": "To give the application time to send more data"
+            },
+            {
+              "id": "c",
+              "text": "To renegotiate sequence numbers"
+            },
+            {
+              "id": "d",
+              "text": "To let congestion control reset its window"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Without waiting, a delayed FIN from the old incarnation could terminate a new connection reusing the same port pair."
+        },
+        {
+          "id": "q3",
+          "stem": "The other side closes first. Which states does this side pass through?",
+          "options": [
+            {
+              "id": "a",
+              "text": "ESTABLISHED → CLOSE_WAIT → LAST_ACK → CLOSED"
+            },
+            {
+              "id": "b",
+              "text": "ESTABLISHED → FIN_WAIT_1 → FIN_WAIT_2 → TIME_WAIT → CLOSED"
+            },
+            {
+              "id": "c",
+              "text": "ESTABLISHED → FIN_WAIT_1 → CLOSING → TIME_WAIT → CLOSED"
+            },
+            {
+              "id": "d",
+              "text": "ESTABLISHED → SYN_RCVD → CLOSED"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Closing first goes through FIN_WAIT states and TIME_WAIT; when the other side closes first you pass CLOSE_WAIT and LAST_ACK."
+        }
+      ]
     },
     {
       "id": "cs-tcp-flow-control",
@@ -144,11 +304,65 @@
         }
       ],
       "prereqs": [],
-      "version": 1,
+      "version": 3,
       "verified": {
-        "status": "verified",
+        "status": "partial",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "What sets the size of the receiver's AdvertisedWindow?",
+          "options": [
+            {
+              "id": "a",
+              "text": "The free space in its receive buffer"
+            },
+            {
+              "id": "b",
+              "text": "The network's congestion level"
+            },
+            {
+              "id": "c",
+              "text": "The sender's send buffer size"
+            },
+            {
+              "id": "d",
+              "text": "A fixed value negotiated in the handshake"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "The receiver advertises a window based on the memory available for buffering, so the sender doesn't overrun it."
+        },
+        {
+          "id": "q2",
+          "stem": "The receiving application stops reading. What happens?",
+          "options": [
+            {
+              "id": "a",
+              "text": "The advertised window shrinks to 0 and the sender can't transmit"
+            },
+            {
+              "id": "b",
+              "text": "The sender doubles its window"
+            },
+            {
+              "id": "c",
+              "text": "The receiver keeps advertising its full buffer size (MaxRcvBuffer)"
+            },
+            {
+              "id": "d",
+              "text": "The connection enters TIME_WAIT"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "As the receive buffer fills, the advertised window shrinks to zero, stopping the sender."
+        }
+      ]
     },
     {
       "id": "cs-tcp-aimd",
@@ -198,11 +412,91 @@
       "prereqs": [
         "cs-tcp-flow-control"
       ],
-      "version": 1,
+      "version": 2,
       "verified": {
         "status": "verified",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "What does TCP do to its congestion window on each timeout?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Halves it (but not below one packet)"
+            },
+            {
+              "id": "b",
+              "text": "Resets it to the advertised window"
+            },
+            {
+              "id": "c",
+              "text": "Increases it by one packet"
+            },
+            {
+              "id": "d",
+              "text": "Doubles it"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Multiplicative decrease: each timeout halves CongestionWindow, down to a minimum of one maximum segment size."
+        },
+        {
+          "id": "q2",
+          "stem": "Why does TCP treat a timeout as a sign of congestion?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Packets are rarely lost to transmission errors, so a loss most likely means a router dropped it due to congestion"
+            },
+            {
+              "id": "b",
+              "text": "Timeouts only happen when the receiver's buffer is full"
+            },
+            {
+              "id": "c",
+              "text": "The receiver sends a congestion flag"
+            },
+            {
+              "id": "d",
+              "text": "Timeouts always mean the connection closed"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "The main reason packets aren't delivered is drops due to congestion; errors are rare."
+        },
+        {
+          "id": "q3",
+          "stem": "How much data can a TCP sender have unacknowledged with congestion control?",
+          "options": [
+            {
+              "id": "a",
+              "text": "The minimum of CongestionWindow and AdvertisedWindow"
+            },
+            {
+              "id": "b",
+              "text": "The maximum of CongestionWindow and AdvertisedWindow"
+            },
+            {
+              "id": "c",
+              "text": "Only AdvertisedWindow"
+            },
+            {
+              "id": "d",
+              "text": "Only CongestionWindow"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "MaxWindow = MIN(CongestionWindow, AdvertisedWindow): no faster than the slower of network and receiver allow."
+        }
+      ]
     },
     {
       "id": "cs-tcp-slow-start",
@@ -244,11 +538,65 @@
       "prereqs": [
         "cs-tcp-aimd"
       ],
-      "version": 2,
+      "version": 3,
       "verified": {
         "status": "verified",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "How fast does slow start grow the number of packets in transit?",
+          "options": [
+            {
+              "id": "a",
+              "text": "It doubles them every RTT (exponential growth)"
+            },
+            {
+              "id": "b",
+              "text": "One extra packet per RTT (linear growth)"
+            },
+            {
+              "id": "c",
+              "text": "It halves them every RTT"
+            },
+            {
+              "id": "d",
+              "text": "It keeps them constant"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Adding one packet per ACK doubles packets in flight each RTT. One per RTT is additive increase."
+        },
+        {
+          "id": "q2",
+          "stem": "After a timeout, what happens to the congestion window?",
+          "options": [
+            {
+              "id": "a",
+              "text": "CongestionThreshold is set to half the window, the window resets to one packet, and slow start runs up to the threshold"
+            },
+            {
+              "id": "b",
+              "text": "The window stays the same and additive increase continues"
+            },
+            {
+              "id": "c",
+              "text": "The window doubles"
+            },
+            {
+              "id": "d",
+              "text": "The connection closes"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Slow start rapidly returns to the threshold, then additive increase takes over."
+        }
+      ]
     },
     {
       "id": "cs-tcp-fast-retransmit",
@@ -294,11 +642,65 @@
       "prereqs": [
         "cs-tcp-slow-start"
       ],
-      "version": 1,
+      "version": 2,
       "verified": {
         "status": "verified",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "When does fast retransmit resend a packet?",
+          "options": [
+            {
+              "id": "a",
+              "text": "After three duplicate ACKs"
+            },
+            {
+              "id": "b",
+              "text": "After the first duplicate ACK"
+            },
+            {
+              "id": "c",
+              "text": "Only after a timeout"
+            },
+            {
+              "id": "d",
+              "text": "After every ACK"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "TCP waits for three duplicate ACKs, since a single duplicate might just mean the packet was delayed."
+        },
+        {
+          "id": "q2",
+          "stem": "Why doesn't fast retransmit eliminate all timeouts?",
+          "options": [
+            {
+              "id": "a",
+              "text": "With small windows there aren't enough packets in transit to generate enough duplicate ACKs"
+            },
+            {
+              "id": "b",
+              "text": "Duplicate ACKs are never sent"
+            },
+            {
+              "id": "c",
+              "text": "It replaces timeouts entirely"
+            },
+            {
+              "id": "d",
+              "text": "The receiver ignores out-of-order packets"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Fast retransmit enhances timeouts rather than replacing them; small windows don't produce enough duplicate ACKs."
+        }
+      ]
     },
     {
       "id": "cs-isolation-phenomena",
@@ -338,11 +740,61 @@
         }
       ],
       "prereqs": [],
-      "version": 2,
+      "version": 4,
       "verified": {
-        "status": "verified",
+        "status": "partial",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "A transaction reads data written by a concurrent transaction that hasn't committed yet. What is this?",
+          "options": [
+            {
+              "id": "a",
+              "text": "A dirty read"
+            },
+            {
+              "id": "b",
+              "text": "A nonrepeatable read"
+            },
+            {
+              "id": "c",
+              "text": "A phantom read"
+            },
+            {
+              "id": "d",
+              "text": "A serialization anomaly"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "A dirty read is reading uncommitted data from a concurrent transaction."
+        },
+        {
+          "id": "q2",
+          "stem": "A transaction re-runs a query and finds the set of matching rows has changed because another transaction committed. What is this?",
+          "options": [
+            {
+              "id": "a",
+              "text": "A phantom read"
+            },
+            {
+              "id": "b",
+              "text": "A dirty read"
+            },
+            {
+              "id": "c",
+              "text": "A nonrepeatable read"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "A phantom read is about the set of rows matching a condition changing; a nonrepeatable read is about previously read data changing."
+        }
+      ]
     },
     {
       "id": "cs-isolation-levels",
@@ -392,11 +844,91 @@
       "prereqs": [
         "cs-isolation-phenomena"
       ],
-      "version": 2,
+      "version": 3,
       "verified": {
         "status": "verified",
         "checkedAt": "2026-11-15"
-      }
+      },
+      "questions": [
+        {
+          "id": "q1",
+          "stem": "In PostgreSQL's Read Committed level, when is a query's snapshot taken?",
+          "options": [
+            {
+              "id": "a",
+              "text": "When that statement begins, so two SELECTs in one transaction can see different data"
+            },
+            {
+              "id": "b",
+              "text": "At the start of the transaction's first statement"
+            },
+            {
+              "id": "c",
+              "text": "When the transaction commits"
+            },
+            {
+              "id": "d",
+              "text": "Never; it reads uncommitted data"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "Read Committed snapshots per statement; Repeatable Read snapshots once for the transaction."
+        },
+        {
+          "id": "q2",
+          "stem": "Which phenomena can occur under PostgreSQL's Repeatable Read?",
+          "options": [
+            {
+              "id": "a",
+              "text": "Serialization anomalies"
+            },
+            {
+              "id": "b",
+              "text": "Dirty reads"
+            },
+            {
+              "id": "c",
+              "text": "Nonrepeatable reads"
+            },
+            {
+              "id": "d",
+              "text": "Phantom reads"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "PostgreSQL's Repeatable Read prevents everything except serialization anomalies, including phantoms (stronger than the standard requires)."
+        },
+        {
+          "id": "q3",
+          "stem": "How does PostgreSQL treat a request for Read Uncommitted?",
+          "options": [
+            {
+              "id": "a",
+              "text": "It behaves like Read Committed"
+            },
+            {
+              "id": "b",
+              "text": "It allows dirty reads"
+            },
+            {
+              "id": "c",
+              "text": "It behaves like Serializable"
+            },
+            {
+              "id": "d",
+              "text": "It raises an error"
+            }
+          ],
+          "answers": [
+            "a"
+          ],
+          "why": "PostgreSQL implements only three distinct levels; Read Uncommitted maps to Read Committed."
+        }
+      ]
     }
   ]
 }

@@ -33,14 +33,14 @@ class StudyRepository(
     suspend fun content(): Content = contentRepo.content()
 
     /**
-     * Run on startup. If a card's key points changed since it was last reviewed, its
+     * Run on startup. If a card's key points or answers changed since it was last reviewed, its
      * scheduling resets (it comes back as a new card). History in review_log is kept.
      */
     suspend fun syncContent() {
         val content = content()
         val stale = dao.allStates().filter { s ->
             val card = content.cardsById[s.cardId]
-            card != null && card.keyPointsHash != s.contentHash
+            card != null && card.answerHash != s.contentHash
         }
         if (stale.isNotEmpty()) dao.deleteStates(stale.map { it.cardId })
     }
@@ -68,7 +68,8 @@ class StudyRepository(
         return TodayInfo(plan, logs.map { it.cardId }.distinct().size)
     }
 
-    suspend fun recordReview(card: Card, keyPointsHit: List<String>, rating: Fsrs.Rating) {
+    /** [correctQuestions] is stored in ReviewLog.keyPointsHit (the column predates the quiz format). */
+    suspend fun recordReview(card: Card, correctQuestions: List<String>, rating: Fsrs.Rating) {
         val now = Instant.now(clock).toEpochMilli()
         val today = today()
         db.transaction {
@@ -89,10 +90,10 @@ class StudyRepository(
                     reps = (prev?.reps ?: 0) + 1,
                     lapses = (prev?.lapses ?: 0) + if (result.lapsed) 1 else 0,
                     state = if (rating == Fsrs.Rating.Again) CardState.RELEARNING else CardState.REVIEW,
-                    contentHash = card.keyPointsHash,
+                    contentHash = card.answerHash,
                 )
             )
-            dao.insertLog(ReviewLog(cardId = card.id, at = now, rating = rating.value, keyPointsHit = keyPointsHit, cardVersion = card.version, wasNew = prev == null))
+            dao.insertLog(ReviewLog(cardId = card.id, at = now, rating = rating.value, keyPointsHit = correctQuestions, cardVersion = card.version, wasNew = prev == null))
         }
     }
 

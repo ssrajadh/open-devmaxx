@@ -21,7 +21,7 @@ data class ReviewState(
     val lapses: Int,
     /** One of [CardState]. */
     val state: Int,
-    /** Card.keyPointsHash at the time of the last review; a mismatch triggers a reset. */
+    /** Card.answerHash at the time of the last review; a mismatch triggers a reset. */
     val contentHash: String,
 )
 

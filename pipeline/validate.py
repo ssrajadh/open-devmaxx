@@ -94,6 +94,29 @@ def main() -> int:
                         err(where, f"source missing `{k}`")
                 if isinstance(s.get("url"), str) and not s["url"].startswith("https://"):
                     err(where, f"source url should be https: {s['url']}")
+            qs = need(c, where, "questions", list) or []
+            q_ids = set()
+            for q in qs:
+                qw = f"{where}:{q.get('id')}"
+                if not q.get("id") or q["id"] in q_ids:
+                    err(qw, "question id missing or duplicate")
+                q_ids.add(q.get("id"))
+                for k in ("stem", "why"):
+                    if not isinstance(q.get(k), str) or not q[k].strip():
+                        err(qw, f"question needs `{k}`")
+                opts = q.get("options") or []
+                opt_ids = [o.get("id") for o in opts]
+                if not 3 <= len(opts) <= 5:
+                    err(qw, "needs 3 to 5 options")
+                if len(set(opt_ids)) != len(opt_ids) or any(not isinstance(o.get("text"), str) or not o["text"].strip() for o in opts):
+                    err(qw, "options need unique ids and text")
+                if len({o.get("text", "").strip().lower() for o in opts}) != len(opts):
+                    err(qw, "duplicate option text")
+                ans = q.get("answers") or []
+                if not ans or any(a not in opt_ids for a in ans) or len(set(ans)) != len(ans):
+                    err(qw, "answers must be a non-empty subset of option ids")
+                if len(ans) >= len(opts):
+                    err(qw, "at least one option must be wrong")
             need(c, where, "prereqs", list, nonempty=False)
             v = need(c, where, "version", int)
             if v is not None and v < 1:
